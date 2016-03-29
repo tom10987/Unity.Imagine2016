@@ -9,7 +9,7 @@ public class CharacterMove : MonoBehaviour
     [SerializeField]
     GameObject _character = null;
 
-    [SerializeField]
+    [SerializeField, Range(-50f, 50f)]
     float _stopPos;
 
     [SerializeField]
@@ -22,11 +22,11 @@ public class CharacterMove : MonoBehaviour
     [SerializeField]
     int _totalKickCount;
     //飛ぶ威力
-    [SerializeField]
+    [SerializeField, Range(1f, 5f)]
     int _jumpPower;
 
     //重力
-    [SerializeField]
+    [SerializeField, Range(0f, 1f)]
     float _gravity;
 
     //待っている時間
@@ -34,7 +34,7 @@ public class CharacterMove : MonoBehaviour
     float _waitTime;
 
     //こけるSpeed
-    [SerializeField]
+    [SerializeField, Range(-20f, 20f)]
     int _spinSpeed;
     [SerializeField]
     Quaternion _setRotation;
@@ -85,7 +85,7 @@ public class CharacterMove : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
 
         UpdateOfCharacterFall();
@@ -106,21 +106,20 @@ public class CharacterMove : MonoBehaviour
         if (_isEndFalled == true) return;
 
         _characterStatus._jumpCount += Time.deltaTime;
-
         _character.transform.Translate(0,
-                                       - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
+                                       -_gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
                                        0);
 
-        if (_character.transform.localPosition.y < _stopPos)
-        {
-            _player.Play(11, 1.0f, false);
-            _isEndFalled = true;
-            _character.transform.localPosition
-            = new Vector3(_character.transform.localPosition.x,
-                          _stopPos,
-                          _character.transform.localPosition.z);
-            _characterStatus._jumpCount = 0;
-        }
+        if (_character.transform.localPosition.y >= _stopPos) return;
+
+        _player.Play(11, 1.0f, false);
+        _isEndFalled = true;
+        _character.transform.localPosition
+        = new Vector3(_character.transform.localPosition.x,
+                      _stopPos,
+                      _character.transform.localPosition.z);
+        _characterStatus._jumpCount = 0;
+
     }
 
 
@@ -131,18 +130,17 @@ public class CharacterMove : MonoBehaviour
             _characterStatus._jumpCount += Time.deltaTime;
 
             _character.transform.Translate(0,
-                                           + _jumpPower  - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
+                                           +_jumpPower - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
                                            0);
 
-            if (_character.transform.localPosition.y < _stopPos)
-            {
-                _isDrop = true;
-                _character.transform.localPosition
-                = new Vector3(_character.transform.localPosition.x,
-                              _stopPos,
-                              _character.transform.localPosition.z);
-                _characterStatus._jumpCount = 0.0f;
-            }
+            if (_character.transform.localPosition.y >= _stopPos) return;
+
+            _isDrop = true;
+            _character.transform.localPosition
+            = new Vector3(_character.transform.localPosition.x,
+                          _stopPos,
+                          _character.transform.localPosition.z);
+            _characterStatus._jumpCount = 0.0f;
 
         }
     }
@@ -152,68 +150,67 @@ public class CharacterMove : MonoBehaviour
         if (_characterStatus._isJump == false && _canJump == true)
             _waitTime += Time.deltaTime;
 
-        if (_waitTime >= _characterStatus._totalWaitTime)
-        {
-            //Randomで飛ぶタイミングを変更
-            _characterStatus._totalWaitTime = UnityEngine.Random.Range(0.5f, 2.0f);
-            _characterStatus._isJump = true;
-            _waitTime = 0.0f;
-            _player.Play(13, 1.0f, false);
-        }
+        if (_waitTime < _characterStatus._totalWaitTime) return;
+
+        //Randomで飛ぶタイミングを変更
+        _characterStatus._totalWaitTime = UnityEngine.Random.Range(0.5f, 2.0f);
+        _characterStatus._isJump = true;
+        _waitTime = 0.0f;
+        _player.Play(13, 1.0f, false);
+
     }
 
     private void UpdateofCharacterJump()
     {
-        if (_characterStatus._isJump == true)
+        if (_characterStatus._isJump != true) return;
+
+        _characterStatus._jumpCount += Time.deltaTime;
+
+        _character.transform.localPosition
+            = new Vector3(_character.transform.localPosition.x,
+                          _character.transform.localPosition.y
+                        + _jumpPower - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
+                          _character.transform.localPosition.z);
+
+        //こけていないときに回転させる
+        if (_characterStatus._isSpin == false)
         {
-            _characterStatus._jumpCount += Time.deltaTime;
-
-            _character.transform.localPosition
-                = new Vector3(_character.transform.localPosition.x,
-                              _character.transform.localPosition.y
-                            + _jumpPower - _gravity * _characterStatus._jumpCount * _characterStatus._jumpCount * 360,
-                              _character.transform.localPosition.z);
-
-            //こけていないときに回転させる
-            if (_characterStatus._isSpin == false)
-            {
-                _character.transform.Rotate(new Vector3(0, _spinSpeed * 2, 0));
-            }
-
-            //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
-            if (_character.transform.localPosition.y < _stopPos)
-            {
-                _characterStatus._isJump = false;
-                _character.transform.localPosition
-                = new Vector3(_character.transform.localPosition.x,
-                              _stopPos,
-                              _character.transform.localPosition.z);
-              
-                _character.transform.localRotation = new Quaternion(_setRotation.x, _setRotation.y, _setRotation.z, 1);
-
-                _characterStatus._jumpCount = 0.0f;
-                _player.Play(11, 1.0f, false);
-            }
+            _character.transform.Rotate(new Vector3(0, _spinSpeed * 2, 0));
         }
+
+        //初期位置より下にいったら元の位置に戻し、ジャンプ処理の終了
+        if (_character.transform.localPosition.y >= _stopPos) return;
+
+        _characterStatus._isJump = false;
+        _character.transform.localPosition
+        = new Vector3(_character.transform.localPosition.x,
+                      _stopPos,
+                      _character.transform.localPosition.z);
+
+        _character.transform.localRotation = new Quaternion(_setRotation.x, _setRotation.y, _setRotation.z, 1);
+
+        _characterStatus._jumpCount = 0.0f;
+        _player.Play(11, 1.0f, false);
+
+
     }
 
     private void UpdateOfCharacterSpin()
     {
-        if (_characterStatus._isSpin == true)
-        {
-            _characterStatus._fallCount += Time.deltaTime;
-            _characterStatus._isJump = true;
-            //Rotateをいじりこかす
-            _character.transform.Rotate(new Vector3(0, 0, _spinSpeed * _characterStatus._fallCount));
-            if (_characterStatus._fallCount > 0.5f)
-            {
-                //起こすためにSpeedを-1
-                _spinSpeed *= -1;
-                _characterStatus._canSpin = false;
-                _characterStatus._isSpin = false;
-                _characterStatus._fallCount = 0.0f;
-            }
-        }
+        if (_characterStatus._isSpin != true) return;
+
+        _characterStatus._fallCount += Time.deltaTime;
+        _characterStatus._isJump = true;
+        //Rotateをいじりこかす
+        _character.transform.Rotate(new Vector3(0, 0, _spinSpeed * _characterStatus._fallCount));
+        if (_characterStatus._fallCount <= 0.5f) return;
+
+        //起こすためにSpeedを-1
+        _spinSpeed *= -1;
+        _characterStatus._canSpin = false;
+        _characterStatus._isSpin = false;
+        _characterStatus._fallCount = 0.0f;
+
     }
 
     void PushHit()
@@ -223,7 +220,7 @@ public class CharacterMove : MonoBehaviour
 
         if (!isHit) return;
 
-        if (hitObject.transform.name == _character.name 
+        if (hitObject.transform.name == _character.name
             && _characterStatus._isSpin == false && _characterStatus._isJump == false)
         {
             _characterStatus._isSpin = true;

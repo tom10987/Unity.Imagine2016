@@ -9,13 +9,13 @@ public class CloudMove : MonoBehaviour
   [SerializeField, Range(1f, 100f)]
   float _moveSpeed = 10f;
 
-  [SerializeField, Range(900f, 1100f)]
+  [SerializeField, Range(500f, 1000f)]
   [Tooltip("画面右の雲が移動する x 座標")]
-  float _rightBound = 1000f;
+  float _rightBound = 500f;
 
-  [SerializeField, Range(900f, 1100f)]
+  [SerializeField, Range(500f, 1000f)]
   [Tooltip("画面左側の雲が出現する x 座標")]
-  float _leftBound = 1000f;
+  float _leftBound = 500f;
 
   void FixedUpdate()
   {
