@@ -1,0 +1,51 @@
+﻿
+※ VisualStudio からでも開けます
+
+//////////////////////////////////////////////////////////////////////
+サウンド
+サンプルコード
+//////////////////////////////////////////////////////////////////////
+
+----------------------------------------------------------------------
+// 基本仕様
+
+ヒエラルキーに AudioManager プレハブを配置して、
+任意の GameObject に AudioPlayer スクリプトを追加してください
+
+スクリプト上から任意の方法で AudioPlayer を取得してください
+基本的には Play() メソッドの呼び出しだけで再生ができます
+
+インスペクターのパラメータによっては再生されない場合があります
+「 Manage Mode 」の設定を「 None 」以外に変更してください
+これはスクリプト上からでも変更が可能です
+
+----------------------------------------------------------------------
+// case1: GameObject にスクリプトを設定している
+void Start()
+{
+  var player = GetComponent<AudioPlayer>();
+  player.manageMode = AudioPlayer.SourceManageMode.Additive;
+  player.Play(0, true);
+}
+
+----------------------------------------------------------------------
+// case2: インスペクターから AudioPlayer を持つオブジェクトを登録している
+[SerializeField]
+AudioPlayer _player = null;
+
+void Start()
+{
+  // TIPS: 下記のいずれかで AudioSource を追加できる
+
+  // 1. 再生できないときに自動で追加
+  _player.manageMode = AudioPlayer.SourceManageMode.Additive;
+
+  // 2. クリップされてない空の AudioSource を手動で追加
+  // 戻り値を返すので、戻り値から再生などの操作も可能
+  var source = _player.AddSource();
+
+  // 再生
+  _player.Play(0, true);
+}
+
+//////////////////////////////////////////////////////////////////////

@@ -1,0 +1,11 @@
+{
+    "SPEED_MAGNIFICATION": 0.05,
+    "OFF_SET": {
+        "x": 0.1,
+        "y": 0.4,
+        "z": -1.1
+    },
+    "FIELD_OF_VIEW": 70,
+    "NEAR": 0.3,
+    "FAR": 3
+}
