@@ -1,66 +1,62 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using UnityEngine;
 
 public class ButterflyMove : MonoBehaviour
 {
-    [SerializeField, Tooltip("サイズ変更用")]
-    private float _scale = 1.0f;
+  [SerializeField, Range(1f, 10f), Tooltip("サイズ変更用")]
+  private float _scale = 1.0f;
 
-    private float _sinWaveCount = 0.0f;
+  private float _sinWaveCount = 0.0f;
 
-    [SerializeField, Tooltip("スピード変更用")]
-    private float _moveSpeed = 60.0f;
+  [SerializeField, Range(1f, 120f), Tooltip("スピード変更用")]
+  private float _moveSpeed = 60.0f;
 
-    [SerializeField, Tooltip("縦の動きの幅")]
-    private float _sinMove = 5.0f;
+  [SerializeField, Range(1f, 10f), Tooltip("縦の動きの幅")]
+  private float _sinMove = 5.0f;
 
-    private float _startPosY = 0.0f;
+  private float _startPosY = 0.0f;
 
-    [SerializeField, Tooltip("端から出現したときに出てくるY座標を乱数で動かす")]
-    private float _randomPosY = 0.0f;
+  [SerializeField, Range(0f, 5f), Tooltip("端から出現したときに出てくるY座標を乱数で動かす")]
+  private float _randomPositionY = 2.5f;
 
-    private float _randomMoveY = 0.0f;
+  [SerializeField, Range(150f, 170f)]
+  [Tooltip("移動方向を反転させる x 座標")]
+  float _reverseRange = 165f;
 
+  [SerializeField]
+  Vector3 _rightDirection = Vector3.zero;
 
-    void Start()
-    {
-        transform.localScale = Vector3.one * _scale;
-        _startPosY = transform.localPosition.y;
-    }
+  [SerializeField]
+  Vector3 _leftDirection = Vector3.back * 90f;
 
-    void Update()
-    {
-        UpdateOfMove();
-    }
+  void Start()
+  {
+    transform.localScale = Vector3.one * _scale;
+    _startPosY = transform.localPosition.y;
+  }
 
-    private void UpdateOfMove()
-    {
-        _sinWaveCount += Time.deltaTime;
+  void FixedUpdate()
+  {
+    _sinWaveCount += Time.deltaTime;
 
-        transform.localPosition =
-            new Vector3(transform.localPosition.x + _moveSpeed * Time.deltaTime,
-                        transform.localPosition.y + UnityEngine.Mathf.Sin(_sinWaveCount) * _sinMove,
-                        transform.localPosition.z);
+    var moveX = Vector3.right * _moveSpeed * Time.deltaTime;
+    var moveY = Vector3.up * Mathf.Sin(_sinWaveCount) * _sinMove;
+    transform.localPosition += (moveX + moveY);
 
-        if (transform.localPosition.x < -165)
-        {
-            _randomMoveY = Random.Range(-_randomPosY, _randomPosY);
-            _moveSpeed *= -1;
-            transform.localRotation = Quaternion.Euler(0, 0, -90);
-            transform.localPosition =
-            new Vector3(-165.0f,
-                        _startPosY + _randomMoveY,
-                        transform.localPosition.z);
-        }
-        else if (transform.localPosition.x > 165)
-        {
-            _randomMoveY = Random.Range(-_randomPosY, _randomPosY);
-            _moveSpeed *= -1;
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
-            transform.localPosition =
-            new Vector3(165.0f,
-                        _startPosY + _randomMoveY,
-                        transform.localPosition.z);
-        }
-    }
+    var absX = Mathf.Abs(transform.localPosition.x);
+    if (absX < _reverseRange) { return; }
+
+    var isLeft = transform.localPosition.x < 0f;
+
+    // TIPS: 移動方向反転して、移動範囲内に少し戻す
+    _moveSpeed *= -1;
+    transform.localPosition += isLeft ? Vector3.right : Vector3.left;
+
+    // TIPS: オブジェクトの y 座標を少し移動する
+    var randomY = Random.Range(-1f, 1f) * _randomPositionY;
+    transform.localPosition = Vector3.up * (_startPosY + randomY);
+
+    // TIPS: オブジェクトの向きを反転
+    transform.localRotation = Quaternion.Euler(isLeft ? _leftDirection : _rightDirection);
+  }
 }
