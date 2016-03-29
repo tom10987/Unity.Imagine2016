@@ -14,6 +14,9 @@ public class ChargePlayer : ActionManager
 
     public bool _getIsInit { get { return _isInit; } }
 
+    [SerializeField]
+    GameController _controller;
+
 
     [SerializeField]
     private EnergyGage[] _energyGage;
@@ -34,17 +37,32 @@ public class ChargePlayer : ActionManager
     {
         if (_pressOnce) return;
 
-        if (Input.GetKey(keyCode))
+        var P1Key = _controller.player1.GetEnumerator();
+        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current))
         {
             _gage.MoveSelectGage();
         }
         else
-            if (Input.GetKeyUp(keyCode))
+        if (P1Key.MoveNext() && Input.GetKeyUp(P1Key.Current))
         {
             _gage.RangeSelectNow();
             _pressOnce = true;
            // _isInit = false;
         }
+
+        var P2Key = _controller.player2.GetEnumerator();
+        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current))
+        {
+            _gage.MoveSelectGage();
+        }
+        else
+        if (P2Key.MoveNext() && Input.GetKeyUp(P2Key.Current))
+        {
+            _gage.RangeSelectNow();
+            _pressOnce = true;
+            // _isInit = false;
+        }
+
     }
 
     void EnergyGageMove()
@@ -79,6 +97,6 @@ public class ChargePlayer : ActionManager
         }
     }
 
-    //これを書いとかないとウザイ
+
     public override void Action(ARModel model){}
 }
