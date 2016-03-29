@@ -1,0 +1,124 @@
+fileFormatVersion: 2
+guid: e0469f27348483649a7d40659c54be61
+timeCreated: 1458103748
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: menu_asobu_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: menu_asobu_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 717
+        width: 557
+        height: 288
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 217.5, y: -130}
+        - {x: 244.5, y: -123}
+        - {x: 258.5, y: -105}
+        - {x: 259.5, y: -95}
+        - {x: 262.5, y: -77}
+        - {x: 262.5, y: -46}
+        - {x: 261.5, y: -35}
+        - {x: 273.5, y: 9}
+        - {x: 276.5, y: 33}
+        - {x: 276.5, y: 65}
+        - {x: 274.5, y: 86}
+        - {x: 269.5, y: 109}
+        - {x: 261.5, y: 122}
+        - {x: 252.5, y: 132}
+        - {x: 235.5, y: 139}
+        - {x: 216.5, y: 141}
+        - {x: 170.5, y: 141}
+        - {x: 150.5, y: 137}
+        - {x: 124.5, y: 125}
+        - {x: 88.5, y: 120}
+        - {x: 69.5, y: 119}
+        - {x: 35.5, y: 130}
+        - {x: 21.5, y: 132}
+        - {x: -45.5, y: 132}
+        - {x: -65.5, y: 130}
+        - {x: -83.5, y: 127}
+        - {x: -115.5, y: 125}
+        - {x: -125.5, y: 139}
+        - {x: -136.5, y: 144}
+        - {x: -215.5, y: 144}
+        - {x: -229.5, y: 134}
+        - {x: -239.5, y: 117}
+        - {x: -254.5, y: 105}
+        - {x: -265.5, y: 93}
+        - {x: -269.5, y: 81}
+        - {x: -274.5, y: 36}
+        - {x: -278.5, y: 20}
+        - {x: -278.5, y: -93}
+        - {x: -276.5, y: -98}
+        - {x: -273.5, y: -104}
+        - {x: -258.5, y: -119}
+        - {x: -240.5, y: -128}
+        - {x: -211.5, y: -134}
+        - {x: -160.5, y: -137}
+        - {x: -117.5, y: -137}
+        - {x: -101.5, y: -135}
+        - {x: -85.5, y: -131}
+        - {x: -72.5, y: -125}
+        - {x: -53.5, y: -126}
+        - {x: -32.5, y: -135}
+        - {x: -15.5, y: -138}
+        - {x: 24.5, y: -138}
+        - {x: 65.5, y: -133}
+        - {x: 152.5, y: -130}
+        - {x: 208.5, y: -131}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

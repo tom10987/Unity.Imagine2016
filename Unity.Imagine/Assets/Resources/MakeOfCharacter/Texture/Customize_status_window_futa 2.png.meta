@@ -1,0 +1,112 @@
+fileFormatVersion: 2
+guid: 902e52bb3cad29f49b68957eaad49f0b
+timeCreated: 1458883528
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Customize_status_window_futa 2_0
+    21300002: Customize_status_window_futa 2_1
+    21300004: Customize_status_window_futa 2_2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Customize_status_window_futa 2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 979
+        width: 458
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 226, y: 22.5}
+        - {x: -229, y: 22.5}
+        - {x: -229, y: -22.5}
+        - {x: 226, y: -22.5}
+        - {x: 229, y: -18.5}
+        - {x: 229, y: 19.5}
+    - name: Customize_status_window_futa 2_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 925
+        width: 458
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 223, y: 23.5}
+        - {x: -229, y: 23.5}
+        - {x: -229, y: -23.5}
+        - {x: 227, y: -23.5}
+        - {x: 229, y: -20.5}
+        - {x: 229, y: 18.5}
+        - {x: 226, y: 22.5}
+    - name: Customize_status_window_futa 2_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 871
+        width: 458
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -229, y: 23}
+        - {x: -229, y: -23}
+        - {x: 227, y: -23}
+        - {x: 229, y: -20}
+        - {x: 229, y: 19}
+        - {x: 226, y: 23}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: ab803c9ccbe96c84db582a75f57b8cbe
+timeCreated: 1458891281
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: kaiten_0
+    21300002: kaiten_1
+    21300004: kaiten_2
+    21300006: kaiten_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: kaiten_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 892
+        width: 298
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -96, y: 66}
+        - {x: -149, y: 66}
+        - {x: -149, y: 46}
+        - {x: -148, y: 41}
+        - {x: -143, y: 19}
+        - {x: -124, y: -26}
+        - {x: -99, y: -56}
+        - {x: -92, y: -56}
+        - {x: -86, y: -48}
+        - {x: 33, y: -64}
+        - {x: 59, y: -66}
+        - {x: 149, y: -66}
+        - {x: 149, y: -52}
+        - {x: -34, y: 64}
+    - name: kaiten_1
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 867
+        width: 84
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: -38.5}
+        - {x: 42, y: -38.5}
+        - {x: 42, y: 11.5}
+        - {x: 37, y: 33.5}
+        - {x: 9, y: 38.5}
+        - {x: -42, y: 38.5}
+        - {x: -42, y: -22.5}
+    - name: kaiten_2
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 892
+        width: 299
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 149.5, y: 66}
+        - {x: -26.5, y: 66}
+        - {x: -149.5, y: -51}
+        - {x: -149.5, y: -66}
+        - {x: -33.5, y: -66}
+        - {x: -26.5, y: -65}
+        - {x: 91.5, y: -60}
+        - {x: 126.5, y: -56}
+        - {x: 149.5, y: 27}
+    - name: kaiten_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 866
+        width: 716
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -28, y: 1}
+        - {x: -41, y: 1}
+        - {x: -41, y: -38}
+        - {x: -39, y: -54}
+        - {x: 12, y: -79}
+        - {x: 38, y: -79}
+        - {x: 47, y: -67}
+        - {x: 47, y: -49}
+        - {x: 30, y: -21}
+      - - {x: -283, y: 79}
+        - {x: -358, y: 79}
+        - {x: -358, y: 54}
+        - {x: -355, y: 31}
+        - {x: -340, y: -17}
+        - {x: -298, y: -54}
+        - {x: -265, y: -55}
+        - {x: -58, y: -55}
+        - {x: -58, y: -40}
+        - {x: -243, y: 77}
+      - - {x: 274, y: 79}
+        - {x: 237, y: 76}
+        - {x: 232, y: 68}
+        - {x: 247, y: 43}
+        - {x: 52, y: -42}
+        - {x: 52, y: -55}
+        - {x: 330, y: -55}
+        - {x: 355, y: 31}
+        - {x: 355, y: 79}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

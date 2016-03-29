@@ -1,0 +1,106 @@
+fileFormatVersion: 2
+guid: 50cabc4d9c82e384aac7482e9c69c7a5
+timeCreated: 1458909771
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ui_button_arnokotu_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: ui_button_arnokotu_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 816
+        width: 664
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 324, y: 44}
+        - {x: 328, y: 61}
+        - {x: 331, y: 74}
+        - {x: 332, y: 78}
+        - {x: 332, y: 96}
+        - {x: 325, y: 104}
+        - {x: -325, y: 104}
+        - {x: -332, y: 97}
+        - {x: -332, y: 76}
+        - {x: -331, y: 72}
+        - {x: -330, y: 67}
+        - {x: -328, y: 59}
+        - {x: -327, y: 54}
+        - {x: -325, y: 46}
+        - {x: -324, y: 41}
+        - {x: -322, y: 33}
+        - {x: -320, y: 23}
+        - {x: -318, y: 15}
+        - {x: -314, y: -2}
+        - {x: -312, y: -10}
+        - {x: -311, y: -15}
+        - {x: -309, y: -23}
+        - {x: -308, y: -28}
+        - {x: -306, y: -36}
+        - {x: -305, y: -41}
+        - {x: -303, y: -49}
+        - {x: -302, y: -54}
+        - {x: -299, y: -66}
+        - {x: -298, y: -71}
+        - {x: -296, y: -79}
+        - {x: -295, y: -84}
+        - {x: -292, y: -96}
+        - {x: -284, y: -104}
+        - {x: 283, y: -104}
+        - {x: 290, y: -99}
+        - {x: 292, y: -94}
+        - {x: 297, y: -73}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
