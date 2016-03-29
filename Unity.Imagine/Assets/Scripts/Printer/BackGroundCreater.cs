@@ -41,8 +41,8 @@ public class BackGroundCreater : MonoBehaviour
         _panel = new List<GameObject>();
         if (_direction == MoveDirection.PLUSX || _direction == MoveDirection.MINUSX)
         {
-            _panelNumber = 3;
-            _startPos = new Vector3(-1500, 0, 0);
+            _panelNumber = 6;
+            _startPos = new Vector3(-1500, -900, 0);
             for (int i = 0; i < _panelNumber; i++)
             {
                 var panel = Instantiate(_backGroundPanel) as GameObject;
@@ -55,6 +55,11 @@ public class BackGroundCreater : MonoBehaviour
                 _panel[i].transform.localScale = Vector3.one;
                 _panel[i].transform.localPosition = _startPos;
                 _startPos.x += 1075;
+                if(i == _panelNumber / 2 - 1)
+                {
+                    _startPos.x = -1500;
+                    _startPos.y += 1080;
+                }
             }
 
             if (_direction == MoveDirection.PLUSX)
@@ -68,8 +73,8 @@ public class BackGroundCreater : MonoBehaviour
         }
         else if (_direction == MoveDirection.PLUSY || _direction == MoveDirection.MINUSY)
         {
-            _panelNumber = 4;
-            _startPos = new Vector3(-500, -1080, 0);
+            _panelNumber = 6;
+            _startPos = new Vector3(-500, -1500, 0);
             for (int i = 0; i < _panelNumber; i++)
             {
                 var panel = Instantiate(_backGroundPanel) as GameObject;
@@ -81,11 +86,11 @@ public class BackGroundCreater : MonoBehaviour
 
                 _panel[i].transform.localScale = Vector3.one;
                 _panel[i].transform.localPosition = _startPos;
-                _startPos.x += 1075;
+                _startPos.y += 1075;
                 if (i == _panelNumber / 2 - 1)
                 {
-                    _startPos.x = -500;
-                    _startPos.y += 1080;
+                    _startPos.x += 1080;
+                    _startPos.y = -1500;
                 }
             }
 
@@ -150,7 +155,7 @@ public class BackGroundCreater : MonoBehaviour
                 panel.transform.Translate(_moveSpeed, 0.0f, 0.0f);
                 if (panel.transform.localPosition.x > 1550)
                 {
-                    panel.transform.localPosition = new Vector3(-1670, 0, 0);
+                    panel.transform.localPosition = new Vector3(-1670, panel.transform.localPosition.y, 0);
                 }
             }
             yield return null;
@@ -166,7 +171,7 @@ public class BackGroundCreater : MonoBehaviour
                 panel.transform.Translate(-_moveSpeed, 0.0f, 0.0f);
                 if (panel.transform.localPosition.x < -1550)
                 {
-                    panel.transform.localPosition = new Vector3(1670, 0, 0);
+                    panel.transform.localPosition = new Vector3(1670, panel.transform.localPosition.y, 0);
                 }
             }
             yield return null;
@@ -180,9 +185,9 @@ public class BackGroundCreater : MonoBehaviour
             foreach (var panel in _panel)
             {
                 panel.transform.Translate(0.0f, _moveSpeed, 0.0f);
-                if (panel.transform.localPosition.y > 1080)
+                if (panel.transform.localPosition.y > 1550)
                 {
-                    panel.transform.localPosition = new Vector3(panel.transform.localPosition.x, -1075, 0);
+                    panel.transform.localPosition = new Vector3(panel.transform.localPosition.x, -1670, 0);
                 }
             }
             yield return null;
@@ -196,9 +201,9 @@ public class BackGroundCreater : MonoBehaviour
             foreach (var panel in _panel)
             {
                 panel.transform.Translate(0.0f, -_moveSpeed, 0.0f);
-                if (panel.transform.localPosition.y < -1080)
+                if (panel.transform.localPosition.y < -1550)
                 {
-                    panel.transform.localPosition = new Vector3(panel.transform.localPosition.x, 1075, 0);
+                    panel.transform.localPosition = new Vector3(panel.transform.localPosition.x, 1670, 0);
                 }
             }
             yield return null;
