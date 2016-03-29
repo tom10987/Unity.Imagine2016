@@ -20,7 +20,16 @@ public class EnergyGage : MonoBehaviour {
     float _cross;
 
     [SerializeField]
+    private  Player _selectPlayer;
+
+     
     int _player2Gage = 1;
+    private enum Player
+    {
+        Player1,
+        Player2
+    }
+
 
     [SerializeField]
     float _speed = 0;
@@ -35,13 +44,11 @@ public class EnergyGage : MonoBehaviour {
 
     void Start ()
     {
-        //プレイヤーによって左右にゲージのスタート位置を分ける
-
-        //_gagePosition = _backgroundGage.rectTransform.anchoredPosition;
-        //_gagePosition.x = (_backgroundGage.rectTransform.anchoredPosition.x + (_backgroundGage.rectTransform.sizeDelta.x / 4));
-        //_powerIamge.rectTransform.anchoredPosition = _gagePosition;
+        if(_selectPlayer == Player.Player2)
+        {
+            _player2Gage = -1;
+        }
         _size = _powerGage.rectTransform.sizeDelta;
-        //Debug.Log(_powerIamge.rectTransform.anchoredPosition );
     }
 	 
 	void Update (){}
@@ -49,7 +56,6 @@ public class EnergyGage : MonoBehaviour {
 
     public bool PowerGage()
     {
-        //ちょっとゲージがずれる(後で直す)
         if (_gage._getChargeScore * _cross > _powerGage.rectTransform.sizeDelta.x)
         {
             if (_powerGage.rectTransform.sizeDelta.x >=
@@ -68,11 +74,10 @@ public class EnergyGage : MonoBehaviour {
             _gage._getChargeScore * _cross <=
             _powerGage.rectTransform.sizeDelta.x)
         {
-            Debug.Log("debu");
+
 
             if (_player._getIsInit == true)
             {
-                Debug.Log("homo");
                 return _isPowerGage = false;
             }
             else
