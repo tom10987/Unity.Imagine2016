@@ -1,40 +1,29 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using UnityEngine;
 
 public class CloudMove : MonoBehaviour
 {
+  [SerializeField]
+  RectTransform _cloud = null;
 
-    //移動する雲
-    [SerializeField]
-    GameObject _cloud = null;
-    //雲の移動速度
-    [SerializeField]
-    float _moveSpeed;
+  [SerializeField, Range(1f, 100f)]
+  float _moveSpeed = 10f;
 
-    void Start()
-    {
+  [SerializeField, Range(900f, 1100f)]
+  [Tooltip("画面右の雲が移動する x 座標")]
+  float _rightBound = 1000f;
 
-    }
+  [SerializeField, Range(900f, 1100f)]
+  [Tooltip("画面左側の雲が出現する x 座標")]
+  float _leftBound = 1000f;
 
-    void Update()
-    {
-        Move();
-    }
+  void FixedUpdate()
+  {
+    _cloud.position += Vector3.right * _moveSpeed * Time.deltaTime;
+    if (_cloud.position.x < _rightBound) { return; }
 
-    private void Move()
-    {
-        _cloud.transform.localPosition =
-          new Vector3(_cloud.transform.localPosition.x + _moveSpeed * Time.deltaTime,
-                      _cloud.transform.localPosition.y,
-                      _cloud.transform.localPosition.z);
-
-        if (_cloud.transform.localPosition.x <= 1100)
-            return;
-
-        //範囲の外に出たら左側に戻す
-            _cloud.transform.localPosition =
-            new Vector3(_cloud.transform.localPosition.x - 2800,
-                        _cloud.transform.localPosition.y,
-                        _cloud.transform.localPosition.z);
-    }
+    var position = _cloud.position;
+    position.x = (_rightBound + _leftBound) * -1f;
+    _cloud.position = position;
+  }
 }
