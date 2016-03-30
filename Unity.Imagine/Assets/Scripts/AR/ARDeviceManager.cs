@@ -56,10 +56,10 @@ public class ARDeviceManager : MonoBehaviour {
   public ARModel player1 { get { return _models[0]; } }
   public ARModel player2 { get { return _models[1]; } }
 
-  void Awake() {
+  void Start() {
     if (WebCamTexture.devices.Length <= 0) { return; }
 
-    var wcTexture = new WebCamTexture(320, 240, 15);
+    var wcTexture = new WebCamTexture(320, 200, 15);
     _device = NyARUnityWebCam.CreateInstance(wcTexture);
     _panel.material.mainTexture = wcTexture;
 

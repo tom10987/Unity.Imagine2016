@@ -4,7 +4,7 @@ using UnityEngine;
 //------------------------------------------------------------
 // TIPS:
 // 描画する画面を指定した比率に変更する
-// メインカメラに必ず MainCamera タグを設定すること
+// メインカメラをインスペクターから割り当てる
 //
 //------------------------------------------------------------
 
@@ -12,20 +12,24 @@ class ViewAspectUpdate : MonoBehaviour {
 
   [SerializeField]
   Vector2 _aspect = new Vector2(16f, 9f);
+  float aspectRate { get { return _aspect.x / _aspect.y; } }
+
+  [SerializeField, Range(0f, 1f)]
+  float _xOffset = 0.5f;
+
+  [SerializeField, Range(0f, 1f)]
+  float _yOffset = 0.5f;
 
   [SerializeField]
   Color _backGroundColor = Color.black;
 
-  float _aspectRate = 0.0f;
+  [SerializeField]
   Camera _camera = null;
   static Camera _backgroundCamera = null;
 
-  void Start() {
-    _aspectRate = _aspect.x / _aspect.y;
-    _camera = Camera.main;
-
+  void Awake() {
     CreateBackgroundCamera();
-    UpdateScreenRate();
+    UpdateAspectRate();
   }
 
   void CreateBackgroundCamera() {
@@ -37,10 +41,10 @@ class ViewAspectUpdate : MonoBehaviour {
 
     var backGroundCameraObject = new GameObject("BackGroundCamera");
     _backgroundCamera = backGroundCameraObject.AddComponent<Camera>();
-    _backgroundCamera.depth = -99;
-    _backgroundCamera.fieldOfView = 1;
+    _backgroundCamera.depth = -99f;
+    _backgroundCamera.fieldOfView = 1f;
     _backgroundCamera.farClipPlane = 1.1f;
-    _backgroundCamera.nearClipPlane = 1;
+    _backgroundCamera.nearClipPlane = 1f;
     _backgroundCamera.cullingMask = 0;
     _backgroundCamera.depthTextureMode = DepthTextureMode.None;
     _backgroundCamera.backgroundColor = _backGroundColor;
@@ -50,28 +54,28 @@ class ViewAspectUpdate : MonoBehaviour {
     backGroundCameraObject.hideFlags = HideFlags.NotEditable;
   }
 
-  void UpdateScreenRate() {
-    float baseAspect = _aspect.y / _aspect.x;
-    float nowAspect = (float)Screen.height / Screen.width;
+  /// <summary> カメラのアスペクト比が指定した値と異なるとき true を返す </summary>
+  public bool IsChangeAspect() { return _camera.aspect != aspectRate; }
 
-    if (baseAspect > nowAspect) {
-      var changeAspect = nowAspect / baseAspect;
-      _camera.rect = new Rect((1 - changeAspect) * 0.5f, 0, changeAspect, 1);
-    }
-    else {
-      var changeAspect = baseAspect / nowAspect;
-      _camera.rect = new Rect(0, (1 - changeAspect) * 0.5f, 1, changeAspect);
-    }
-  }
+  /// <summary> カメラのアスペクト比を補正 </summary>
+  public void UpdateAspectRate() {
+    var nowAspect = (float)Screen.width / Screen.height;
+    var isGreater = aspectRate < nowAspect;
 
-  bool IsChangeAspect() {
-    return _camera.aspect != _aspectRate;
-  }
+    var currentAspect = isGreater ?
+      aspectRate / nowAspect : nowAspect / aspectRate;
 
-  void Update() {
-    if (!IsChangeAspect()) { return; }
+    _camera.rect = isGreater ?
+      HeightBaseRect(currentAspect) : WidthBaseRect(currentAspect);
 
-    UpdateScreenRate();
     _camera.ResetAspect();
+  }
+
+  Rect WidthBaseRect(float aspect) {
+    return new Rect(0f, (1f - aspect) * _yOffset, 1f, aspect);
+  }
+
+  Rect HeightBaseRect(float aspect) {
+    return new Rect((1f - aspect) * _xOffset, 0f, aspect, 1f);
   }
 }
