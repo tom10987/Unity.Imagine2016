@@ -22,14 +22,14 @@ public class EnergyGage : MonoBehaviour {
     [SerializeField]
     private  Player _selectPlayer;
 
-     
     int _player2Gage = 1;
-    private enum Player
+    public enum Player
     {
         Player1,
         Player2
     }
 
+    public Player getSelectPlayer { get { return _selectPlayer; } }
 
     [SerializeField]
     float _speed = 0;
@@ -68,24 +68,7 @@ public class EnergyGage : MonoBehaviour {
             _powerGage.rectTransform.anchoredPosition = _gagePosition;
             return _isPowerGage = false;
         }
-        else
-
-        if (_gage._getChargeScore != 0&&
-            _gage._getChargeScore * _cross <=
-            _powerGage.rectTransform.sizeDelta.x)
-        {
-
-
-            if (_player._getIsInit == true)
-            {
-                return _isPowerGage = false;
-            }
-            else
-            if (_player._getIsInit == false)
-            {
-                return _isPowerGage = true;
-            }
-        }
+  
 
         return _isPowerGage = false;
     }

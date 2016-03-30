@@ -14,6 +14,8 @@ public class ChargePlayer : ActionManager
 
     public bool _getIsInit { get { return _isInit; } }
 
+    bool _isGage = false;
+
     [SerializeField]
     GameController _controller;
 
@@ -27,40 +29,42 @@ public class ChargePlayer : ActionManager
 
     void Update()
     {
-        //Debug.Log(_isInit);
-        //Debug.Log(_energyGage[0]._getIsPowerGage); 
+       
         IsKeyDownMoveGage();
         EnergyGageMove();
     }
 
     void IsKeyDownMoveGage()
     {
+        _gage.getIsGage = false;
         if (_pressOnce) return;
 
         var P1Key = _controller.player1.GetEnumerator();
-        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current))
+        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
         {
             _gage.MoveSelectGage();
         }
         else
-        if (P1Key.MoveNext() && Input.GetKeyUp(P1Key.Current))
+        if (Input.GetKeyUp(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
         {
             _gage.RangeSelectNow();
+            _gage.getIsGage = true;
             _pressOnce = true;
-           // _isInit = false;
+            _isInit = false;
         }
 
         var P2Key = _controller.player2.GetEnumerator();
-        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current))
+        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
         {
             _gage.MoveSelectGage();
         }
         else
-        if (P2Key.MoveNext() && Input.GetKeyUp(P2Key.Current))
+        if ( Input.GetKeyUp(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
         {
             _gage.RangeSelectNow();
+            _gage.getIsGage = true;
             _pressOnce = true;
-            // _isInit = false;
+             _isInit = false;
         }
 
     }
@@ -81,7 +85,6 @@ public class ChargePlayer : ActionManager
         int finishPowerGageCount = 0;
         foreach (var energyGage in _energyGage)
         {
-            //Debug.Log(energyGage._getIsPowerGage);
             if (energyGage._getIsPowerGage == true)
             {
                 finishPowerGageCount++;
@@ -90,10 +93,10 @@ public class ChargePlayer : ActionManager
 
         if (finishPowerGageCount == _energyGage.Length)
         {
+            _gage.getIsGage = false;
             _gage.InitGage();
             _pressOnce = false;
             _isInit = true;
-
         }
     }
 
