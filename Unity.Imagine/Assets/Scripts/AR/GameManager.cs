@@ -12,9 +12,6 @@ public class GameManager : MonoBehaviour {
   ARDeviceManager _device = null;
 
   [SerializeField]
-  GameController _controller = null;
-
-  [SerializeField]
   GameMenu _menu = null;
 
   [SerializeField]
@@ -114,12 +111,10 @@ public class GameManager : MonoBehaviour {
     var models = _device.GetModels().Except(_device.models);
     foreach (var model in models) { Destroy(model.gameObject); }
 
-    _device.player1.inputKey = _controller.IsPlayer1KeyDown;
-    _device.player2.inputKey = _controller.IsPlayer2KeyDown;
-    _device.player1.body.material = _materials.p1body;
-    _device.player1.clip.material = _materials.p1clip;
-    _device.player2.body.material = _materials.p2body;
-    _device.player2.clip.material = _materials.p2clip;
+    _device.player1.bodyRenderer.material = _materials.p1body;
+    _device.player1.clipRenderer.material = _materials.p1clip;
+    _device.player2.bodyRenderer.material = _materials.p2body;
+    _device.player2.clipRenderer.material = _materials.p2clip;
     _device.player1.scoreBoard = _menu.player1;
     _device.player2.scoreBoard = _menu.player2;
     _device.player1.effect = _effect.p1effect;
@@ -134,8 +129,8 @@ public class GameManager : MonoBehaviour {
 
     while (true) {
       _device.ModelUpdate();
-      var p1 = _device.player1.inputKey();
-      var p2 = _device.player2.inputKey();
+      var p1 = GameController.instance.player1.IsPress();
+      var p2 = GameController.instance.player2.IsPress();
       if (p1 && p2) { break; }
       yield return null;
     }
@@ -244,8 +239,8 @@ public class GameManager : MonoBehaviour {
   void ActiveGameMode() {
     _counter.UpdateTimeCount();
 
-    if (_device.player1.inputKey()) { Shot(_device.player1, _device.player2); }
-    if (_device.player2.inputKey()) { Shot(_device.player2, _device.player1); }
+    if (GameController.instance.player1.IsPush()) { Shot(_device.player1, _device.player2); }
+    if (GameController.instance.player2.IsPush()) { Shot(_device.player2, _device.player1); }
 
     if (_counter.time > 3.5f) { return; }
     _finishCount.UpdateCount(_counter.timeToInt);

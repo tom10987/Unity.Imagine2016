@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class ShotEffect : MonoBehaviour {
+public class OneTimeEffect : MonoBehaviour {
 
   [SerializeField]
   ParticleSystem _particle = null;
