@@ -65,29 +65,37 @@ public class MenuBoxAnimater : MonoBehaviour
         }
     }
 
-    private bool _isStarted = false;
-
     void Start()
     {
         _animator = GetComponent<Animator>();
+        gameObject.SetActive(false);
     }
 
     void Update()
     {
-        if (_isPlay == true && _isStarted == false)
+        if (_isPlay == true)
         {
             _animator.SetTrigger("isPlay");
             _isPlay = false;
-            _isStarted = true;
         }
 
-        if (_isBack == true && _isStarted == true)
+        if (_isBack == true)
         {
+            Debug.Log("Back");
             _animator.SetTrigger("isBack");
             _isBack = false;
-            _isPlay = false;
-            _isStarted = false;
         }
+    }
+
+    public void Play(string _stateName,float _normalizedtime)
+    {
+        Debug.Log(_animator);
+        _animator.Play(_stateName, 0, _normalizedtime);
+    }
+
+    public void Stop()
+    {
+        _animator.Stop();
     }
 
 }
