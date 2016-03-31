@@ -88,12 +88,14 @@ public class Barrage : ActionManager
     int Barragebutton(ARModel model)
     {
         if (_timeCount.time <= 1) return 0;
+        /*
         if (model.inputKey())
         {
             _audioPlayer.Play(20, false);
             StartCoroutine(BulletCreate(_waitTime));
             return 1;
         }
+        */
 
         return 0;
     }
