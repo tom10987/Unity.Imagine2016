@@ -68,6 +68,15 @@ public class EnergyGage : MonoBehaviour {
             _powerGage.rectTransform.anchoredPosition = _gagePosition;
             return _isPowerGage = false;
         }
+        else
+        if(_gage._getChargeScore * _cross <= _powerGage.rectTransform.sizeDelta.x)
+        {
+            //if (_player._getIsInit == false)
+            {
+                return _isPowerGage = true;
+            }
+
+        }
   
 
         return _isPowerGage = false;
