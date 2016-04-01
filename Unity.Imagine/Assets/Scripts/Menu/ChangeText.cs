@@ -20,7 +20,7 @@ public class ChangeText : MonoBehaviour
         _text.Add("ゲームをじどうでえらぶよ\nでもいまはつかえないよ");
         _text.Add("ゲームをえらんだときに\nどんなCuboが\nつよいのかみれるよ");
         _text.Add("ごめんね！！\nぼくはえらべないよ");
-
+        _text.Add("このゲームに\nきまったよ！！");
         ChangeExplanationText(0);
     }
 
