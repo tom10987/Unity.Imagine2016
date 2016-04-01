@@ -81,6 +81,9 @@ public class MenuDirecter : MonoBehaviour
     //True-> ボタン反応させない　false->ボタン反応していい
     private bool _isEndedChoiseScene = false;
 
+    private bool _isSelectGameRandom = false;
+    private int _randomCount = 0;
+    private int _tempSelectGameNum = 0;
     void Start()
     {
 
@@ -267,6 +270,11 @@ public class MenuDirecter : MonoBehaviour
         ChangeMiniGame();
     }
 
+    void FixedUpdate()
+    {
+        SelectGameRandom();
+    }
+
     //Scene選択
     private void SelectGameMode()
     {
@@ -312,13 +320,19 @@ public class MenuDirecter : MonoBehaviour
         else if (hitObject.transform.name == "OkButton")
             _ListsOfActionPushButton[4]();
         else if (hitObject.transform.name == "RandomButton")
+        {
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
+            SelectOfGameNum(3);
+        }
         else if (hitObject.transform.name == "SpeedGameButton")
             SelectOfGameNum(0);
         else if (hitObject.transform.name == "ShotGameButton")
             SelectOfGameNum(1);
-        else if (hitObject.transform.name == "DiffenceGameButton")
+        else if (hitObject.transform.name == "DeffenceGameButton")
+        {
             SelectOfGameNum(2);
+            Debug.Log("Hit");
+        }
         else if (hitObject.transform.name == "StatusButton")
             FindObjectOfType<ChangeText>().ChangeExplanationText(5);
 
@@ -457,7 +471,7 @@ public class MenuDirecter : MonoBehaviour
     {
         _animation.SetActive(true);
         //_animation.GetComponent<MenuBoxAnimater>().Stop();
-        _animation.GetComponent<MenuBoxAnimater>().Play("TransisionState",1.0f);
+        _animation.GetComponent<MenuBoxAnimater>().Play("TransisionState", 1.0f);
         _animationCount = 1.0f;
 
         StopAllCoroutines();
@@ -528,13 +542,15 @@ public class MenuDirecter : MonoBehaviour
         {
             _nowSelectGameNum = nowSelectGameNum_;
             FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
-            if (nowSelectGameNum_ != 0) return;
+            //if (nowSelectGameNum_ != 0) return;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
+            _isSelectGameRandom = true;
+            _isEndedChoiseScene = true;
             _nowSelectGameNum = 0;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             //FindObjectOfType<ChangeTarget>().ChangeTargetCursor(3);
@@ -548,6 +564,37 @@ public class MenuDirecter : MonoBehaviour
         //    _selectGameName.sprite = _gameNames[0];
 
         _player.Play(8, 1.0f, false);
+    }
+
+    private void SelectGameRandom()
+    {
+        if (!_isSelectGameRandom) return;
+        ++_randomCount;
+        if (_randomCount % 15 != 0) return;
+        RandomSelect();
+        FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
+        FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
+        ChangeStatusCursor(_nowSelectGameNum);
+        _player.Play(6, 1.0f, false);
+        _tempSelectGameNum = _nowSelectGameNum;
+
+        if (_randomCount < 151) return;
+        FindObjectOfType<ChangeText>().ChangeExplanationText(7);
+
+        if (_randomCount < 160) return;
+        _player.Play(8, 1.0f, false);
+        FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
+        _isSelectGameRandom = false;
+        _isEndedChoiseScene = false;
+        _randomCount = 0;
+    }
+
+    private void RandomSelect()
+    {
+        _nowSelectGameNum = UnityEngine.Random.Range(0, 3);
+        if (_tempSelectGameNum != _nowSelectGameNum) return;
+        RandomSelect();
+
     }
 
     private void ChangeStatusCursor(int _selectGameNum)
