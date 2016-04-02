@@ -20,9 +20,9 @@ public class Gage : MonoBehaviour
 
     private Vector3 _selectGagePosition = new Vector3(0, 0, 0);
 
-    public float _score = 0;
+    float _oneRoundScore = 0;
 
-    public float _getChargeScore { get { return _score; } }
+    public float getOneRoundScore { get { return _oneRoundScore; } }
 
     bool _isGage = false;
 
@@ -50,14 +50,14 @@ public class Gage : MonoBehaviour
 
     void Update()
     {
-        _score += RangeSelectNow(); 
+        //_totalScore += RangeSelectNow(); 
     }
 
     public float  RangeSelectNow()
     {
         //int score = 0;
         if (_rangeGageImage.Length == 0) return 0;
-        if (!_isGage) return 0;
+        //if (!_isGage) return 0;
         float score = 0;
         int crossScore = 0;
 
@@ -70,10 +70,12 @@ public class Gage : MonoBehaviour
                 selectRange.rectTransform.anchoredPosition.x +
                 selectRange.rectTransform.sizeDelta.x / 2)
             {
-                score = crossScore++ * _plusScore;
+                crossScore++;
             }
         }
 
+        _oneRoundScore = crossScore;
+        score = crossScore * _plusScore;
         return score;
 
     }

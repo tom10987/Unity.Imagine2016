@@ -14,7 +14,11 @@ public class ChargePlayer : ActionManager
 
     public bool _getIsInit { get { return _isInit; } }
 
-    bool _isGage = false;
+    public float _totalScore = 0;
+
+    public float getTotalScore { get { return _totalScore; } }
+
+    //bool _isGage = false;
 
     [SerializeField]
     GameController _controller;
@@ -47,7 +51,7 @@ public class ChargePlayer : ActionManager
         else
         if (Input.GetKeyUp(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
         {
-            _gage.RangeSelectNow();
+            _totalScore += _gage.RangeSelectNow();
             _gage.getIsGage = true;
             _pressOnce = true;
             _isInit = false;
@@ -61,7 +65,7 @@ public class ChargePlayer : ActionManager
         else
         if ( Input.GetKeyUp(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
         {
-            _gage.RangeSelectNow();
+            _totalScore += _gage.RangeSelectNow();
             _gage.getIsGage = true;
             _pressOnce = true;
              _isInit = false;
@@ -73,7 +77,7 @@ public class ChargePlayer : ActionManager
     {
         if (!_pressOnce) return;
         
-        if (_energyGage[0].PowerGage() == true)
+        if (_energyGage[0].ChargePowerGage() == true)
         {
             Init();
         }
