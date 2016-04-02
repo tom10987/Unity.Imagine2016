@@ -28,8 +28,10 @@ public class Shield : MonoBehaviour {
     private int _maxArmor = 20;
     private int _armor = 0;
 
-    [SerializeField]
-    private string _ballName = "Ball";
+    //[SerializeField]
+    //private string _ballName = "Ball";
+
+    public int defenseParmater { get; set; }
 
     //Pendulum pendulum = null;
 
@@ -81,11 +83,14 @@ public class Shield : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == _ballName)
+        var ball = collision.gameObject.GetComponent<Ball>();
+        if(ball == null) { return; }
+        if (!ball.stopFlag)
         {
             if (_hitDelayCount == 0)
             {
-                int damage = _maxDamage - _armor;
+                int damage = _maxDamage - _armor - defenseParmater;
+                if(damage < 0) { damage = 0; }
                 hp -= damage;
                 if(hp == 0) {
                     collision.gameObject.GetComponent<Ball>().StopBall();
@@ -116,17 +121,21 @@ public class Shield : MonoBehaviour {
         //float count = 0;
         const int PUSH_FREAM = 3;
         const int PULL_FREAM = 3;
+        const float PUSH_SPEED = 40.0f;
+        const float PULL_SPEED = 40.0f;
+        const float PUSH_VALUE = 0.3f;
+        const float PULL_VALUE = -0.3f;
         for (int i = 0; i < PUSH_FREAM; ++i)
         {
             _armor = _maxArmor - _maxArmor / PUSH_FREAM * i;
-            transform.Translate(0.0f, 0.0f, 0.3f * 40.0f);
-            yield return 0.3f * 40.0f;
+            transform.Translate(0.0f, 0.0f, PUSH_VALUE * PUSH_SPEED);
+            yield return PUSH_VALUE * PUSH_SPEED;
         }
         for (int i = 0; i < PULL_FREAM; ++i)
         {
             _armor -= _maxArmor;
-            transform.Translate(0.0f, 0.0f, -0.3f * 40.0f);
-            yield return -0.3f * 40.0f;
+            transform.Translate(0.0f, 0.0f, PULL_VALUE * PULL_SPEED);
+            yield return PULL_VALUE * PULL_SPEED;
         }
         _armor = 0;
     }

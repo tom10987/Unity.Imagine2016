@@ -143,8 +143,8 @@ public class GameSelect : MonoBehaviour {
 
         //_objList.Add(obj);
         //_objList.Add(canvas);
-        _objList.Add(players[0].GetComponent<Pendulum>().CreateShield(hitParticle1P));
-        _objList.Add(players[1].GetComponent<Pendulum>().CreateShield(hitParticle2P));
+        _objList.Add(players[0].GetComponent<PendulumTest>().CreateShield(hitParticle1P));
+        _objList.Add(players[1].GetComponent<PendulumTest>().CreateShield(hitParticle2P));
         GetComponent<KeyAction>().InitOn();
     }
 
