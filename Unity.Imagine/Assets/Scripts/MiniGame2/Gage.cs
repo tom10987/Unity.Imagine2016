@@ -20,71 +20,67 @@ public class Gage : MonoBehaviour
 
     private Vector3 _selectGagePosition = new Vector3(0, 0, 0);
 
-    float _oneRoundScore = 0;
+    float _oneRoundOnGageCount = 0;
 
-    public float getOneRoundScore { get { return _oneRoundScore; } }
+    public float getOneRoundOnGageCount { get { return _oneRoundOnGageCount; } }
 
-    bool _isGage = false;
+    //bool _isGage = false;
 
-    public bool getIsGage { set { _isGage = value; } }
+    //public bool setIsGage { set { _isGage = value; } }
 
-    [SerializeField]
-    float _plusScore = 1;
+    public int getRangeGageCount { get { return _rangeGageImage.Length; } }
 
     void Start()
     {
         _size = _backgroundGage.rectTransform.sizeDelta;
-        _selectGagePosition = _backgroundGage.rectTransform.anchoredPosition;
+        _selectGagePosition = _backgroundGage.rectTransform.localPosition;
         _selectGagePosition.x -= _size.x / 2;
-        _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
+        _selectGage.rectTransform.localPosition = _selectGagePosition;
     }
 
     public void MoveSelectGage()
     {
-        if (_selectGage.rectTransform.anchoredPosition.x >=
-            _backgroundGage.rectTransform.anchoredPosition.x + _size.x / 2) return;
+        if (_selectGage.rectTransform.localPosition.x >=
+            _backgroundGage.rectTransform.localPosition.x + _size.x / 2)
+            return;
         _selectGagePosition.x += _speed;
-        _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
+        _selectGage.rectTransform.localPosition = _selectGagePosition;
 
     }
 
     void Update()
     {
-        //_totalScore += RangeSelectNow(); 
+       
     }
 
-    public float  RangeSelectNow()
+    public float RangeSelectNow()
     {
-        //int score = 0;
         if (_rangeGageImage.Length == 0) return 0;
-        //if (!_isGage) return 0;
-        float score = 0;
-        int crossScore = 0;
+        int score = 0;
 
-        foreach (Image selectRange in _rangeGageImage)
+
+        foreach (Image rangeGage in _rangeGageImage)
         {
-            if (_selectGage.rectTransform.anchoredPosition.x >=
-                selectRange.rectTransform.anchoredPosition.x -
-                selectRange.rectTransform.sizeDelta.x / 2 &&
-                _selectGage.rectTransform.anchoredPosition.x <=
-                selectRange.rectTransform.anchoredPosition.x +
-                selectRange.rectTransform.sizeDelta.x / 2)
+            if (_selectGage.rectTransform.localPosition.x >=
+                rangeGage.rectTransform.localPosition.x -
+                rangeGage.rectTransform.sizeDelta.x / 2 &&
+                _selectGage.rectTransform.localPosition.x <=
+                rangeGage.rectTransform.localPosition.x +
+                rangeGage.rectTransform.sizeDelta.x / 2)
             {
-                crossScore++;
+                score++;
             }
         }
 
-        _oneRoundScore = crossScore;
-        score = crossScore * _plusScore;
-        return score;
+        return _oneRoundOnGageCount = score;
 
     }
 
     public void InitGage()
     {
-        _selectGagePosition = _backgroundGage.rectTransform.anchoredPosition;
+        _selectGagePosition = _backgroundGage.rectTransform.localPosition;
         _selectGagePosition.x -= _size.x / 2;
-        _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
+        _selectGage.rectTransform.localPosition = _selectGagePosition;
     }
 
 }
