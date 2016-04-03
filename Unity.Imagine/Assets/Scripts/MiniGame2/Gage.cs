@@ -20,10 +20,16 @@ public class Gage : MonoBehaviour
 
     private Vector3 _selectGagePosition = new Vector3(0, 0, 0);
 
-    public int _score = 0;
+    float _oneRoundScore = 0;
 
-    public int _getChargeScore { get { return _score; } }
+    public float getOneRoundScore { get { return _oneRoundScore; } }
 
+    bool _isGage = false;
+
+    public bool getIsGage { set { _isGage = value; } }
+
+    [SerializeField]
+    float _plusScore = 1;
 
     void Start()
     {
@@ -42,10 +48,18 @@ public class Gage : MonoBehaviour
 
     }
 
-    public int RangeSelectNow()
+    void Update()
+    {
+        //_totalScore += RangeSelectNow(); 
+    }
+
+    public float  RangeSelectNow()
     {
         //int score = 0;
         if (_rangeGageImage.Length == 0) return 0;
+        //if (!_isGage) return 0;
+        float score = 0;
+        int crossScore = 0;
 
         foreach (Image selectRange in _rangeGageImage)
         {
@@ -56,11 +70,13 @@ public class Gage : MonoBehaviour
                 selectRange.rectTransform.anchoredPosition.x +
                 selectRange.rectTransform.sizeDelta.x / 2)
             {
-                _score++;
+                crossScore++;
             }
         }
 
-        return _score;
+        _oneRoundScore = crossScore;
+        score = crossScore * _plusScore;
+        return score;
 
     }
 
