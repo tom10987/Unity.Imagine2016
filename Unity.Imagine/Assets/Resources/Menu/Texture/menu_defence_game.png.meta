@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 51207804825835841a2f8278e661f0c8
-timeCreated: 1458359017
+guid: 5760ed58ed8fca34cbffbae94e0f30aa
+timeCreated: 1459775525
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: menu_defence_game_lock_0
+    21300000: menu_defence_game_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,38 +51,38 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: menu_defence_game_lock_0
+    - name: menu_defence_game_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 258
-        width: 252
-        height: 254
+        x: 2
+        y: 262
+        width: 248
+        height: 250
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 125, y: -92}
-        - {x: 125, y: 91}
-        - {x: 123, y: 98}
-        - {x: 119, y: 107}
-        - {x: 112, y: 116}
-        - {x: 106, y: 121}
-        - {x: 94, y: 127}
-        - {x: -96, y: 127}
-        - {x: -104, y: 124}
-        - {x: -109, y: 121}
-        - {x: -123, y: 107}
-        - {x: -126, y: 100}
-        - {x: -126, y: -95}
-        - {x: -125, y: -97}
-        - {x: -119, y: -108}
-        - {x: -111, y: -116}
-        - {x: -100, y: -123}
-        - {x: -90, y: -125}
-        - {x: 93, y: -125}
-        - {x: 108, y: -117}
-        - {x: 117, y: -108}
+      - - {x: 122, y: -99}
+        - {x: 124, y: -93}
+        - {x: 124, y: 93}
+        - {x: 123, y: 96}
+        - {x: 119, y: 105}
+        - {x: 112, y: 114}
+        - {x: 106, y: 119}
+        - {x: 94, y: 125}
+        - {x: -97, y: 125}
+        - {x: -109, y: 120}
+        - {x: -121, y: 108}
+        - {x: -124, y: 100}
+        - {x: -124, y: -102}
+        - {x: -123, y: -104}
+        - {x: -111, y: -119}
+        - {x: -100, y: -124}
+        - {x: -98, y: -125}
+        - {x: 95, y: -125}
+        - {x: 97, y: -124}
+        - {x: 108, y: -118}
+        - {x: 116, y: -110}
     outline: []
   spritePackingTag: 
   userData: 
