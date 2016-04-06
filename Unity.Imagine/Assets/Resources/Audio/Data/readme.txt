@@ -45,12 +45,70 @@ SE
 
 14: No17 -> se_No15_StartCountDown    (ゲーム開始時のカウントダウン)
 15: No18 -> se_No16_FinishCountDown   (ゲーム終了前のカウントダウン)
-16: No19 -> se_No17_Finish            (ゲーム終了のホイッスル)
+
+16: No19 -> se_No17_Finish            (※ No18:se_No16 と結合しているため未使用)
+
 17: No20 -> se_No18_CostumeBreak_A    (リザルト発表時のコスチュームが吹っ飛ぶ音１)
 18: No20 -> se_No19_CostumeBreak_B    (リザルト発表時のコスチュームが吹っ飛ぶ音２)
 19: No21 -> se_No20_Result            (リザルトの表示)
 
 20: No22 -> se_No21_Shot              (スピードのゲームでショット発射時)
 21: No23 -> se_No22_Hit               (スピートのゲームでショットが当たった時)
+
+22: No24 -> se_No23_JustCharge        (アタックのゲームでジャストタイミング成功)
+23: No25 -> se_No24_MissCharge        (アタックのゲームでタイミングがずれた)
+24: No26 -> se_No25_PowerCharge       (アタックのゲームでチャージ中)
+25: No27 -> se_No26_BeamFire          (アタックのゲームでビーム発射)
+26: No28 -> se_No27_BeamClash         (アタックのゲームでビーム衝突)
+
+27: No29 -> se_No28_JustHit           (ディフェンスのゲームで消しゴムをうまく跳ね返した)
+28: No30 -> se_No29_MissHit           (ディフェンスのゲームで消しゴムをうまく返せなかった)
+29: No31 -> se_No30_ShieldBreak       (ディフェンスのゲームで盾が壊れた)
+30: No32 -> se_No31_Floating          (ディフェンスのゲームで消しゴムが浮いた音)
+
+31: No16 -> se_No32_RandomSelect      (ランダム選択中)
+32: No16 -> se_No33_RandomFinish      (ランダム終了：ゲームが決定されたとき)
+
+----------------------------------------------------------------------
+
+サウンドリスト逆引き対応表
+
+No01 ... bgm_No01
+No02 ... bgm_No04
+No03 ... bgm_No02
+No04 ... se_No05
+No05 ... se_No06
+No06 ... bgm_No03
+No07 ... ※削除
+No08 ... se_No07
+No09 ... se_No08
+
+No10 ... se_No09
+No11 ... se_No10
+No12 ... se_No11
+No13 ... se_No12
+No14 ... se_No13
+No15 ... ※削除
+No16 ... se_No32, se_No33
+No17 ... se_No15
+No18 ... se_No16
+No19 ... se_No17  ※ No18 に含まれるため未使用
+
+No20 ... se_No18, se_No19
+No21 ... se_No20
+No22 ... se_No21
+No23 ... se_No22
+No24 ... se_No23
+No25 ... se_No24
+No26 ... se_No25
+No27 ... se_No26
+No28 ... se_No27
+No29 ... se_No28
+
+No30 ... se_No29
+No31 ... se_No30
+No32 ... se_No31
+No33 ... se_No14
+
 
 //////////////////////////////////////////////////////////////////////
