@@ -222,6 +222,8 @@ public class MenuDirecter : MonoBehaviour
 
         _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title"));
         _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title1"));
+        _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title2"));
+        _gameNames.Add(Resources.Load<Sprite>("Menu/Texture/menu_title3"));
 
         _selectGameName.sprite = _gameNames[1];
     }
@@ -546,6 +548,7 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
+            _selectGameName.sprite = _gameNames[_nowSelectGameNum + 1];
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
@@ -557,11 +560,6 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
             ChangeStatusCursor(_nowSelectGameNum);
         }
-
-        //if (_nowSelectGameNum == 0)
-        //    _selectGameName.sprite = _gameNames[1];
-        //else
-        //    _selectGameName.sprite = _gameNames[0];
 
         _player.Play(8, 1.0f, false);
     }
@@ -584,6 +582,7 @@ public class MenuDirecter : MonoBehaviour
         if (_randomCount < 160) return;
         _player.Play(8, 1.0f, false);
         FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
+        _selectGameName.sprite = _gameNames[_nowSelectGameNum + 1];
         _isSelectGameRandom = false;
         _isEndedChoiseScene = false;
         _randomCount = 0;
@@ -599,7 +598,7 @@ public class MenuDirecter : MonoBehaviour
 
     private void ChangeStatusCursor(int _selectGameNum)
     {
-        _statusCursor.transform.localRotation = Quaternion.Euler(0, 0, 120 * (_nowSelectGameNum + 1));
+        _statusCursor.transform.localRotation = Quaternion.Euler(0, 0, -120 * (_nowSelectGameNum -1));
     }
 
     private void ChangeMiniGame()
