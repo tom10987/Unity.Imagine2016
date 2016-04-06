@@ -5,6 +5,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour {
 
+  /*
   [SerializeField]
   AudioPlayer _audio = null;
 
@@ -259,4 +260,5 @@ public class GameManager : MonoBehaviour {
   void HitPlay() { _audio.Play(21); }
   void ShotHitP1() { _device.player1.scoreBoard.CountUp(); HitPlay(); }
   void ShotHitP2() { _device.player2.scoreBoard.CountUp(); HitPlay(); }
+  */
 }
