@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 51207804825835841a2f8278e661f0c8
-timeCreated: 1458359017
+guid: 96f8c819d434a5947a97090eb3c14fc1
+timeCreated: 1459760091
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: menu_defence_game_lock_0
+    21300000: menu_UI_green_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,38 +51,21 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: menu_defence_game_lock_0
+    - name: menu_UI_green_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 258
-        width: 252
-        height: 254
+        x: 219
+        y: 341
+        width: 343
+        height: 317
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 125, y: -92}
-        - {x: 125, y: 91}
-        - {x: 123, y: 98}
-        - {x: 119, y: 107}
-        - {x: 112, y: 116}
-        - {x: 106, y: 121}
-        - {x: 94, y: 127}
-        - {x: -96, y: 127}
-        - {x: -104, y: 124}
-        - {x: -109, y: 121}
-        - {x: -123, y: 107}
-        - {x: -126, y: 100}
-        - {x: -126, y: -95}
-        - {x: -125, y: -97}
-        - {x: -119, y: -108}
-        - {x: -111, y: -116}
-        - {x: -100, y: -123}
-        - {x: -90, y: -125}
-        - {x: 93, y: -125}
-        - {x: 108, y: -117}
-        - {x: 117, y: -108}
+      - - {x: -171.5, y: 158.5}
+        - {x: -171.5, y: -158.5}
+        - {x: 171.5, y: -158.5}
+        - {x: 171.5, y: 158.5}
     outline: []
   spritePackingTag: 
   userData: 
