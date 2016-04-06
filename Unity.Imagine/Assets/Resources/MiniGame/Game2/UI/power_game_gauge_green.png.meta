@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 31e9942529928c84ebb0ec5e3accedbd
-timeCreated: 1458358932
+guid: 37ea3877b8935e2438d308591ffb3a37
+timeCreated: 1459699359
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: menu_beam_game_lock_0
+    21300000: power_game_gauge_green_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,38 +51,21 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: menu_beam_game_lock_0
+    - name: power_game_gauge_green_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 260
-        width: 251
-        height: 252
+        x: 0
+        y: 202
+        width: 54
+        height: 54
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 124.5, y: -91}
-        - {x: 124.5, y: 87}
-        - {x: 123.5, y: 93}
-        - {x: 119.5, y: 104}
-        - {x: 115.5, y: 110}
-        - {x: 103.5, y: 121}
-        - {x: 94.5, y: 125}
-        - {x: 91.5, y: 126}
-        - {x: -100.5, y: 126}
-        - {x: -112.5, y: 119}
-        - {x: -123.5, y: 105}
-        - {x: -125.5, y: 101}
-        - {x: -125.5, y: -99}
-        - {x: -124.5, y: -101}
-        - {x: -120.5, y: -108}
-        - {x: -107.5, y: -120}
-        - {x: -94.5, y: -126}
-        - {x: 85.5, y: -126}
-        - {x: 93.5, y: -124}
-        - {x: 104.5, y: -119}
-        - {x: 119.5, y: -104}
+      - - {x: -27, y: 27}
+        - {x: -27, y: -27}
+        - {x: 27, y: -27}
+        - {x: 27, y: 27}
     outline: []
   spritePackingTag: 
   userData: 

@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChargePlayer : ActionManager
+public class ChargePlayer : MonoBehaviour
 {
     [SerializeField]
     private Gage _gage;
 
     bool _pressOnce = false;
 
-    public bool _getPressOnce { get { return _pressOnce; } }
+    public bool PressOnce { get { return _pressOnce; } set { _pressOnce = value; } }
 
-    bool _isInit;
 
-    public bool _getIsInit { get { return _isInit; } }
+    public float _totalScore = 0;
 
-    bool _isGage = false;
+    public float getTotalScore { get { return _totalScore; } }
+
 
     [SerializeField]
     GameController _controller;
@@ -23,20 +23,22 @@ public class ChargePlayer : ActionManager
     [SerializeField]
     private EnergyGage[] _energyGage;
 
-    void Start(){
-        _isInit = false;
+    [SerializeField]
+    Round _round;
+
+    void Start()
+    {
     }
 
     void Update()
     {
-       
+
         IsKeyDownMoveGage();
         EnergyGageMove();
     }
 
     void IsKeyDownMoveGage()
     {
-        _gage.getIsGage = false;
         if (_pressOnce) return;
 
         var P1Key = _controller.player1.GetEnumerator();
@@ -47,10 +49,8 @@ public class ChargePlayer : ActionManager
         else
         if (Input.GetKeyUp(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
         {
-            _gage.RangeSelectNow();
-            _gage.getIsGage = true;
+            _totalScore += _gage.RangeSelectNow();
             _pressOnce = true;
-            _isInit = false;
         }
 
         var P2Key = _controller.player2.GetEnumerator();
@@ -59,47 +59,29 @@ public class ChargePlayer : ActionManager
             _gage.MoveSelectGage();
         }
         else
-        if ( Input.GetKeyUp(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
+        if (Input.GetKeyUp(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
         {
-            _gage.RangeSelectNow();
-            _gage.getIsGage = true;
+            _totalScore += _gage.RangeSelectNow();
             _pressOnce = true;
-             _isInit = false;
         }
 
     }
 
     void EnergyGageMove()
     {
-        if (!_pressOnce) return;
-        
-        if (_energyGage[0].PowerGage() == true)
+
+
+        if (_energyGage[0].ChargePowerGage() == true)
         {
-            Init();
+            _round.NextRound();
         }
 
     }
 
-    void Init()
+   public void Init()
     {
-        int finishPowerGageCount = 0;
-        foreach (var energyGage in _energyGage)
-        {
-            if (energyGage._getIsPowerGage == true)
-            {
-                finishPowerGageCount++;
-            }
-        }
-
-        if (finishPowerGageCount == _energyGage.Length)
-        {
-            _gage.getIsGage = false;
-            _gage.InitGage();
-            _pressOnce = false;
-            _isInit = true;
-        }
+        _gage.InitGage();
+        _pressOnce = false;
     }
 
-
-    public override void Action(ARModel model){}
 }

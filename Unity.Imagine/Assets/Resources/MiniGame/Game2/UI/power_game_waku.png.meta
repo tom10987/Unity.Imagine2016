@@ -1,10 +1,11 @@
 fileFormatVersion: 2
-guid: 9433f92667f8c0042ad06e6f649c4a5a
-timeCreated: 1458358847
+guid: 8ef5aac14a2e74846a9c88ed39065a89
+timeCreated: 1459710348
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: menu_random_game_lock_0
+    21300000: power_game_waku_0
+    21300002: power_game_waku_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,39 +52,34 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: menu_random_game_lock_0
+    - name: power_game_waku_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 261
-        width: 251
-        height: 251
+        y: 880
+        width: 657
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 122.5, y: -96.5}
-        - {x: 124.5, y: -89.5}
-        - {x: 124.5, y: 90.5}
-        - {x: 122.5, y: 100.5}
-        - {x: 114.5, y: 111.5}
-        - {x: 102.5, y: 121.5}
-        - {x: 95.5, y: 124.5}
-        - {x: 92.5, y: 125.5}
-        - {x: -99.5, y: 125.5}
-        - {x: -110.5, y: 118.5}
-        - {x: -120.5, y: 108.5}
-        - {x: -125.5, y: 97.5}
-        - {x: -125.5, y: -97.5}
-        - {x: -121.5, y: -106.5}
-        - {x: -118.5, y: -110.5}
-        - {x: -108.5, y: -119.5}
-        - {x: -97.5, y: -124.5}
-        - {x: -95.5, y: -125.5}
-        - {x: 90.5, y: -125.5}
-        - {x: 97.5, y: -124.5}
-        - {x: 106.5, y: -119.5}
-        - {x: 118.5, y: -105.5}
+      - - {x: -322.5, y: 3}
+        - {x: -325.5, y: 2}
+        - {x: -328.5, y: -2}
+        - {x: -328.5, y: -67}
+        - {x: 328.5, y: -67}
+        - {x: 328.5, y: -1}
+        - {x: 323.5, y: 3}
+      - - {x: -316.5, y: -11}
+        - {x: 316.5, y: -11}
+        - {x: 316.5, y: -53}
+        - {x: -316.5, y: -53}
+      - - {x: -325.5, y: 72}
+        - {x: -328.5, y: 69}
+        - {x: -328.5, y: 39}
+        - {x: -323.5, y: 35}
+        - {x: 328.5, y: 35}
+        - {x: 328.5, y: 72}
     outline: []
   spritePackingTag: 
   userData: 
