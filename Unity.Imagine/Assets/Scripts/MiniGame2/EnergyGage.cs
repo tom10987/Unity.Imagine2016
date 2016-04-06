@@ -17,11 +17,13 @@ public class EnergyGage : MonoBehaviour
     [SerializeField]
     Image _backgroundGage;
 
-    [SerializeField]
-    float _cross;
+    
 
     [SerializeField]
     private Player _selectPlayer;
+
+    [SerializeField]
+    Round _round;
 
     int _player2Gage = 1;
     public enum Player
@@ -29,6 +31,8 @@ public class EnergyGage : MonoBehaviour
         Player1,
         Player2
     }
+
+    float _oneUpGage = 0;
 
     public Player getSelectPlayer { get { return _selectPlayer; } }
 
@@ -43,6 +47,8 @@ public class EnergyGage : MonoBehaviour
 
     public bool _getIsPowerGage { get { return _isPowerGage; } }
 
+    Vector3 _initialPosition = new Vector3(0,0,0);
+
     void Start()
     {
         if (_selectPlayer == Player.Player2)
@@ -50,29 +56,43 @@ public class EnergyGage : MonoBehaviour
             _player2Gage = -1;
         }
         _size = _powerGage.rectTransform.sizeDelta;
+        _oneUpGage = _backgroundGage.rectTransform.sizeDelta.x / _round.getRoundCount / _gage.getRangeGageCount;
+
+        
+        _initialPosition = _backgroundGage.rectTransform.localPosition;
+        Debug.Log(_initialPosition);
+        _initialPosition.x -= _backgroundGage.rectTransform.sizeDelta.x / 2 * _player2Gage;
+        _initialPosition.y = _powerGage.rectTransform.localPosition.y;
+        _initialPosition.z = _powerGage.rectTransform.localPosition.z;
+        _powerGage.rectTransform.localPosition = _initialPosition;
     }
 
-    void Update() { }
+    void Update() {
+        
+    }
 
 
     public bool ChargePowerGage()
     {
-        float oneRoundUpGage = (_player._totalScore - _gage.getOneRoundScore) * _cross;
 
-        if (_gage.getOneRoundScore * _cross >= _size.x - oneRoundUpGage)
+        if (!_player.PressOnce) return _isPowerGage = false;
+        float upGage = _oneUpGage * _player._totalScore;
+        if (_powerGage.rectTransform.sizeDelta.x >=
+    _backgroundGage.rectTransform.sizeDelta.x)
+            return _isPowerGage = false;
+
+        if (upGage > _size.x)
         {
-            if (_powerGage.rectTransform.sizeDelta.x >=
-                _backgroundGage.rectTransform.sizeDelta.x)
-                return _isPowerGage = false;
+
             _size.x += _speed;
             _powerGage.rectTransform.sizeDelta = _size;
-            _gagePosition = _powerGage.rectTransform.anchoredPosition;
-            _gagePosition.x += _speed / 2 * _player2Gage;
-            _powerGage.rectTransform.anchoredPosition = _gagePosition;
+            _gagePosition = _powerGage.rectTransform.localPosition;
+            _gagePosition.x += (_speed / 2) * _player2Gage;
+            _powerGage.rectTransform.localPosition = _gagePosition;
             return _isPowerGage = false;
         }
         else
-        if (_gage.getOneRoundScore * _cross < _size.x - oneRoundUpGage)
+        if (upGage <= _size.x)
         {
             return _isPowerGage = true;
         }
