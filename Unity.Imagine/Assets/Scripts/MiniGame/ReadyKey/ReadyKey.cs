@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class ReadyKey : MonoBehaviour {
 
-    [SerializeField]
-    GameManager _manager = null;
+    //[SerializeField]
+    //GameManager _manager = null;
 
     [SerializeField]
     GameController _controller = null;
@@ -93,6 +93,6 @@ public class ReadyKey : MonoBehaviour {
     public void HideReadyImage()
     {
         _uiMover.targetPos = _hidePos;
-        _manager.OnPlay();
+        //_manager.OnPlay();
     }
 }

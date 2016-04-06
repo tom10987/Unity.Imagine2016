@@ -3,8 +3,10 @@ using System.Collections;
 
 public class GameMnueTab : MonoBehaviour {
 
+  /*
   [SerializeField]
   GameManager _manager = null;
+  */
 
     [SerializeField]
     ReadyKey _readyKey = null;
@@ -60,6 +62,7 @@ public class GameMnueTab : MonoBehaviour {
     {
         if (_tabPattern == TabPattern.ARLoad || _tabPattern == TabPattern.Ready)
         {
+      /*
             if (_manager.isStart)
             {
                 _tabPattern = TabPattern.Ready;
@@ -68,6 +71,7 @@ public class GameMnueTab : MonoBehaviour {
             {
                 _tabPattern = TabPattern.ARLoad;
             }
+      */
         }
     }
 
