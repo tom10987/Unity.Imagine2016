@@ -33,20 +33,20 @@ public class Gage : MonoBehaviour
     void Start()
     {
         _size = _backgroundGage.rectTransform.sizeDelta;
-        _selectGagePosition = _backgroundGage.rectTransform.localPosition;
-        _selectGagePosition.x -= _size.x / 2;
-        _selectGagePosition.y = _selectGage.rectTransform.localPosition.y;
-        _selectGagePosition.z = _selectGage.rectTransform.localPosition.z;
-        _selectGage.rectTransform.localPosition = _selectGagePosition;
+        _selectGagePosition = _backgroundGage.rectTransform.anchoredPosition3D;
+        _selectGagePosition.x -= _size.x / 2 +5;
+        _selectGagePosition.y = _selectGage.rectTransform.anchoredPosition3D.y;
+        _selectGagePosition.z = _selectGage.rectTransform.anchoredPosition3D.z;
+        _selectGage.rectTransform.anchoredPosition3D = _selectGagePosition;
     }
 
     public void MoveSelectGage()
     {
-        if (_selectGage.rectTransform.localPosition.x >=
-            _backgroundGage.rectTransform.localPosition.x + _size.x / 2)
+        if (_selectGage.rectTransform.anchoredPosition.x >=
+            _backgroundGage.rectTransform.anchoredPosition.x + _size.x / 2)
             return;
         _selectGagePosition.x += _speed;
-        _selectGage.rectTransform.localPosition = _selectGagePosition;
+        _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
 
     }
 
@@ -64,14 +64,14 @@ public class Gage : MonoBehaviour
         foreach (Image rangeGage in _rangeGageImage)
         {
             
-            if (_selectGage.rectTransform.localPosition.x >=
-                (rangeGage.rectTransform.localPosition.x -
+            if (_selectGage.rectTransform.anchoredPosition.x >=
+                (rangeGage.rectTransform.anchoredPosition.x -
                 rangeGage.rectTransform.sizeDelta.x / 2) &&
-                _selectGage.rectTransform.localPosition.x <=
-                (rangeGage.rectTransform.localPosition.x +
+                _selectGage.rectTransform.anchoredPosition.x <=
+                (rangeGage.rectTransform.anchoredPosition.x +
                 rangeGage.rectTransform.sizeDelta.x / 2))
             {
-                Debug.Log(_selectGage.rectTransform.localPosition);
+                
                 score++;
             }
         }
@@ -82,9 +82,10 @@ public class Gage : MonoBehaviour
 
     public void InitGage()
     {
-        _selectGagePosition = _backgroundGage.rectTransform.localPosition;
-        _selectGagePosition.x -= _size.x / 2;
-        _selectGage.rectTransform.localPosition = _selectGagePosition;
+        _selectGagePosition = _backgroundGage.rectTransform.anchoredPosition;
+        _selectGagePosition.x -= _size.x / 2 +5;
+        _selectGagePosition.y = _selectGage.rectTransform.anchoredPosition.y;
+        _selectGage.rectTransform.anchoredPosition = _selectGagePosition;
     }
 
 }
