@@ -45,6 +45,7 @@ public class Pendulum : AbstractGame
         ressouce.Current.transform.parent = transform.parent;
         ressouce.Current.name = ressouce.Current.name;
         shield = ressouce.Current.GetComponent<Shield>();
+        shield.defenseParmater = parameter.getCharacterData.defense;
         
         if (_OneCreateFlag)
         {

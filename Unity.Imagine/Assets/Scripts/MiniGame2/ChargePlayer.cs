@@ -6,6 +6,10 @@ public class ChargePlayer : MonoBehaviour
     [SerializeField]
     private Gage _gage;
 
+    Gage[] a;
+
+    ChargeGameController _chargeGameController;
+
     bool _pressOnce = false;
 
     public bool PressOnce { get { return _pressOnce; } set { _pressOnce = value; } }
@@ -16,7 +20,7 @@ public class ChargePlayer : MonoBehaviour
     public float getTotalScore { get { return _totalScore; } }
 
 
-    [SerializeField]
+
     GameController _controller;
 
 
@@ -28,6 +32,19 @@ public class ChargePlayer : MonoBehaviour
 
     void Start()
     {
+        _chargeGameController = GetComponent<ChargeGameController>();
+        _controller = GetComponentInParent<GameController>();
+
+        Debug.Log(a = FindObjectsOfType<Gage>());
+        if (_chargeGameController.player1.gameObject == gameObject)
+        {
+
+        }
+        else
+        if (_chargeGameController.player2.gameObject == gameObject)
+        {
+
+        }
     }
 
     void Update()
@@ -37,7 +54,7 @@ public class ChargePlayer : MonoBehaviour
         EnergyGageMove();
     }
 
-    void IsKeyDownMoveGage()
+    public void IsKeyDownMoveGage()
     {
         if (_pressOnce) return;
 
@@ -67,9 +84,8 @@ public class ChargePlayer : MonoBehaviour
 
     }
 
-    void EnergyGageMove()
+    public void EnergyGageMove()
     {
-
 
         if (_energyGage[0].ChargePowerGage() == true)
         {
@@ -78,7 +94,7 @@ public class ChargePlayer : MonoBehaviour
 
     }
 
-   public void Init()
+    public void Init()
     {
         _gage.InitGage();
         _pressOnce = false;
