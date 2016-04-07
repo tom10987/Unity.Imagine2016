@@ -549,6 +549,7 @@ public class MenuDirecter : MonoBehaviour
             FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
             ChangeStatusCursor(_nowSelectGameNum);
             _selectGameName.sprite = _gameNames[_nowSelectGameNum + 1];
+            _player.Play(8, 1.0f, false);
         }
         else if (nowSelectGameNum_ == 3 && _canMoveCharacter == false)
         {
@@ -556,12 +557,12 @@ public class MenuDirecter : MonoBehaviour
             _isEndedChoiseScene = true;
             _nowSelectGameNum = 0;
             FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
-            //FindObjectOfType<ChangeTarget>().ChangeTargetCursor(3);
             FindObjectOfType<ChangeText>().ChangeExplanationText(4);
             ChangeStatusCursor(_nowSelectGameNum);
+            _player.Play(31, 1.0f, false);
         }
 
-        _player.Play(8, 1.0f, false);
+        
     }
 
     private void SelectGameRandom()
@@ -573,14 +574,14 @@ public class MenuDirecter : MonoBehaviour
         FindObjectOfType<SelectGameStatus>().SelectGameNum = _nowSelectGameNum;
         FindObjectOfType<ChangeTarget>().ChangeTargetCursor(_nowSelectGameNum);
         ChangeStatusCursor(_nowSelectGameNum);
-        _player.Play(6, 1.0f, false);
+        _player.Play(31, 1.0f, false);
         _tempSelectGameNum = _nowSelectGameNum;
 
         if (_randomCount < 151) return;
         FindObjectOfType<ChangeText>().ChangeExplanationText(7);
 
         if (_randomCount < 160) return;
-        _player.Play(8, 1.0f, false);
+        _player.Play(32, 1.0f, false);
         FindObjectOfType<ChangeText>().ChangeExplanationText(1 + _nowSelectGameNum);
         _selectGameName.sprite = _gameNames[_nowSelectGameNum + 1];
         _isSelectGameRandom = false;
@@ -603,8 +604,9 @@ public class MenuDirecter : MonoBehaviour
 
     private void ChangeMiniGame()
     {
-        if (_isEndedChoiseScene == true) return;
+        if (_isEndedChoiseScene != true) return;
         if (_cunon.activeInHierarchy == false) return;
+        Debug.Log("AA");
         if (FindObjectOfType<ActionOfCunon>().isEnd == true && _isChangeScene == false)
         {
             var screenSequencer = ScreenSequencer.instance;
