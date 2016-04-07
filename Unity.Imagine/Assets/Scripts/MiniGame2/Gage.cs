@@ -13,6 +13,8 @@ public class Gage : MonoBehaviour
     [SerializeField]
     private Image[] _rangeGageImage = null;
 
+    public Image[] getRangeGageImage { get { return _rangeGageImage; } }
+
     private Vector2 _size;
 
     [SerializeField]

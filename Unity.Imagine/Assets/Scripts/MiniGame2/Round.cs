@@ -14,8 +14,9 @@ public class Round : MonoBehaviour
     [SerializeField]
     ChargePlayer[] _chargePlayer;
 
-    [SerializeField]
-    Judge _juge;
+    bool _roundFinish = false;
+
+    public bool getRoundFinish { get { return _roundFinish; } }
 
     int _round;
     public int getRoundCount { get { return _roundCount; } }
@@ -32,7 +33,7 @@ public class Round : MonoBehaviour
     {
         if (_round <= 1)
         {
-            _juge.Winner();
+            _roundFinish = true;
             return;
         }
         int finishPowerGageCount = 0;
