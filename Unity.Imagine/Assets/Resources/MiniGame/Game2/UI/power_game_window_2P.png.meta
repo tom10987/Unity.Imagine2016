@@ -1,0 +1,99 @@
+fileFormatVersion: 2
+guid: ce3edccee751dcf49937195fc74de0c2
+timeCreated: 1459930359
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: power_game_window_2P_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: power_game_window_2P_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 719
+        width: 738
+        height: 305
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 317, y: -109.5}
+        - {x: 369, y: -109.5}
+        - {x: 369, y: 152.5}
+        - {x: -366, y: 152.5}
+        - {x: -369, y: 149.5}
+        - {x: -369, y: -104.5}
+        - {x: -365, y: -108.5}
+        - {x: -363, y: -108.5}
+        - {x: -362, y: -109.5}
+        - {x: 151, y: -109.5}
+        - {x: 151, y: -110.5}
+        - {x: 158, y: -117.5}
+        - {x: 159, y: -117.5}
+        - {x: 162, y: -120.5}
+        - {x: 164, y: -120.5}
+        - {x: 165, y: -121.5}
+        - {x: 165, y: -129.5}
+        - {x: 166, y: -130.5}
+        - {x: 166, y: -132.5}
+        - {x: 171, y: -138.5}
+        - {x: 177, y: -141.5}
+        - {x: 179, y: -143.5}
+        - {x: 185, y: -146.5}
+        - {x: 187, y: -148.5}
+        - {x: 191, y: -149.5}
+        - {x: 194, y: -152.5}
+        - {x: 313, y: -152.5}
+        - {x: 316, y: -149.5}
+        - {x: 316, y: -147.5}
+        - {x: 317, y: -146.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

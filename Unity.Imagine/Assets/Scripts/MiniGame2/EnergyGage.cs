@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class EnergyGage : MonoBehaviour {
+public class EnergyGage : MonoBehaviour
+{
 
     [SerializeField]
     ChargePlayer _player;
@@ -16,70 +17,84 @@ public class EnergyGage : MonoBehaviour {
     [SerializeField]
     Image _backgroundGage;
 
-    [SerializeField]
-    float _cross;
+    
 
     [SerializeField]
+    private Player _selectPlayer;
+
+    [SerializeField]
+    Round _round;
+
     int _player2Gage = 1;
+    public enum Player
+    {
+        Player1,
+        Player2
+    }
+
+    float _oneUpGage = 0;
+
+    public Player getSelectPlayer { get { return _selectPlayer; } }
 
     [SerializeField]
-    float _speed = 0;
+    float _speed = 1;
 
-    Vector2 _size = new Vector2(0,0);
+    Vector2 _size = new Vector2(0, 0);
 
     Vector2 _gagePosition = new Vector2(0, 0);
 
     bool _isPowerGage = false;
 
-    public bool _getIsPowerGage {get { return _isPowerGage; }}
+    public bool _getIsPowerGage { get { return _isPowerGage; } }
 
-    void Start ()
+    Vector3 _initialPosition = new Vector3(0,0,0);
+
+    void Start()
     {
-        //プレイヤーによって左右にゲージのスタート位置を分ける
-
-        //_gagePosition = _backgroundGage.rectTransform.anchoredPosition;
-        //_gagePosition.x = (_backgroundGage.rectTransform.anchoredPosition.x + (_backgroundGage.rectTransform.sizeDelta.x / 4));
-        //_powerIamge.rectTransform.anchoredPosition = _gagePosition;
-        _size = _powerGage.rectTransform.sizeDelta;
-        //Debug.Log(_powerIamge.rectTransform.anchoredPosition );
-    }
-	 
-	void Update (){}
-
-
-    public bool PowerGage()
-    {
-        //ちょっとゲージがずれる(後で直す)
-        if (_gage._getChargeScore * _cross > _powerGage.rectTransform.sizeDelta.x)
+        if (_selectPlayer == Player.Player2)
         {
-            if (_powerGage.rectTransform.sizeDelta.x >=
-                _backgroundGage.rectTransform.sizeDelta.x)
-                return _isPowerGage = false;
+            _player2Gage = -1;
+        }
+        _size = _powerGage.rectTransform.sizeDelta;
+        _oneUpGage = _backgroundGage.rectTransform.sizeDelta.x / _round.getRoundCount / _gage.getRangeGageCount;
+
+        
+        _initialPosition = _backgroundGage.rectTransform.localPosition;
+        Debug.Log(_initialPosition);
+        _initialPosition.x -= _backgroundGage.rectTransform.sizeDelta.x / 2 * _player2Gage;
+        _initialPosition.y = _powerGage.rectTransform.localPosition.y;
+        _initialPosition.z = _powerGage.rectTransform.localPosition.z;
+        _powerGage.rectTransform.localPosition = _initialPosition;
+    }
+
+    void Update() {
+        
+    }
+
+
+    public bool ChargePowerGage()
+    {
+
+        if (!_player.PressOnce) return _isPowerGage = false;
+        float upGage = _oneUpGage * _player._totalScore;
+        if (_powerGage.rectTransform.sizeDelta.x >=
+    _backgroundGage.rectTransform.sizeDelta.x)
+            return _isPowerGage = false;
+
+        if (upGage > _size.x)
+        {
+
             _size.x += _speed;
             _powerGage.rectTransform.sizeDelta = _size;
-            _gagePosition = _powerGage.rectTransform.anchoredPosition;
-            _gagePosition.x += _speed / 2 * _player2Gage;
-            _powerGage.rectTransform.anchoredPosition = _gagePosition;
+            _gagePosition = _powerGage.rectTransform.localPosition;
+            _gagePosition.x += (_speed / 2) * _player2Gage;
+            _powerGage.rectTransform.localPosition = _gagePosition;
             return _isPowerGage = false;
         }
         else
-
-        if (_gage._getChargeScore != 0&&
-            _gage._getChargeScore * _cross <=
-            _powerGage.rectTransform.sizeDelta.x)
+        if (upGage <= _size.x)
         {
-            Debug.Log("debu");
-
-            if (_player._getIsInit == true)
-            {
-                Debug.Log("homo");
-                return _isPowerGage = false;
-            }
-            else
-            if (_player._getIsInit == false)
-            {
-                return _isPowerGage = true;
-            }
+            return _isPowerGage = true;
         }
 
         return _isPowerGage = false;

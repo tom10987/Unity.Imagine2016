@@ -22,7 +22,7 @@ public class GameShot : MonoBehaviour {
 
   public System.Action listener { get; set; }
 
-  public ParticleSystem effect { get; set; }
+  public GameEffect effect { get; set; }
 
   // TIPS: 一度発射されたらターゲットに向かって進み続ける
   void FixedUpdate() {
@@ -34,7 +34,7 @@ public class GameShot : MonoBehaviour {
     var e = Instantiate(effect);
     e.transform.position = transform.position;
     e.transform.localScale = Vector3.one * _effectScale;
-    e.Play();
+    e.particle.Play();
     Destroy(gameObject);
   }
 }

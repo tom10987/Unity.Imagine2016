@@ -15,12 +15,12 @@ public class ChangeText : MonoBehaviour
     {
         _text.Add("ゲームをえらべるよ\n3つのゲームからえらんでね");
         _text.Add("ひたすらタップ！！\nたまをうちあうゲームだよ\nはやいCuboがとくいだよ!");
-        _text.Add("このゲームは\nまだあそべないよ");
-        _text.Add("このゲームは\nまだあそべないよ");
-        _text.Add("ゲームをじどうでえらぶよ\nでもいまはつかえないよ");
+        _text.Add("ビームをためろ！\nうちあうゲームだよ！！\nつよいCuboがとくいだよ!");
+        _text.Add("はじけ けしゴム!!\nあいてのたてを\nこわすゲームだよ\nかたいCuboがとくいだよ!");
+        _text.Add("ゲームをじどうで\nえらんでくれるよ！！");
         _text.Add("ゲームをえらんだときに\nどんなCuboが\nつよいのかみれるよ");
         _text.Add("ごめんね！！\nぼくはえらべないよ");
-
+        _text.Add("このゲームに\nきまったよ！！");
         ChangeExplanationText(0);
     }
 
