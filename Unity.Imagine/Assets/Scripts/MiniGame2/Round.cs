@@ -7,11 +7,11 @@ public class Round : MonoBehaviour
     [SerializeField]
     int _roundCount = 3;
 
-    [SerializeField]
+    //[SerializeField]
     EnergyGage[] _energyGage;
 
 
-    [SerializeField]
+    //[SerializeField]
     ChargePlayer[] _chargePlayer;
 
     bool _roundFinish = false;
@@ -24,6 +24,8 @@ public class Round : MonoBehaviour
 
     void Start()
     {
+        _energyGage = FindObjectsOfType<EnergyGage>();
+        _chargePlayer = FindObjectsOfType<ChargePlayer>();
         _round = _roundCount;
     }
 

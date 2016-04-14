@@ -9,58 +9,91 @@ public class ChargeGameController : AbstractGame {
 
     public CharacterData parameter { get; set; }
 
+    ARDeviceManager _aRDeviceManager;
+
     bool _isDraw = false;
 
     public bool getIsDraw { get { return _isDraw; } }
 
-    //public AR
+    public GameObject player1Obj { get { return _aRDeviceManager.player1.gameObject; } }
+
+    public GameObject player2Obj { get { return _aRDeviceManager.player2.gameObject; } }
+
+    ChargePlayer _chargePlayer;
+
+    Round _round = null;
+        
+
+    void Start()
+    {
+        
+        Action();
+    }
+
+    void Update()
+    {
+        //_aRDeviceManager.player1
+        // player1.CreateGameComponent<AbstractGame>(player1);
+        // player2.CreateGameComponent<AbstractGame>();
+
+        //Debug.Log(_aRDeviceManager.player1);
+        Action();
+    }
 
     public override void Action()
     {
         if(_isStart == false)
         {
+            _round = FindObjectOfType<Round>();
             _gageLengthChange = FindObjectOfType<GageLengthChange>();
            gameObject.AddComponent<ChargePlayer>();
-            //ARModelExtension.CreateGameComponent<ChargeGameController>(player1);
-            //ARModelExtension.CreateGameComponent<ChargeGameController>(player2);
             parameter = GetComponentInChildren<CharacterData>();
+            _aRDeviceManager = GetComponentInParent<ARDeviceManager>();
             _gageLengthChange.Parameter = parameter.getCharacterData.attack;
             _gageLengthChange.StatusGageLengthChange();
+            _chargePlayer = GetComponent<ChargePlayer>();
             _isStart = true;
         }
-
-            
-    }
+        //_chargePlayer = GetComponent<ChargePlayer>();
+        _chargePlayer.IsKeyDownMoveGage();
+        _chargePlayer.EnergyGageMove();
+        IsFinish();
+    }  
 
     public override bool IsFinish()
     {
-       // if ()
+        if (_round.getRoundFinish)
+        {
+            GetWinner();
+            Debug.Log(GetWinner());
             return true;
+        }
 
         return false;
     }
 
     public override bool IsDraw()
     {
+
         return true;
     }
 
     public override Transform GetWinner()
     {
 
-        if (player1 == null || player2 == null) { return null; }
+        if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return null; }
 
-        if (player1.GetComponent<ChargePlayer>().getTotalScore > player2.GetComponent<ChargePlayer>().getTotalScore)
+        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 > _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
         {
-            return player1.transform;
+            return _aRDeviceManager.player1.transform;
         }
         else
-   if (player1.GetComponent<ChargePlayer>().getTotalScore < player2.GetComponent<ChargePlayer>().getTotalScore)
+        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 < _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
         {
-            return player2.transform;
+            return _aRDeviceManager.player2.transform;
         }
         else
-   if (player1.GetComponent<ChargePlayer>().getTotalScore == player2.GetComponent<ChargePlayer>().getTotalScore)
+        if (_aRDeviceManager.player1.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 == _aRDeviceManager.player2.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
         {
             IsDraw();
         }
