@@ -26,20 +26,20 @@ public class Judge : MonoBehaviour
 
   public  void Winner()
     {
-        if (_player[0].getTotalScore > _player[1].getTotalScore)
-        {
-            _winnerPlayer = gameObject.transform;
-        }
-        else
-        if (_player[0].getTotalScore < _player[1].getTotalScore)
-        {
-            _winnerPlayer = gameObject.transform;
-        }
-        else
-        if (_player[0].getTotalScore == _player[1].getTotalScore)
-        {
-            _isDraw = true;
-        }
+        //if (_player[0].getTotalScorePlayer1 > _player[1].getTotalScore)
+        //{
+        //    _winnerPlayer = gameObject.transform;
+        //}
+        //else
+        //if (_player[0].getTotalScore < _player[1].getTotalScore)
+        //{
+        //    _winnerPlayer = gameObject.transform;
+        //}
+        //else
+        //if (_player[0].getTotalScore == _player[1].getTotalScore)
+        //{
+        //    _isDraw = true;
+        //}
     }
 
 }
