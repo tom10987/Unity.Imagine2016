@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ChargePlayer : MonoBehaviour
 {
@@ -28,6 +28,8 @@ public class ChargePlayer : MonoBehaviour
 
     GameController _controller;
 
+    IEnumerator<KeyCode> P1Key;
+    IEnumerator<KeyCode> P2Key;
 
    // [SerializeField]
     private EnergyGage[] _energyGage;
@@ -48,26 +50,30 @@ public class ChargePlayer : MonoBehaviour
         _gage[0] = GameObject.Find("GageUI1").GetComponent<Gage>();
         _gage[1] = GameObject.Find("GageUI2").GetComponent<Gage>();
         _energyGage = FindObjectsOfType<EnergyGage>();
+ 
+
     }
 
     void Update()
     {
 
-       // IsKeyDownMoveGage();
-       // EnergyGageMove();
-        
+        // IsKeyDownMoveGage();
+        // EnergyGageMove();
+
+        Debug.Log("hit1" + _pressOnce[0]);
+        Debug.Log("hit2" + _pressOnce[1]);
     }
 
     public void IsKeyDownMoveGage()
     {
-        
-        var P1Key = _controller.player1.GetEnumerator();
+        P1Key = _controller.player1.GetEnumerator();
+        P2Key = _controller.player2.GetEnumerator();
 
         if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
             if (_pressOnce[0]) return;
             _gage[0].MoveSelectGage();
-            Debug.Log("homo1");
+         //   Debug.Log("homo1");
         }
         else
         if (Input.GetKeyUp(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
@@ -77,12 +83,11 @@ public class ChargePlayer : MonoBehaviour
             _pressOnce[0] = true;
         }
 
-        var P2Key = _controller.player2.GetEnumerator();
         if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
             if (_pressOnce[1]) return;
             _gage[1].MoveSelectGage();
-            Debug.Log("homo2");
+         //   Debug.Log("homo2");
         }
         else
         if (Input.GetKeyUp(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
@@ -126,6 +131,7 @@ public class ChargePlayer : MonoBehaviour
         //_gage.InitGage();
         _pressOnce[0] = false;
         _pressOnce[1] = false;
+
     }
 
 }

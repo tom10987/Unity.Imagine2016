@@ -25,7 +25,7 @@ public class Round : MonoBehaviour
     void Start()
     {
         _energyGage = FindObjectsOfType<EnergyGage>();
-        _chargePlayer = FindObjectsOfType<ChargePlayer>();
+        
         _round = _roundCount;
     }
 
@@ -49,6 +49,7 @@ public class Round : MonoBehaviour
 
         if (finishPowerGageCount == _energyGage.Length)
         {
+            _chargePlayer = FindObjectsOfType<ChargePlayer>();
             _round--;
             foreach (var player in _chargePlayer)
             {

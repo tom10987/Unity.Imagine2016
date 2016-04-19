@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class ChargeGameController : AbstractGame {
 
     bool _isStart = false;
-    GageLengthChange _gageLengthChange;
+    GageLengthChange[] _gageLengthChange;
 
     public CharacterData parameter { get; set; }
 
@@ -22,39 +22,56 @@ public class ChargeGameController : AbstractGame {
     ChargePlayer _chargePlayer;
 
     Round _round = null;
-        
+    GameResource ressouces;
+    IEnumerator<GameObject> ressouce;
 
     void Start()
     {
-        
-        Action();
+        //ここクソコード
+        _gageLengthChange = new GageLengthChange[2];  
+        _gageLengthChange[0] = GameObject.Find("GageUI1").GetComponent<GageLengthChange>();
+        _gageLengthChange[1] = GameObject.Find("GageUI2").GetComponent<GageLengthChange>();
+
+        ressouces = GameResources.instance.charge;
+        ressouce = ressouces.CreateResource().GetEnumerator();
+        //Action();
+
     }
 
     void Update()
     {
-        //_aRDeviceManager.player1
-        // player1.CreateGameComponent<AbstractGame>(player1);
-        // player2.CreateGameComponent<AbstractGame>();
-
-        //Debug.Log(_aRDeviceManager.player1);
         Action();
     }
 
     public override void Action()
     {
-        if(_isStart == false)
+        if (_isStart == false)
         {
             _round = FindObjectOfType<Round>();
-            _gageLengthChange = FindObjectOfType<GageLengthChange>();
-           gameObject.AddComponent<ChargePlayer>();
+            //_gageLengthChange = FindObjectOfType<GageLengthChange>();
+            gameObject.AddComponent<ChargePlayer>();
             parameter = GetComponentInChildren<CharacterData>();
             _aRDeviceManager = GetComponentInParent<ARDeviceManager>();
-            _gageLengthChange.Parameter = parameter.getCharacterData.attack;
-            _gageLengthChange.StatusGageLengthChange();
             _chargePlayer = GetComponent<ChargePlayer>();
             _isStart = true;
+            if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
+            {
+                _gageLengthChange[0].Parameter = parameter.getCharacterData.attack;
+                _gageLengthChange[0].StatusGageLengthChange();
+            }
+            else
+            if (_aRDeviceManager.player2.gameObject == gameObject.transform.parent.gameObject)
+            {
+                _gageLengthChange[1].Parameter = parameter.getCharacterData.attack;
+                _gageLengthChange[1].StatusGageLengthChange();
+            }
+            
+            
         }
-        //_chargePlayer = GetComponent<ChargePlayer>();
+        if (_aRDeviceManager == null) return;
+        if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return; }
+        
+        _chargePlayer = GetComponent<ChargePlayer>();
         _chargePlayer.IsKeyDownMoveGage();
         _chargePlayer.EnergyGageMove();
         IsFinish();
@@ -64,8 +81,9 @@ public class ChargeGameController : AbstractGame {
     {
         if (_round.getRoundFinish)
         {
+            LaserCreate();
             GetWinner();
-            Debug.Log(GetWinner());
+            
             return true;
         }
 
@@ -100,4 +118,32 @@ public class ChargeGameController : AbstractGame {
 
         return null;
     }
+
+    public void LaserCreate()
+    {
+       
+        if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
+        {
+            ressouce.MoveNext();
+            ressouce.Current.transform.rotation = transform.rotation;
+            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
+            ressouce.Current.transform.position = transform.position;
+             //ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.parent = transform.parent;
+            ressouce.Current.name = ressouce.Current.name;
+        }
+        else
+        if(_aRDeviceManager.player2.gameObject == gameObject.transform.parent.gameObject)
+        {
+            ressouce.MoveNext();
+            ressouce.Current.transform.rotation = transform.rotation;
+            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
+            ressouce.Current.transform.position = transform.position;
+            //ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.parent = transform.parent;
+            ressouce.Current.name = ressouce.Current.name;
+            //ressouce.MoveNext();
+        }
+    }
+
 }
