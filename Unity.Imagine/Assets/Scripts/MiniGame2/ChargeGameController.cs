@@ -34,10 +34,11 @@ public class ChargeGameController : AbstractGame {
         
         ressouces = GameResources.instance.charge;
         ressouce = ressouces.CreateResource().GetEnumerator();
-      
 
         if (_isCreateUI == false)
         {
+            
+
             ressouce.MoveNext();
             _isCreateUI = true;
         }
@@ -137,19 +138,21 @@ public class ChargeGameController : AbstractGame {
     //レーザーのエフェクトの生成
     public void LaserCreate()
     {
-        float distance = Vector3.Distance(_aRDeviceManager.player2.gameObject.transform.GetComponentInChildren<ChargeGameController>().gameObject.transform.position, _aRDeviceManager.player2.gameObject.transform.GetComponentInChildren<ChargeGameController>().gameObject.transform.position);
+        float distance = Vector3.Distance(_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position, _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position);
 
-        Debug.Log(distance);
+        //Debug.Log(distance);
 
-       //いい方法がわからなかった。
+        float halfScaleLaser = distance / 2;
+
         if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
         {
+          
             ressouce.MoveNext();
             Destroy(ressouce.Current.gameObject);
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.localScale = new Vector3(1,1, 0.5f);
+            ressouce.Current.transform.localScale = new Vector3(1,1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
@@ -163,7 +166,7 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.localScale = new Vector3(1, 1, 0.5f);
+            ressouce.Current.transform.localScale = new Vector3(1, 1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
