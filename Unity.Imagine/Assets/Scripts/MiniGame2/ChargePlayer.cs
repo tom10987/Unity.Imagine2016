@@ -60,8 +60,6 @@ public class ChargePlayer : MonoBehaviour
         // IsKeyDownMoveGage();
         // EnergyGageMove();
 
-        Debug.Log("hit1" + _pressOnce[0]);
-        Debug.Log("hit2" + _pressOnce[1]);
     }
 
     public void IsKeyDownMoveGage()

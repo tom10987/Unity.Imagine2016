@@ -21,19 +21,33 @@ public class ChargeGameController : AbstractGame {
 
     ChargePlayer _chargePlayer;
 
+    bool _isFinish = false;
+
     Round _round = null;
     GameResource ressouces;
     IEnumerator<GameObject> ressouce;
 
+    static bool _isCreateUI = false;
+
     void Start()
     {
+        
+        ressouces = GameResources.instance.charge;
+        ressouce = ressouces.CreateResource().GetEnumerator();
+      
+
+        if (_isCreateUI == false)
+        {
+            ressouce.MoveNext();
+            _isCreateUI = true;
+        }
         //ここクソコード
         _gageLengthChange = new GageLengthChange[2];  
         _gageLengthChange[0] = GameObject.Find("GageUI1").GetComponent<GageLengthChange>();
         _gageLengthChange[1] = GameObject.Find("GageUI2").GetComponent<GageLengthChange>();
 
-        ressouces = GameResources.instance.charge;
-        ressouce = ressouces.CreateResource().GetEnumerator();
+        
+        
         //Action();
 
     }
@@ -79,15 +93,16 @@ public class ChargeGameController : AbstractGame {
 
     public override bool IsFinish()
     {
+        if (_isFinish) return true;
         if (_round.getRoundFinish)
         {
             LaserCreate();
             GetWinner();
             
-            return true;
+            return _isFinish = true;
         }
 
-        return false;
+        return _isFinish = false;
     }
 
     public override bool IsDraw()
@@ -119,16 +134,22 @@ public class ChargeGameController : AbstractGame {
         return null;
     }
 
+    //レーザーのエフェクトの生成
     public void LaserCreate()
     {
-       
+        float distance = Vector3.Distance(_aRDeviceManager.player2.gameObject.transform.GetComponentInChildren<ChargeGameController>().gameObject.transform.position, _aRDeviceManager.player2.gameObject.transform.GetComponentInChildren<ChargeGameController>().gameObject.transform.position);
+
+        Debug.Log(distance);
+
+       //いい方法がわからなかった。
         if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
         {
             ressouce.MoveNext();
+            Destroy(ressouce.Current.gameObject);
+            ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
             ressouce.Current.transform.position = transform.position;
-             //ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.localScale = new Vector3(1,1, 0.5f);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
@@ -136,13 +157,15 @@ public class ChargeGameController : AbstractGame {
         if(_aRDeviceManager.player2.gameObject == gameObject.transform.parent.gameObject)
         {
             ressouce.MoveNext();
+            Destroy(ressouce.Current.gameObject);
+            ressouce.MoveNext();
+            Destroy(ressouce.Current.gameObject);
+            ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
             ressouce.Current.transform.position = transform.position;
-            //ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.localScale = new Vector3(1, 1, 0.5f);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
-            //ressouce.MoveNext();
         }
     }
 
