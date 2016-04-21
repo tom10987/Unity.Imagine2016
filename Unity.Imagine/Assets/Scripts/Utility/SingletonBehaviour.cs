@@ -2,30 +2,44 @@
 using UnityEngine;
 
 //------------------------------------------------------------
+// NOTICE:
+// static インスタンスとして管理する
+//
+//------------------------------------------------------------
 // TIPS:
-// static なヒエラルキーオブジェクトを生成
+// Awake() の呼び出しで初期化する前提のため、
+// 初期化の順番に注意してください
 //
-// Awake() メソッドの呼び出しで初期化が行われるため、
-// 継承したクラスは必ず、ヒエラルキー上に配置すること
+// 独自の初期化が必要な場合、派生クラスで Awake() を override してください
 //
-// また、Awake() の呼び出しが前提になるため、
-// 初期化の順番に注意すること
+// また、Awake() を override した場合で、インスタンスの管理方法が変わる場合、
+// Release() も override してください
+// override していない状態で呼び出した場合は想定していません
 //
 //------------------------------------------------------------
 
 public abstract class SingletonBehaviour<T> :
-  MonoBehaviour where T : SingletonBehaviour<T> {
-
+  MonoBehaviour where T : SingletonBehaviour<T>
+{
   static T _instance = null;
   public static T instance { get { return _instance; } }
 
-  protected virtual void Awake() {
-    if (IsSingle()) { return; }
+  /// <summary> インスタンスを解放する </summary>
+  public virtual void Release()
+  {
+    Destroy(gameObject);
+    _instance = null;
+  }
+
+  protected virtual void Awake()
+  {
+    if (IsSingle()) { DontDestroyOnLoad(gameObject); return; }
     Debug.LogWarning("Exists other " + typeof(T));
     Debug.Log("removed " + gameObject.name);
   }
 
-  protected bool IsSingle() {
+  protected bool IsSingle()
+  {
     if (_instance == null) { _instance = this as T; }
     if (_instance == this) { return true; }
     Destroy(gameObject);
