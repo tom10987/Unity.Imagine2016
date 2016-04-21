@@ -1,8 +1,8 @@
 ﻿
 using UnityEngine;
 
-public class GameEffect : MonoBehaviour {
-
+public class GameEffect : MonoBehaviour
+{
   [SerializeField]
   ParticleSystem _particle = null;
   public ParticleSystem particle { get { return _particle; } }

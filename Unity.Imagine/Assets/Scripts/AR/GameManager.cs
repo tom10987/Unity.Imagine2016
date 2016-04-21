@@ -3,251 +3,285 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-public class GameManager : MonoBehaviour {
+//------------------------------------------------------------
+// NOTICE:
+// ゲーム全体の管理を行う
+//
+//------------------------------------------------------------
+// TIPS:
+// 下記オブジェクトを取得できます
+//
+// * 各プレイヤーの情報
+// * 音源（AudioPlayer クラス）
+// * レフェリー
+//
+//------------------------------------------------------------
 
-  /*
+public class GameManager : MonoBehaviour
+{
   [SerializeField]
-  AudioPlayer _audio = null;
+  [Tooltip("AR カメラ")]
+  ARDeviceManager _arManager = null;
+  public ARModel player1 { get { return _arManager.player1; } }
+  public ARModel player2 { get { return _arManager.player2; } }
+
 
   [SerializeField]
-  ARDeviceManager _device = null;
+  AudioPlayer _audioPlayer = null;
+  /// <summary> <see cref="AudioPlayer"/> を取得 </summary>
+  public new AudioPlayer audio { get { return _audioPlayer; } }
+
 
   [SerializeField]
+  [Tooltip("ゲーム画面上部の各種ボタン")]
   GameMenu _menu = null;
 
   [SerializeField]
-  CanvasGroup _gameUI = null;
+  [Tooltip("ゲームルールを表示するボードのプレハブを指定")]
+  RuleBoard _ruleBoard = null;
 
   [SerializeField]
-  TimeCount _counter = null;
+  Referee _referee = null;
+  /// <summary> レフェリーのオブジェクトを取得 </summary>
+  public Referee referee { get { return _referee; } }
 
-  [SerializeField]
-  GameCounter _startCount = null;
 
-  [SerializeField]
-  GameCounter _finishCount = null;
-
-  [SerializeField]
-  GameSuddenDeath _suddenDeath = null;
-
-  [SerializeField]
-  GameFinish _finish = null;
-
-  [SerializeField]
-  ARModelMaterial _materials = null;
-
-  [SerializeField]
-  RefereeFloat _referee = null;
-
-  [SerializeField]
-  GameShot _shot = null;
-
-  [SerializeField]
-  GameObject _ruleCanvas = null;
-
-  [SerializeField]
-  GameEffectManager _effect = null;
-
-  [SerializeField]
-  LayerMask _refereeMask;
-
-  [SerializeField]
-  Vector3 _refereePosition = Vector3.zero;
-
-  [SerializeField, Range(1f, 5f)]
-  float _refereeVelocity = 1f;
-
-  bool _isStart = false;
-
-  public enum State { Detect, Standby, MainGame, Result, }
-  State _state = State.Detect;
-  public State state { get { return _state; } }
-
-  /// <summary> プレイボタンが押せるようになったら true を返す </summary>
-  public bool isStart { get { return _isStart; } }
-
+  // TIPS: 動作中のコルーチンを保持
   Coroutine _playThread = null;
 
-  void Start() {
+  // TIPS: プレイボタンが押されたかどうか
+  bool _isStart = false;
+
+  // TIPS: ミニゲームの管理クラス
+  AbstractGame _game = null;
+
+
+  void Start()
+  {
+    _audioPlayer.Play(ClipIndex.bgm_No04_MiniGame, true);
     _playThread = StartCoroutine(GameLoop());
-    _gameUI.alpha = 0f;
-    _referee.enabled = false;
-    _audio.Play(3, true);
+
+    _menu.start.onClick.AddListener(OnPlay);
+    _menu.back.onClick.AddListener(OnBackToMenu);
+
+    _referee.gameObject.SetActive(false);
   }
 
-  void OnDestroy() { _audio.Stop(); }
 
-  /// <summary> プレイボタンが押された </summary>
-  public void OnPlay() {
+  // プレイボタンの処理
+  void OnPlay()
+  {
     _isStart = true;
-    _menu.start.interactable = false;
-    _menu.back.interactable = false;
-    _menu.hint.interactable = false;
+    _menu.ButtonSetActive(false);
   }
 
-  /// <summary> 戻るボタンが押された </summary>
-  public void OnBackToMenu() {
+  // 戻るボタンの処理
+  void OnBackToMenu()
+  {
     StopCoroutine(_playThread);
-    System.Action Change = () => { GameScene.Menu.ChangeScene(); };
-    ScreenSequencer.instance.SequenceStart(Change, new Fade(1f));
+
+    // TIPS: 画面遷移の演出が終了したときの処理
+    System.Action change = () =>
+    {
+      GameScene.Menu.ChangeScene();
+      _audioPlayer.Stop();
+    };
+    ScreenSequencer.instance.SequenceStart(change, new Fade(1f));
   }
 
-  IEnumerator GameLoop() {
+
+  // メインループ
+  IEnumerator GameLoop()
+  {
+    // TIPS: デバイスの初期化待ちで１フレームスキップする
+    yield return null;
+
     yield return StartCoroutine(DetectMarker());
     yield return StartCoroutine(Standby());
     yield return StartCoroutine(MainGame());
     yield return StartCoroutine(Result());
   }
 
-  // TIPS: マーカー検出
-  IEnumerator DetectMarker() {
-    _state = State.Detect;
+
+  // AR マーカー認識フェイズ
+  IEnumerator DetectMarker()
+  {
     _isStart = false;
 
-    while (!_isStart) {
-      _menu.start.interactable = _device.DetectMarker();
+    while (!_isStart)
+    {
+      // TIPS: マーカーを２つ認識できたらプレイボタンを押せるようにする
+      _menu.start.interactable = _arManager.DetectMarker();
+
+      // TIPS: 処理が重いので、わざとフレームをスキップする
+      yield return null;
       yield return null;
     }
 
-    var models = _device.GetModels().Except(_device.models);
-    foreach (var model in models) { Destroy(model.gameObject); }
-
-    _device.player1.bodyRenderer.material = _materials.p1body;
-    _device.player1.clipRenderer.material = _materials.p1clip;
-    _device.player2.bodyRenderer.material = _materials.p2body;
-    _device.player2.clipRenderer.material = _materials.p2clip;
-    _device.player1.scoreBoard = _menu.player1;
-    _device.player2.scoreBoard = _menu.player2;
-    _device.player1.effect = _effect.p1effect;
-    _device.player2.effect = _effect.p2effect;
+    // TIPS: ゲームに使用されないモデルのインスタンスを解放
+    _arManager.RemoveModel();
   }
 
-  // TIPS: ゲームルール説明（キー入力でゲーム開始）
-  IEnumerator Standby() {
-    _state = State.Standby;
 
-    var canvas = Instantiate(_ruleCanvas);
+  // プレイボタン押された -> ゲームルール解説
+  IEnumerator Standby()
+  {
+    yield return StartCoroutine(Initialize());
 
-    while (true) {
-      _device.ModelUpdate();
-      var p1 = GameController.instance.player1.IsPress();
-      var p2 = GameController.instance.player2.IsPress();
-      if (p1 && p2) { break; }
+    // TIPS: ゲームルールを表示
+    var ruleBoardInstance = Instantiate(_ruleBoard);
+    ruleBoardInstance.SetRuleText(_game.gameRule);
+
+    // TIPS: 次のステップに進むまで動作停止
+    _game.gameObject.SetActive(false);
+
+    // TIPS: 両方のプレイヤーが同時に操作キーを入力したら次のステップに進む
+    while (!GameController.instance.IsGameStart())
+    {
+      _arManager.ModelUpdate();
       yield return null;
     }
 
-    Destroy(canvas);
-
-    while (_menu.group.alpha > 0f) {
-      var time = Time.deltaTime;
-      _menu.group.alpha -= time;
-      _gameUI.alpha += time;
-      _device.ModelUpdate();
-      yield return null;
-    }
-
-    while (true) {
-      var distance = _refereePosition - _referee.transform.position;
-      if (distance.magnitude < 10f) { break; }
-      _referee.transform.position += distance * Time.deltaTime * _refereeVelocity;
-      _device.ModelUpdate();
-      yield return null;
-    }
-
-    _referee.enabled = true;
+    // TIPS: ルール説明のキャンバスを削除
+    ruleBoardInstance.DeleteObject();
   }
 
-  // TIPS: ゲームループ
-  IEnumerator MainGame() {
-    _state = State.MainGame;
+  // ゲームの初期化
+  IEnumerator Initialize()
+  {
+    // TIPS: 選択されたゲームモードに対応した初期化を行う
+    switch (GameMode.type)
+    {
+      // 連射
+      case GameType.Speed:
+        _game = GameMode.Create<BarrageGame>(this);
+        break;
 
-    _counter.TimeReset();
-    _startCount.Visible();
-    _audio.Play(14);
+      // チャージ
+      case GameType.Power:
+        _game = GameMode.Create<ChargeGameController>(this);
+        break;
 
-    var countDown = 3.5f;
-    while (countDown > 0f) {
-      countDown -= Time.deltaTime;
-      _startCount.UpdateCount(Mathf.RoundToInt(countDown));
-      _device.ModelUpdate();
-      yield return null;
+      // 反射（振り子）
+      case GameType.Defense:
+        _game = GameMode.Create<Pendulum>(this);
+        break;
+
+      // TIPS: 不正な値が入っていたらメニュー画面に戻す
+      default:
+        Debug.Assert(false, "ゲームモードが正しく設定されていません");
+        OnBackToMenu();
+        yield break;
     }
 
-    _startCount.Visible();
-    if (_suddenDeath.isVisible) {
-      _suddenDeath.Visible();
-      _counter.time = _counter.timeCount * 0.5f;
-    }
-
-    var finishCountStart = false;
-    while (_counter.time > 0f) {
-      _device.ModelUpdate();
-      _counter.board.text = "Time: " + _counter.timeToInt;
-
-      // TIPS: モデルが表示されている間だけ実行
-      if (_device.models.All(model => model.isVisible)) {
-        ActiveGameMode();
-        if (_counter.time < 3.5f && !finishCountStart) {
-          finishCountStart = true;
-          _audio.Play(15);
-          _finishCount.Visible();
-        }
-      }
-
-      yield return null;
-    }
-
-    _finishCount.Visible();
-    var p1score = _device.player1.scoreBoard.count;
-    var p2score = _device.player2.scoreBoard.count;
-    var draw = (p1score == p2score);
-
-    if (draw) { _suddenDeath.Visible(); yield return StartCoroutine(MainGame()); }
+    // TIPS: Awake(), Start() の実行待ちのため、一時停止
+    yield return null;
   }
 
-  // TIPS: リザルト表示
-  IEnumerator Result() {
-    _state = State.Result;
 
-    var p1score = _device.player1.scoreBoard.count;
-    var p2score = _device.player2.scoreBoard.count;
-    _finish.ActivateImage(p1score, p2score);
-    var winner = (p1score > p2score ? _device.player1 : _device.player2);
+  bool _isFinish = false;       // 完全にゲームが終了したかどうか
+  bool _isSuddenDeath = false;  // サドンデスかどうか
 
-    _menu.group.alpha = 1f;
-    _menu.start.image.color = Color.white * 0f;
-    _menu.hint.image.color = Color.white * 0f;
-    _menu.back.interactable = true;
+  // ゲームループ
+  IEnumerator MainGame()
+  {
+    _referee.gameObject.SetActive(true);
 
-    _effect.CreateFireWorks(winner.transform);
-    _effect.CreateFireWorks(winner.transform);
-    _effect.CreateFireWorks(winner.transform);
-    _effect.ActivatePaper(winner.transform);
+    // TIPS: メニューボタンをゆっくりと消しながらレフェリーを動かす
+    while (_menu.group.alpha > 0f)
+    {
+      _menu.group.alpha -= Time.deltaTime;
+      _referee.MoveToGamePosition();
+      yield return null;
+    }
 
-    RaycastHit hit;
-    while (true) {
-      if (TouchController.IsTouchBegan()) {
-        var isHit = TouchController.IsRaycastHitWithLayer(out hit, _refereeMask);
-        if (isHit) { break; }
-      }
-      _device.ModelUpdate();
+    // TIPS: ゲームが完全に決着するまでサドンデスを繰り返す
+    _isFinish = false;
+    _isSuddenDeath = false;
+    while (!_isFinish) { yield return StartCoroutine(Game()); }
+  }
+
+  // ゲーム部分
+  IEnumerator Game()
+  {
+    //TODO: ゲーム開始のカウントダウン
+    //TODO: サドンデスだったときの処理
+
+    while (!_game.IsFinish())
+    {
+      _arManager.ModelUpdate();
+
+      // TIPS: AR マーカーを認識できている時だけゲームを更新する
+      if (_arManager.existsModels) { _game.Action(); }
+
+      //TODO: ゲーム終了までのカウントダウン
+
+      yield return null;
+    }
+
+    _isFinish = !_game.IsDraw();
+    _isSuddenDeath = _game.IsDraw();
+  }
+
+
+  // ゲーム結果
+  IEnumerator Result()
+  {
+    _menu.BackMenuActivate();
+
+    // TIPS: レフェリーがクリックされた場合もゲームを終了する
+    while (!_referee.IsRaycastHit())
+    {
+      // TIPS: メニューのボタンをゆっくり見えるようにする
+      if (_menu.group.alpha < 1f) { _menu.group.alpha += Time.deltaTime; }
       yield return null;
     }
 
     OnBackToMenu();
   }
 
-  void ActiveGameMode() {
-    _counter.UpdateTimeCount();
+  /*
+  // TIPS: ゲームループ
+  IEnumerator MainGame()
+  {
+    _state = State.MainGame;
 
-    if (GameController.instance.player1.IsPush()) { Shot(_device.player1, _device.player2); }
-    if (GameController.instance.player2.IsPush()) { Shot(_device.player2, _device.player1); }
+    _counter.TimeReset();
+    _startCount.Visible();
+    _audio.Play(ClipIndex.se_No15_StartCountDown);
 
-    if (_counter.time > 3.5f) { return; }
-    _finishCount.UpdateCount(_counter.timeToInt);
+    // ゲームスタートまでのカウントダウン
+    var countDown = 3.5f;
+    while (countDown > 0f)
+    {
+      countDown -= Time.deltaTime;
+      _startCount.UpdateCount(Mathf.RoundToInt(countDown));
+      _device.ModelUpdate();
+      yield return null;
+    }
+
+    // サドンデスなら残り時間を減らす
+    _startCount.Visible();
+    if (_suddenDeath.isVisible)
+    {
+      _suddenDeath.Visible();
+      _counter.time = _counter.timeCount * 0.5f;
+    }
+
+    yield return StartCoroutine(Game());
+
+    // ゲームの結果を比較
+    _finishCount.Visible();
+    var p1score = _device.player1.scoreBoard.count;
+    var p2score = _device.player2.scoreBoard.count;
+    var draw = (p1score == p2score);
+
+    // 引き分けならサドンデス開始
+    if (draw) { _suddenDeath.Visible(); yield return StartCoroutine(MainGame()); }
   }
 
-  void Shot(ARModel player, ARModel target) {
+  void Shot(ARModel player, ARModel target)
+  {
     var shot = Instantiate(_shot);
     shot.transform.position = player.transform.position + shot.offset;
     shot.transform.Translate(shot.transform.forward * 50f);

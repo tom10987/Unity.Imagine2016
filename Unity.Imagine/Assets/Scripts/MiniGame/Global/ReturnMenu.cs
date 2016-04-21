@@ -106,7 +106,7 @@ public class ReturnMenu : MonoBehaviour {
     if (!TouchController.IsRaycastHitWithLayer(out hit, _mask)) { return; }
     if (hit.transform != transform) { return; }
 
-    _counter.time = _counter.timeCount;
+    _counter.time = _counter.timeLimit;
     ScreenSequencer.instance.SequenceStart(() => GameScene.Menu.ChangeScene(), new Fade(1f));
   }
 
