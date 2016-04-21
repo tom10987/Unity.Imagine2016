@@ -56,6 +56,15 @@ public class GameManager : MonoBehaviour
   AbstractGame _game = null;
 
 
+  //------------------------------------------------------------
+  // DEBUG
+  [SerializeField]
+  [Tooltip("デバッグ用: 後日削除します")]
+  GameType _type = GameType.Speed;
+  void Awake() { GameMode.type = _type; }
+  //------------------------------------------------------------
+
+
   void Start()
   {
     _audioPlayer.Play(ClipIndex.bgm_No04_MiniGame, true);
