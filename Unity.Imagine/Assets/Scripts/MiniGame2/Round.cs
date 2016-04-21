@@ -33,11 +33,7 @@ public class Round : MonoBehaviour
 
     public void NextRound()
     {
-        if (_round <= 1)
-        {
-            _roundFinish = true;
-            return;
-        }
+
         int finishPowerGageCount = 0;
         foreach (var energyGage in _energyGage)
         {
@@ -45,6 +41,15 @@ public class Round : MonoBehaviour
             {
                 finishPowerGageCount++;
             }
+        }
+
+        if (_round <= 1)
+        {
+            if (finishPowerGageCount == _energyGage.Length)
+            {
+                _roundFinish = true;
+            }
+            return;
         }
 
         if (finishPowerGageCount == _energyGage.Length)

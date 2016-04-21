@@ -40,6 +40,13 @@ public class ChargeGameController : AbstractGame {
             
 
             ressouce.MoveNext();
+            CharacterData[] characterData = FindObjectsOfType<CharacterData>();
+            foreach (var gameobject in characterData)
+            {
+                gameobject.gameObject.transform.parent.gameObject.AddComponent<ChargeGameController>();
+
+            }
+
             _isCreateUI = true;
         }
         //ここクソコード
@@ -47,8 +54,8 @@ public class ChargeGameController : AbstractGame {
         _gageLengthChange[0] = GameObject.Find("GageUI1").GetComponent<GageLengthChange>();
         _gageLengthChange[1] = GameObject.Find("GageUI2").GetComponent<GageLengthChange>();
 
-        
-        
+
+
         //Action();
 
     }
@@ -97,7 +104,7 @@ public class ChargeGameController : AbstractGame {
         if (_isFinish) return true;
         if (_round.getRoundFinish)
         {
-            LaserCreate();
+            
             GetWinner();
             
             return _isFinish = true;
@@ -119,11 +126,13 @@ public class ChargeGameController : AbstractGame {
 
         if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 > _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
         {
+            LaserCreate();
             return _aRDeviceManager.player1.transform;
         }
         else
         if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 < _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
         {
+            LaserCreate();
             return _aRDeviceManager.player2.transform;
         }
         else
@@ -138,11 +147,6 @@ public class ChargeGameController : AbstractGame {
     //レーザーのエフェクトの生成
     public void LaserCreate()
     {
-        float distance = Vector3.Distance(_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position, _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position);
-
-        //Debug.Log(distance);
-
-        float halfScaleLaser = distance / 2;
 
         if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
         {
@@ -152,7 +156,7 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.localScale = new Vector3(1,1, 1/ halfScaleLaser);
+            //ressouce.Current.transform.localScale = new Vector3(1,1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
@@ -166,7 +170,7 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.localScale = new Vector3(1, 1, 1/ halfScaleLaser);
+            //ressouce.Current.transform.localScale = new Vector3(1, 1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
