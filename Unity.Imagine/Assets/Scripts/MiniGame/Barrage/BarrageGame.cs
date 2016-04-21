@@ -25,7 +25,7 @@ public class BarrageGame : AbstractGame
 
   public override bool IsFinish()
   {
-    return false;
+    return Input.GetKeyDown(KeyCode.G);
   }
 
   public override bool IsDraw()
