@@ -14,6 +14,14 @@ using System.Collections.Generic;
 //
 // void Action()
 // * ミニゲームのメインとなる処理を記述してください
+// * マーカーが認識されてない場合は動作しません
+// * 必ずモデルが２体表示されていないと問題がある処理を実装してください
+//
+// virtual void EarlyUpdate()
+// virtual void LastUpdate()
+// * マーカーが認識されてなくても動作するメソッドです
+// * 必要に応じて override してください
+// * それぞれ、Action() の前後で動作します
 //
 // bool IsFinish()
 // * ゲーム終了の判定に使用します
@@ -34,8 +42,15 @@ using System.Collections.Generic;
 
 public abstract class AbstractGame : MonoBehaviour
 {
-  // ゲームの処理
+  // マーカー認識が必須の処理用
   public abstract void Action();
+
+  // マーカーが認識されてなくても動作させたいオブジェクト用（Action() の前）
+  public virtual void EarlyUpdate() { }
+
+  // マーカーが認識されてなくても動作させたいオブジェクト用（Action() の後）
+  public virtual void LastUpdate() { }
+
 
   // ゲームが終了したとき true を返す
   public abstract bool IsFinish();
@@ -44,11 +59,14 @@ public abstract class AbstractGame : MonoBehaviour
   // TIPS: 引き分けにならないゲームは override しなくて大丈夫です
   public virtual bool IsDraw() { return false; }
 
+
   // ゲームの勝者
   public abstract Transform GetWinner();
 
+
   /// <summary> ゲームルールの説明 </summary>
   public string gameRule { get; protected set; }
+
 
   /// <summary> プレイヤーの情報を取り出す </summary>
   public GameManager gameManager { get; set; }

@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
     // TIPS: メニューボタンをゆっくりと消しながらレフェリーを動かす
     while (_menu.group.alpha > 0f)
     {
-      _menu.group.alpha -= Time.deltaTime;
+      _menu.group.alpha -= Time.deltaTime * 0.5f;
       _referee.MoveToGamePosition();
       yield return null;
     }
@@ -211,10 +211,10 @@ public class GameManager : MonoBehaviour
     {
       _arManager.ModelUpdate();
 
-      // TIPS: AR マーカーを認識できている時だけゲームを更新する
+      // TIPS: 基本的に AR マーカーを認識できている時だけメインの処理を行う
+      _game.EarlyUpdate();
       if (_arManager.existsModels) { _game.Action(); }
-
-      //TODO: ゲーム終了までのカウントダウン
+      _game.LastUpdate();
 
       yield return null;
     }
