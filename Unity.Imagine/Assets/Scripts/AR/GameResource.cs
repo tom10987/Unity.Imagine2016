@@ -15,15 +15,20 @@ using System.Collections.Generic;
 //
 //------------------------------------------------------------
 
-public class GameResource : MonoBehaviour {
-
+public class GameResource : MonoBehaviour
+{
   [SerializeField]
   GameObject[] _objects = null;
   public IEnumerable<GameObject> objects { get { return _objects; } }
 }
 
-public static class GameResourceExtension {
-  public static IEnumerable<GameObject> CreateResource(this GameResource resource) {
+public static class GameResourceExtension
+{
+  /// <summary> 登録されているインスタンスを全て生成 <para>
+  /// <see cref="Object.Instantiate{T}"/> によって
+  /// 生成したオブジェクトそのものを返す </para></summary>
+  public static IEnumerable<GameObject> CreateResource(this GameResource resource)
+  {
     var resources = Object.Instantiate(resource);
     foreach (var res in resources.objects) { yield return Object.Instantiate(res); }
     Object.Destroy(resources.gameObject);
