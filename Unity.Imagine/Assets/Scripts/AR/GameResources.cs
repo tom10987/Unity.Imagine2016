@@ -15,14 +15,15 @@ using UnityEngine;
 // 下記の方法で、各プレハブを生成、操作ができます
 //
 // var barrage = GameResources.instance.barrage;
-// foreach (var res in barrage.CreateResouce()) {
+// foreach (var res in barrage.CreateResouce())
+// {
 //   /* 各プレハブに対する処理 */
 // }
 //
 //------------------------------------------------------------
 
-public class GameResources : SingletonBehaviour<GameResources> {
-
+public class GameResources : SingletonBehaviour<GameResources>
+{
   [SerializeField]
   GameResource _barrage = null;
   public GameResource barrage { get { return _barrage; } }

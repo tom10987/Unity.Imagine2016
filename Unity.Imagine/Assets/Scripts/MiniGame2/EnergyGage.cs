@@ -5,8 +5,12 @@ using UnityEngine.UI;
 public class EnergyGage : MonoBehaviour
 {
 
-    [SerializeField]
-    ChargePlayer _player;
+    //[SerializeField]
+    ChargePlayer[] _player;
+    
+
+    //[SerializeField]
+   ARDeviceManager _aRDeviceManager;
 
     [SerializeField]
     Gage _gage;
@@ -51,6 +55,8 @@ public class EnergyGage : MonoBehaviour
 
     void Start()
     {
+        _aRDeviceManager = FindObjectOfType<ARDeviceManager>();
+        _player = new ChargePlayer[2];
         if (_selectPlayer == Player.Player2)
         {
             _player2Gage = -1;
@@ -58,27 +64,40 @@ public class EnergyGage : MonoBehaviour
         _size = _powerGage.rectTransform.sizeDelta;
         _oneUpGage = _backgroundGage.rectTransform.sizeDelta.x / _round.getRoundCount / _gage.getRangeGageCount;
 
-        
         _initialPosition = _backgroundGage.rectTransform.localPosition;
-        Debug.Log(_initialPosition);
+        //Debug.Log(_initialPosition);
         _initialPosition.x -= _backgroundGage.rectTransform.sizeDelta.x / 2 * _player2Gage;
         _initialPosition.y = _powerGage.rectTransform.localPosition.y;
         _initialPosition.z = _powerGage.rectTransform.localPosition.z;
         _powerGage.rectTransform.localPosition = _initialPosition;
     }
 
-    void Update() {
-        
-    }
+    void Update()
+    { }
 
 
     public bool ChargePowerGage()
     {
+        
+        _player[0] = _aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>();
+        _player[1] = _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>();
 
-        if (!_player.PressOnce) return _isPowerGage = false;
-        float upGage = _oneUpGage * _player._totalScore;
+        if (_player[0].PressOnce1 == false && _selectPlayer == Player.Player1) return _isPowerGage = false;
+
+        if (_player[1].PressOnce2 == false && _selectPlayer == Player.Player2) return _isPowerGage = false;
+
+        float upGage = 0;
+        if (_selectPlayer == Player.Player1)
+        {
+            upGage = _oneUpGage * _player[0].getTotalScorePlayer1;
+        }else
+        if (_selectPlayer == Player.Player2)
+        {
+            upGage = _oneUpGage * _player[1].getTotalScorePlayer2;
+        }
+
         if (_powerGage.rectTransform.sizeDelta.x >=
-    _backgroundGage.rectTransform.sizeDelta.x)
+    _backgroundGage.rectTransform.sizeDelta.x-2)
             return _isPowerGage = false;
 
         if (upGage > _size.x)

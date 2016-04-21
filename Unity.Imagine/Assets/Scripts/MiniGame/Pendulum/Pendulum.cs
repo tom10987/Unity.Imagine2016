@@ -33,19 +33,55 @@ public class Pendulum : AbstractGame
 
         // PendulumResouces の中身
         // 0 : 盾
-        // 1 : ボール
-        // 2 : プレイヤーのHPUI
+        // 1 : 青盾
+        // 2 : 赤盾
+        // 3 : ボール
+        // 4 : プレイヤーのHPUI
 
         // 盾生成
-        ressouce.MoveNext();
-        ressouce.Current.transform.position = transform.position;
-        ressouce.Current.transform.rotation = transform.rotation;
-        ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
-        ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
-        ressouce.Current.transform.parent = transform.parent;
-        ressouce.Current.name = ressouce.Current.name;
-        shield = ressouce.Current.GetComponent<Shield>();
-        
+        // 途中にある ressouce.MoveNext(); は上記の配列番号を変えるために書いている
+        var player = GetComponentInParent<ARModel>();
+        if (player1 == player)
+        {
+            ressouce.MoveNext();
+            ressouce.MoveNext();
+            ressouce.Current.transform.rotation = transform.rotation;
+            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
+            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.parent = transform.parent;
+            ressouce.Current.name = ressouce.Current.name;
+            shield = ressouce.Current.GetComponent<Shield>();
+            shield.defenseParmater = parameter.getCharacterData.defense;
+            ressouce.MoveNext();
+        }
+        else if (player2 == player)
+        {
+            ressouce.MoveNext();
+            ressouce.MoveNext();
+            ressouce.MoveNext();
+            ressouce.Current.transform.rotation = transform.rotation;
+            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
+            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.parent = transform.parent;
+            ressouce.Current.name = ressouce.Current.name;
+            shield = ressouce.Current.GetComponent<Shield>();
+            shield.defenseParmater = parameter.getCharacterData.defense;
+
+        }
+        else
+        {
+            ressouce.MoveNext();
+            ressouce.Current.transform.rotation = transform.rotation;
+            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
+            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
+            ressouce.Current.transform.parent = transform.parent;
+            ressouce.Current.name = ressouce.Current.name;
+            shield = ressouce.Current.GetComponent<Shield>();
+            shield.defenseParmater = parameter.getCharacterData.defense;
+            ressouce.MoveNext();
+            ressouce.MoveNext();
+        }
+
         if (_OneCreateFlag)
         {
             // ボール生成

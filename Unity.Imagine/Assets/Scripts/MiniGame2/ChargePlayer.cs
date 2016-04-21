@@ -1,87 +1,156 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ChargePlayer : MonoBehaviour
 {
-    [SerializeField]
-    private Gage _gage;
+    //[SerializeField]
+    //private Gage _gage;
 
-    bool _pressOnce = false;
+    Gage[] _gage;
 
-    public bool PressOnce { get { return _pressOnce; } set { _pressOnce = value; } }
+    ChargeGameController _chargeGameController;
+
+    bool[] _pressOnce;
+
+    public bool PressOnce1 { get { return _pressOnce[0]; } set { _pressOnce[0] = value; } }
+    public bool PressOnce2 { get { return _pressOnce[1]; } set { _pressOnce[1] = value; } }
 
 
-    public float _totalScore = 0;
+    public float _totalScorePlayer1 = 0;
 
-    public float getTotalScore { get { return _totalScore; } }
+    public float getTotalScorePlayer1 { get { return _totalScorePlayer1; } }
 
+    public float _totalScorePlayer2 = 0;
 
-    [SerializeField]
+    public float getTotalScorePlayer2 { get { return _totalScorePlayer2; } }
+
+    int[] _firstSkipCount;
+
     GameController _controller;
 
+    IEnumerator<KeyCode> P1Key;
+    IEnumerator<KeyCode> P2Key;
 
-    [SerializeField]
+   // [SerializeField]
     private EnergyGage[] _energyGage;
 
-    [SerializeField]
-    Round _round;
+    //[SerializeField]
+    Round _round = null;
 
     void Start()
     {
+        _firstSkipCount = new int[2];
+        _firstSkipCount[0] = 0;
+        _firstSkipCount[1] = 0;
+        _pressOnce = new bool[2];
+        _pressOnce[1] = false;
+        _pressOnce[0] = false;
+        _gage = new Gage[2];
+        //_controller = GetComponentInParent<GameController>();
+        _round = FindObjectOfType<Round>();
+        _chargeGameController = GetComponent<ChargeGameController>();
+        //        _controller = GetComponentInParent<GameController>();
+        _controller = FindObjectOfType<GameController>();
+
+        _gage[0] = GameObject.Find("GageUI1").GetComponent<Gage>();
+        _gage[1] = GameObject.Find("GageUI2").GetComponent<Gage>();
+        _energyGage = FindObjectsOfType<EnergyGage>();
+ 
+
     }
 
     void Update()
     {
+        // IsKeyDownMoveGage();
+        // EnergyGageMove();
 
-        IsKeyDownMoveGage();
-        EnergyGageMove();
     }
 
-    void IsKeyDownMoveGage()
+    public void IsKeyDownMoveGage()
     {
-        if (_pressOnce) return;
+        P1Key = _controller.player1.GetEnumerator();
+        P2Key = _controller.player2.GetEnumerator();
 
-        var P1Key = _controller.player1.GetEnumerator();
-        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
+        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
-            _gage.MoveSelectGage();
+            
+            if (!(_firstSkipCount[0] == 0))
+            {
+                if (_pressOnce[0]) return;
+                _gage[0].MoveSelectGage();
+                //   Debug.Log("homo1");
+            }
         }
         else
-        if (Input.GetKeyUp(P1Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1)
+        if (Input.GetKeyUp(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
-            _totalScore += _gage.RangeSelectNow();
-            _pressOnce = true;
+            if (_pressOnce[0]) return;
+            if (_firstSkipCount[0] >= 1)
+            {
+                _totalScorePlayer1 += _gage[0].RangeSelectNow();
+                _pressOnce[0] = true;
+
+            }
+            _firstSkipCount[0]++;
         }
 
-        var P2Key = _controller.player2.GetEnumerator();
-        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
+        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
-            _gage.MoveSelectGage();
+            
+            if (!(_firstSkipCount[1] == 0))
+            {
+                if (_pressOnce[1]) return;
+                _gage[1].MoveSelectGage();
+                //   Debug.Log("homo2");
+            }
         }
         else
-        if (Input.GetKeyUp(P2Key.Current) && _energyGage[0].getSelectPlayer == EnergyGage.Player.Player2)
+        if (Input.GetKeyUp(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
-            _totalScore += _gage.RangeSelectNow();
-            _pressOnce = true;
+            if (_pressOnce[1]) return;
+            if(_firstSkipCount[1] >= 1)
+            {
+                _totalScorePlayer2 += _gage[1].RangeSelectNow();
+                _pressOnce[1] = true;
+            }
+            _firstSkipCount[1]++;
         }
 
     }
 
-    void EnergyGageMove()
+    public void EnergyGageMove()
     {
-
-
-        if (_energyGage[0].ChargePowerGage() == true)
+        _chargeGameController = GetComponent<ChargeGameController>();
+        //Debug.Log(_chargeGameController.player1Obj);
+        //Debug.Log(_chargeGameController.player2Obj);
+        if (_chargeGameController.player1Obj == gameObject.transform.parent.gameObject)
         {
-            _round.NextRound();
+            if (_energyGage[0].ChargePowerGage() == true)
+            {
+                _round.NextRound();
+            }
+        }
+        else
+        if (_chargeGameController.player2Obj == gameObject.transform.parent.gameObject)
+        {
+            if (_energyGage[1].ChargePowerGage() == true)
+            {
+                _round.NextRound();
+            }
         }
 
     }
 
-   public void Init()
+    public void Init()
     {
-        _gage.InitGage();
-        _pressOnce = false;
+        foreach(var gage in _gage)
+        {
+            gage.InitGage();
+        }
+        //_gage.InitGage();
+        _pressOnce[0] = false;
+        _pressOnce[1] = false;
+
     }
 
 }
