@@ -9,7 +9,7 @@ public class EnergyGage : MonoBehaviour
     ChargePlayer[] _player;
     
 
-    [SerializeField]
+    //[SerializeField]
    ARDeviceManager _aRDeviceManager;
 
     [SerializeField]
@@ -55,6 +55,7 @@ public class EnergyGage : MonoBehaviour
 
     void Start()
     {
+        _aRDeviceManager = FindObjectOfType<ARDeviceManager>();
         _player = new ChargePlayer[2];
         if (_selectPlayer == Player.Player2)
         {
@@ -96,7 +97,7 @@ public class EnergyGage : MonoBehaviour
         }
 
         if (_powerGage.rectTransform.sizeDelta.x >=
-    _backgroundGage.rectTransform.sizeDelta.x)
+    _backgroundGage.rectTransform.sizeDelta.x-2)
             return _isPowerGage = false;
 
         if (upGage > _size.x)

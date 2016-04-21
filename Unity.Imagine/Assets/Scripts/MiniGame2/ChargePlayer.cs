@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ChargePlayer : MonoBehaviour
 {
@@ -24,10 +24,12 @@ public class ChargePlayer : MonoBehaviour
 
     public float getTotalScorePlayer2 { get { return _totalScorePlayer2; } }
 
-
+    int[] _firstSkipCount;
 
     GameController _controller;
 
+    IEnumerator<KeyCode> P1Key;
+    IEnumerator<KeyCode> P2Key;
 
    // [SerializeField]
     private EnergyGage[] _energyGage;
@@ -37,7 +39,12 @@ public class ChargePlayer : MonoBehaviour
 
     void Start()
     {
+        _firstSkipCount = new int[2];
+        _firstSkipCount[0] = 0;
+        _firstSkipCount[1] = 0;
         _pressOnce = new bool[2];
+        _pressOnce[1] = false;
+        _pressOnce[0] = false;
         _gage = new Gage[2];
         //_controller = GetComponentInParent<GameController>();
         _round = FindObjectOfType<Round>();
@@ -48,48 +55,65 @@ public class ChargePlayer : MonoBehaviour
         _gage[0] = GameObject.Find("GageUI1").GetComponent<Gage>();
         _gage[1] = GameObject.Find("GageUI2").GetComponent<Gage>();
         _energyGage = FindObjectsOfType<EnergyGage>();
+ 
+
     }
 
     void Update()
     {
+        // IsKeyDownMoveGage();
+        // EnergyGageMove();
 
-       // IsKeyDownMoveGage();
-       // EnergyGageMove();
-        
     }
 
     public void IsKeyDownMoveGage()
     {
-        
-        var P1Key = _controller.player1.GetEnumerator();
+        P1Key = _controller.player1.GetEnumerator();
+        P2Key = _controller.player2.GetEnumerator();
 
         if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
-            if (_pressOnce[0]) return;
-            _gage[0].MoveSelectGage();
-            Debug.Log("homo1");
+            
+            if (!(_firstSkipCount[0] == 0))
+            {
+                if (_pressOnce[0]) return;
+                _gage[0].MoveSelectGage();
+                //   Debug.Log("homo1");
+            }
         }
         else
         if (Input.GetKeyUp(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
             if (_pressOnce[0]) return;
-            _totalScorePlayer1 += _gage[0].RangeSelectNow();
-            _pressOnce[0] = true;
+            if (_firstSkipCount[0] >= 1)
+            {
+                _totalScorePlayer1 += _gage[0].RangeSelectNow();
+                _pressOnce[0] = true;
+
+            }
+            _firstSkipCount[0]++;
         }
 
-        var P2Key = _controller.player2.GetEnumerator();
         if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
-            if (_pressOnce[1]) return;
-            _gage[1].MoveSelectGage();
-            Debug.Log("homo2");
+            
+            if (!(_firstSkipCount[1] == 0))
+            {
+                if (_pressOnce[1]) return;
+                _gage[1].MoveSelectGage();
+                //   Debug.Log("homo2");
+            }
         }
         else
         if (Input.GetKeyUp(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
             if (_pressOnce[1]) return;
-            _totalScorePlayer2 += _gage[1].RangeSelectNow();
-            _pressOnce[1] = true;
+            if(_firstSkipCount[1] >= 1)
+            {
+                _totalScorePlayer2 += _gage[1].RangeSelectNow();
+                _pressOnce[1] = true;
+            }
+            _firstSkipCount[1]++;
         }
 
     }
@@ -126,6 +150,7 @@ public class ChargePlayer : MonoBehaviour
         //_gage.InitGage();
         _pressOnce[0] = false;
         _pressOnce[1] = false;
+
     }
 
 }
