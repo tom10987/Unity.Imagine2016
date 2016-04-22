@@ -67,15 +67,6 @@ public class GameManager : MonoBehaviour
   AbstractGame _game = null;
 
 
-  //------------------------------------------------------------
-  // DEBUG
-  [SerializeField]
-  [Tooltip("デバッグ用: 後日削除します")]
-  GameType _type = GameType.Speed;
-  void Awake() { GameMode.type = _type; }
-  //------------------------------------------------------------
-
-
   void Start()
   {
     _audioPlayer.Play(ClipIndex.bgm_No04_MiniGame, true);
@@ -104,6 +95,7 @@ public class GameManager : MonoBehaviour
     System.Action change = () =>
     {
       GameScene.Menu.ChangeScene();
+      GameController.instance.Release();
       _audioPlayer.Stop();
     };
     ScreenSequencer.instance.SequenceStart(change, new Fade(1f));
