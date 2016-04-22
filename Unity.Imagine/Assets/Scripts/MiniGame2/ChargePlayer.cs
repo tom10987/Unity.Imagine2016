@@ -68,6 +68,8 @@ public class ChargePlayer : MonoBehaviour
 
     public void IsKeyDownMoveGage()
     {
+        
+
         P1Key = _controller.player1.GetEnumerator();
         P2Key = _controller.player2.GetEnumerator();
 

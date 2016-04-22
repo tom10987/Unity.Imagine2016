@@ -31,7 +31,8 @@ public class ChargeGameController : AbstractGame {
 
     void Start()
     {
-        
+
+ 
         ressouces = GameResources.instance.charge;
         ressouce = ressouces.CreateResource().GetEnumerator();
 
@@ -55,6 +56,12 @@ public class ChargeGameController : AbstractGame {
         _gageLengthChange[1] = GameObject.Find("GageUI2").GetComponent<GageLengthChange>();
 
 
+
+        // ゲームルールのテキスト初期化
+        string text = ("タイミングよく\n").ToColor(RichText.ColorType.red).ToSize(100);
+            text += ("ボタンをはなしてパワーをためよう!!").ToSize(60);//("").ToColor(RichText.ColorType.red).ToSize(100);
+
+        gameRule = text;
 
         //Action();
 
@@ -92,12 +99,19 @@ public class ChargeGameController : AbstractGame {
         }
         if (_aRDeviceManager == null) return;
         if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return; }
-        
+
+        if (_aRDeviceManager.player1.isVisible == false || _aRDeviceManager.player1.isVisible == false) return;
+
         _chargePlayer = GetComponent<ChargePlayer>();
         _chargePlayer.IsKeyDownMoveGage();
         _chargePlayer.EnergyGageMove();
         IsFinish();
     }  
+
+    public override void SuddenDeathAction()
+    {
+
+    }
 
     public override bool IsFinish()
     {
@@ -115,7 +129,8 @@ public class ChargeGameController : AbstractGame {
 
     public override bool IsDraw()
     {
-
+        _round.getRoundCount = 2;
+        _round.getRoundFinish = false;
         return true;
     }
 
@@ -144,6 +159,8 @@ public class ChargeGameController : AbstractGame {
         return null;
     }
 
+
+
     //レーザーのエフェクトの生成
     public void LaserCreate()
     {
@@ -156,7 +173,6 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            //ressouce.Current.transform.localScale = new Vector3(1,1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
@@ -170,7 +186,6 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            //ressouce.Current.transform.localScale = new Vector3(1, 1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
