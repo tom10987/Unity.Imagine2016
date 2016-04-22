@@ -1,7 +1,13 @@
 ﻿
 using UnityEngine;
 
-public class GameEffect : MonoBehaviour
+//------------------------------------------------------------
+// NOTICE:
+// スピードのゲームで使用する弾のエフェクト
+//
+//------------------------------------------------------------
+
+public class ShotEffect : MonoBehaviour
 {
   [SerializeField]
   ParticleSystem _particle = null;

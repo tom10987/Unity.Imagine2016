@@ -3,23 +3,43 @@ using UnityEngine;
 
 public class BarrageGame : AbstractGame
 {
+  public enum Player { _1, _2, }
+
   public override void Action()
   {
-    if (inputP1.IsPush()) { Shot(gameManager.player1, gameManager.player2); }
-    if (inputP2.IsPush()) { Shot(gameManager.player2, gameManager.player1); }
+    if (inputP1.IsPush()) { Shot(Player._1); }
+    if (inputP2.IsPush()) { Shot(Player._2); }
   }
 
-  void Shot(ARModel player, ARModel target)
+  // ショット発射
+  void Shot(Player sign)
   {
-    /*
-    var shot = Instantiate(_shot);
+    // 各プレイヤーに対応した要素を取得
+    var player = sign.IsPlayer1() ? gameManager.player1 : gameManager.player2;
+    var target = sign.IsPlayer1() ? gameManager.player2 : gameManager.player1;
+    var effect = sign.IsPlayer1() ? _speedGame.p1ShotEffect : _speedGame.p2ShotEffect;
+    var action = sign.IsPlayer1() ? (System.Action)ShotP1 : ShotP2;
+
+    // ショットのインスタンス生成
+    var shot = _speedGame.shotObject;
+    shot.effect = effect;
+    shot.target = target.transform;
     shot.transform.position = player.transform.position + shot.offset;
     shot.transform.Translate(shot.transform.forward * 50f);
-    shot.target = target.transform;
-    shot.listener = (player == _device.player1 ? (System.Action)ShotHitP1 : ShotHitP2);
-    shot.effect = player.effect;
-    _audio.Play(20);
-    */
+    shot.listener = action;
+    gameManager.audio.Play(ClipIndex.se_No21_Shot);
+  }
+
+  // プレイヤー１のショットが命中したとき
+  void ShotP1()
+  {
+    Debug.Log("Player 1");
+  }
+
+  // プレイヤー２のショットが命中したとき
+  void ShotP2()
+  {
+    Debug.Log("Player 2");
   }
 
 
@@ -39,6 +59,10 @@ public class BarrageGame : AbstractGame
   }
 
 
+  // TIPS: スピードのゲームのリソース管理クラス
+  SpeedGameManager _speedGame = null;
+
+
   TimeCount _timeCount = null;
 
   void Start()
@@ -49,12 +73,15 @@ public class BarrageGame : AbstractGame
     gameRule = text;
 
     // ゲームで使用するリソースの生成
-    var resources = GameResources.instance.barrage.CreateResource();
-    foreach (var res in resources)
-    {
-      res.transform.SetParent(transform);
-    }
+    _speedGame = Instantiate(GameResources.instance.barrage);
+    GameResources.instance.Release();
+  }
+}
 
-    _timeCount = gameObject.AddComponent<TimeCount>();
+static class Extension
+{
+  public static bool IsPlayer1(this BarrageGame.Player p)
+  {
+    return p == BarrageGame.Player._1;
   }
 }

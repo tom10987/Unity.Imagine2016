@@ -25,8 +25,8 @@ using UnityEngine;
 public class GameResources : SingletonBehaviour<GameResources>
 {
   [SerializeField]
-  GameResource _barrage = null;
-  public GameResource barrage { get { return _barrage; } }
+  SpeedGameManager _barrage = null;
+  public SpeedGameManager barrage { get { return _barrage; } }
 
   [SerializeField]
   GameResource _charge = null;

@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class GameShot : MonoBehaviour
+public class SpeedGameShot : MonoBehaviour
 {
   [SerializeField, Range(1f, 20f)]
   [Tooltip("弾の速度")]
@@ -18,7 +18,7 @@ public class GameShot : MonoBehaviour
   float _effectScale = 10f;
 
   /// <summary> 弾のエフェクト </summary>
-  public GameEffect effect { get; set; }
+  public ShotEffect effect { get; set; }
 
 
   /// <summary> 弾の目標オブジェクト </summary>
@@ -31,13 +31,17 @@ public class GameShot : MonoBehaviour
 
 
   // TIPS: 一度発射されたらターゲットに向かって進み続ける
-  void FixedUpdate()
+  void Update()
   {
-    var velocity = distance.normalized * _velocity;
+    var velocity = distance.normalized * _velocity * Time.deltaTime;
     transform.position += velocity;
 
+    // TIPS: ターゲットに近づくまで何もしない
     if (distance.magnitude > 20f) { return; }
+
+    // TIPS: エフェクト実行
     listener();
+
     var e = Instantiate(effect);
     e.transform.position = transform.position;
     e.transform.localScale = Vector3.one * _effectScale;

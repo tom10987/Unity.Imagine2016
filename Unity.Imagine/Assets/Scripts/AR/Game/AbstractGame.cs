@@ -51,6 +51,9 @@ public abstract class AbstractGame : MonoBehaviour
   // マーカーが認識されてなくても動作させたいオブジェクト用（Action() の後）
   public virtual void LastUpdate() { }
 
+  // サドンデス時の特殊な処理用
+  public virtual void SuddenDeathAction() { }
+
 
   // ゲームが終了したとき true を返す
   public abstract bool IsFinish();

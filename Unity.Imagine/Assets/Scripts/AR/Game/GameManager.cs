@@ -45,6 +45,10 @@ public class GameManager : MonoBehaviour
   /// <summary> レフェリーのオブジェクトを取得 </summary>
   public Referee referee { get { return _referee; } }
 
+  [SerializeField]
+  [Tooltip("ゲーム開始時のカウントダウンを表示するキャンバス")]
+  //
+
 
   // TIPS: 動作中のコルーチンを保持
   Coroutine _playThread = null;
@@ -213,8 +217,10 @@ public class GameManager : MonoBehaviour
   // ゲーム部分
   IEnumerator Game()
   {
-    //TODO: ゲーム開始のカウントダウン
-    //TODO: サドンデスだったときの処理
+    //yield return StartCoroutine(StartCountDown());
+
+    // TIPS: サドンデスだったときの処理
+    if (_isSuddenDeath) { _game.SuddenDeathAction(); }
 
     while (!_game.IsFinish())
     {
@@ -250,44 +256,6 @@ public class GameManager : MonoBehaviour
   }
 
   /*
-  // TIPS: ゲームループ
-  IEnumerator MainGame()
-  {
-    _state = State.MainGame;
-
-    _counter.TimeReset();
-    _startCount.Visible();
-    _audio.Play(ClipIndex.se_No15_StartCountDown);
-
-    // ゲームスタートまでのカウントダウン
-    var countDown = 3.5f;
-    while (countDown > 0f)
-    {
-      countDown -= Time.deltaTime;
-      _startCount.UpdateCount(Mathf.RoundToInt(countDown));
-      _device.ModelUpdate();
-      yield return null;
-    }
-
-    // サドンデスなら残り時間を減らす
-    _startCount.Visible();
-    if (_suddenDeath.isVisible)
-    {
-      _suddenDeath.Visible();
-      _counter.time = _counter.timeCount * 0.5f;
-    }
-
-    yield return StartCoroutine(Game());
-
-    // ゲームの結果を比較
-    _finishCount.Visible();
-    var p1score = _device.player1.scoreBoard.count;
-    var p2score = _device.player2.scoreBoard.count;
-    var draw = (p1score == p2score);
-
-    // 引き分けならサドンデス開始
-    if (draw) { _suddenDeath.Visible(); yield return StartCoroutine(MainGame()); }
-  }
 
   void Shot(ARModel player, ARModel target)
   {
