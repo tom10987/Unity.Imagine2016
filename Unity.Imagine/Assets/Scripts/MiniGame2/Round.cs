@@ -19,7 +19,7 @@ public class Round : MonoBehaviour
     public bool getRoundFinish { get { return _roundFinish; } set { _roundFinish = value; } }
 
     int _round;
-    public int getRoundCount { get { return _roundCount; } set { _round = value; } }
+    public int getRoundCount { get { return _round; } set { _round = value; } }
 
 
     void Start()
