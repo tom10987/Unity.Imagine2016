@@ -67,15 +67,6 @@ public class GameManager : MonoBehaviour
   AbstractGame _game = null;
 
 
-  //------------------------------------------------------------
-  // DEBUG
-  [SerializeField]
-  [Tooltip("デバッグ用: 後日削除します")]
-  GameType _type = GameType.Speed;
-  void Awake() { GameMode.type = _type; }
-  //------------------------------------------------------------
-
-
   void Start()
   {
     _audioPlayer.Play(ClipIndex.bgm_No04_MiniGame, true);
@@ -104,6 +95,7 @@ public class GameManager : MonoBehaviour
     System.Action change = () =>
     {
       GameScene.Menu.ChangeScene();
+      GameController.instance.Release();
       _audioPlayer.Stop();
     };
     ScreenSequencer.instance.SequenceStart(change, new Fade(1f));
@@ -261,7 +253,7 @@ public class GameManager : MonoBehaviour
     // TIPS: 戻るボタン復旧、SE 再生、レフェリーのボード更新
     _menu.BackMenuActivate();
     _audioPlayer.Play(ClipIndex.se_No20_Result);
-    _referee.textBox.text = "メニューに戻る";
+    _referee.textBox.text = "しゅーりょー";
 
     // TIPS: エフェクト実行
     var winner = _game.GetWinner();
