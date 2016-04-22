@@ -14,6 +14,8 @@ public class Pendulum : AbstractGame
     KeyCode _key1P;
     KeyCode _key2P;
 
+    Ball _ballObj = null;
+
     // Use this for initialization
     void Start()
     {
@@ -76,6 +78,7 @@ public class Pendulum : AbstractGame
         ball.GetComponent<Ball>().gameManager = gameManager;
         shield1P.ballObj = ball;
         shield2P.ballObj = ball;
+        _ballObj = ball.GetComponent<Ball>();
 
         // UI生成
         ressouce.MoveNext();
@@ -138,11 +141,13 @@ public class Pendulum : AbstractGame
             {
                 var vector = deviceMgr.player1.transform.eulerAngles;
                 deviceMgr.player1.costume.AddForce(vector.normalized * 10000);
+                //gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n2Pの勝ち!!";
             }
             else if (shield2P.isDeath)
             {
                 var vector = deviceMgr.player2.transform.eulerAngles;
                 deviceMgr.player2.costume.AddForce(vector.normalized * 10000);
+                //gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n1Pの勝ち!!";
             }
         }
         return isFinish;  

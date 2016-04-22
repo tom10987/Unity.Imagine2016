@@ -93,6 +93,12 @@ public class Ball : MonoBehaviour {
             _moveFlag = true;
         }
         ThrowBall();
+        RefereeTextUpdate();
+    }
+
+    void RefereeTextUpdate()
+    {
+        gameManager.referee.textBox.text = "スピードレベル\n" + speedLevel;
     }
 
     bool FindPlayer()
