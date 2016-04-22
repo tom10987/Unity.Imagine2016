@@ -6,7 +6,9 @@ public class HitEffectCreate : MonoBehaviour
     [SerializeField]
     GameObject[] _effectObject;
 
-    ARDeviceManager _aRDeviceManager;
+   
+
+	GameManager _gameManager;
 
     bool _isFiring = false;
 
@@ -28,6 +30,8 @@ public class HitEffectCreate : MonoBehaviour
 
     static bool _playerHit = false;
 
+	bool _isSE = false;
+
     enum Player
     {
         Player1,
@@ -43,8 +47,8 @@ public class HitEffectCreate : MonoBehaviour
         {
             _movedDistance = -1;
         }
-        _aRDeviceManager = FindObjectOfType<ARDeviceManager>();
-        
+       
+		_gameManager = FindObjectOfType<GameManager> ();   
     }
 
     void Update()
@@ -55,7 +59,7 @@ public class HitEffectCreate : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.GetComponent<HitEffectCreate>() == null) return;
-        float distance = Vector3.Distance(_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position, _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargeGameController>().gameObject.transform.position);
+		float distance = Vector3.Distance(_gameManager.player1.gameObject.GetComponent<ChargePlayer>().gameObject.transform.position, _gameManager.player2.gameObject.GetComponent<ChargePlayer>().gameObject.transform.position);
         
 
         foreach (GameObject effect in _effectObject)
@@ -91,12 +95,16 @@ public class HitEffectCreate : MonoBehaviour
     void LaserPushBack()
     {
 
-        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 > _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
+		if( _gameManager.player1.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer1 > _gameManager.player2.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer2)
         {
 
 
             if (effctPosition.z <= 0)
             {
+				if (!_isSE) {
+					_gameManager.audio.Play (ClipIndex.se_No27_BeamClash,0.5f);
+					_isSE = true;
+				}
                 _playerHit = true;
             }
             if (_playerHit) return;
@@ -108,11 +116,15 @@ public class HitEffectCreate : MonoBehaviour
             }
         }
         else
-        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 < _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
+			if (_gameManager.player1.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer1 < _gameManager.player2.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer2)
         {
 
             if(effctPosition.z <= 0)
             {
+					if (!_isSE) {
+						_gameManager.audio.Play (ClipIndex.se_No27_BeamClash,0.5f);
+						_isSE = true;
+					}
                 _playerHit = true;
             }
             if (_playerHit) return;
