@@ -25,10 +25,23 @@ public class Ball : MonoBehaviour {
     bool _stopFlag = false;
     public bool stopFlag { get { return _stopFlag; } }
 
+    bool _moveFlag = false;
+    public bool moveFlag
+    {
+        get { return _moveFlag; }
+    }
+
+    bool startFlag = false;
+
     ARDeviceManager _manager = null;
     public ARDeviceManager manager
     {
         set { _manager = value; }
+    }
+
+    public GameController gameController
+    {
+        get; set;
     }
 
     enum Target{
@@ -42,6 +55,8 @@ public class Ball : MonoBehaviour {
     [SerializeField]
     GameObject[] _hitParticle = null;
 
+    public GameManager gameManager { get; set; }
+
     // Use this for initialization
     void Start () {
         _rigidbody = GetComponent<Rigidbody>();
@@ -54,9 +69,28 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (_stopFlag || !FindPlayer()) {
+        if (!startFlag)
+        {
+            //var key1P = gameController.player1.GetEnumerator();
+            //var key2P = gameController.player2.GetEnumerator();
+            //key1P.MoveNext();
+            //key2P.MoveNext();
+            if (GameController.instance.IsGameStart())
+            {
+                startFlag = true;
+            }
+            return;
+        }
+
+        if (_stopFlag || !FindPlayer())
+        {
+            _moveFlag = false;
             _rigidbody.velocity = Vector3.zero;
             return;
+        }
+        else
+        {
+            _moveFlag = true;
         }
         ThrowBall();
     }
@@ -72,7 +106,9 @@ public class Ball : MonoBehaviour {
         }
         if(playerNum != 2 ||
            _manager.player1 == null ||
-           _manager.player2 == null)
+           _manager.player2 == null ||
+           !_manager.player1.isVisible ||
+           !_manager.player2.isVisible)
         {
             return false;
         }
@@ -162,6 +198,8 @@ public class Ball : MonoBehaviour {
     {
         target = target == Target.Player1 ? Target.Player2 : Target.Player1;
         AddPower();
+
+        gameManager.audio.Play(ClipIndex.se_No31_Floating);
     }
 
     // ボールの速さを増やす
