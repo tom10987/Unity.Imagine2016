@@ -76,6 +76,23 @@ public class EnergyGage : MonoBehaviour
     { }
 
 
+    public void Init()
+    {
+        _initialPosition = _backgroundGage.rectTransform.localPosition;
+        _initialPosition.x -= _backgroundGage.rectTransform.sizeDelta.x / 2 * _player2Gage;
+        _initialPosition.y = _powerGage.rectTransform.localPosition.y;
+        _initialPosition.z = _powerGage.rectTransform.localPosition.z;
+        Vector2 size = _powerGage.rectTransform.sizeDelta;
+        size.x = 0;
+        _powerGage.rectTransform.sizeDelta = size;
+        _powerGage.rectTransform.localPosition = _initialPosition;
+        foreach(var player in _player)
+        {
+            player._totalScorePlayer1 = 0;
+            player._totalScorePlayer2 = 0;
+        }
+    }
+
     public bool ChargePowerGage()
     {
         
@@ -98,7 +115,7 @@ public class EnergyGage : MonoBehaviour
 
         if (_powerGage.rectTransform.sizeDelta.x >=
     _backgroundGage.rectTransform.sizeDelta.x-2)
-            return _isPowerGage = false;
+            return _isPowerGage = true;
 
         if (upGage > _size.x)
         {

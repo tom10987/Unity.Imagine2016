@@ -18,11 +18,11 @@ public class ChargePlayer : MonoBehaviour
 
     public float _totalScorePlayer1 = 0;
 
-    public float getTotalScorePlayer1 { get { return _totalScorePlayer1; } }
+    public float getTotalScorePlayer1 { get { return _totalScorePlayer1; } set { _totalScorePlayer1 = value; } }
 
     public float _totalScorePlayer2 = 0;
 
-    public float getTotalScorePlayer2 { get { return _totalScorePlayer2; } }
+    public float getTotalScorePlayer2 { get { return _totalScorePlayer2; } set { _totalScorePlayer2 = value; } }
 
     int[] _firstSkipCount;
 
@@ -46,16 +46,17 @@ public class ChargePlayer : MonoBehaviour
         _pressOnce[1] = false;
         _pressOnce[0] = false;
         _gage = new Gage[2];
-        //_controller = GetComponentInParent<GameController>();
+        
         _round = FindObjectOfType<Round>();
         _chargeGameController = GetComponent<ChargeGameController>();
-        //        _controller = GetComponentInParent<GameController>();
+        
         _controller = FindObjectOfType<GameController>();
 
         _gage[0] = GameObject.Find("GageUI1").GetComponent<Gage>();
         _gage[1] = GameObject.Find("GageUI2").GetComponent<Gage>();
-        _energyGage = FindObjectsOfType<EnergyGage>();
- 
+        _energyGage = new EnergyGage[2];
+        _energyGage[0] = GameObject.Find("EnergyGage1").GetComponent<EnergyGage>();
+        _energyGage[1] = GameObject.Find("EnergyGage2").GetComponent<EnergyGage>();
 
     }
 
@@ -68,6 +69,8 @@ public class ChargePlayer : MonoBehaviour
 
     public void IsKeyDownMoveGage()
     {
+        
+
         P1Key = _controller.player1.GetEnumerator();
         P2Key = _controller.player2.GetEnumerator();
 

@@ -1,32 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
+using System.Collections.Generic;
 
 public class Pendulum : AbstractGame
 {
-    CharacterData parameter { get; set; }
-    ARDeviceManager manager { get; set; }
-    GameController controller { get; set; }
+    Shield shield1P { get; set; }
+    Shield shield2P { get; set; }
 
-    Shield shield { get; set; }
-
-    // ボールとUIを１つだけ生成するために使う
-    // １つしかいらないものを２つ生成しないため
-    static bool _OneCreateFlag = false;
+    GameController _controller = null;
 
     public static string _ballName = "Ball";
 
-    void Awake()
-    {
-        _OneCreateFlag = true;
-    }
+    KeyCode _key1P;
+    KeyCode _key2P;
 
     // Use this for initialization
     void Start()
     {
-        parameter = GetComponentInChildren<CharacterData>();
-        manager = GetComponentInParent<ARDeviceManager>();
-        controller = GetComponentInParent<GameController>();
+        _controller = GameObject.FindObjectOfType<GameController>();
 
         var ressouces = GameResources.instance.pendulum;
         var ressouce = ressouces.CreateResource().GetEnumerator();
@@ -38,101 +29,86 @@ public class Pendulum : AbstractGame
         // 3 : ボール
         // 4 : プレイヤーのHPUI
 
+        List<GameObject> list = new List<GameObject>();
+
+        while (ressouce.MoveNext())
+        {
+            list.Add(ressouce.Current);
+        }
+
         // 盾生成
         // 途中にある ressouce.MoveNext(); は上記の配列番号を変えるために書いている
         var player = GetComponentInParent<ARModel>();
-        if (player1 == player)
-        {
-            ressouce.MoveNext();
-            ressouce.MoveNext();
-            ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
-            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
-            ressouce.Current.transform.parent = transform.parent;
-            ressouce.Current.name = ressouce.Current.name;
-            shield = ressouce.Current.GetComponent<Shield>();
-            shield.defenseParmater = parameter.getCharacterData.defense;
-            ressouce.MoveNext();
-        }
-        else if (player2 == player)
-        {
-            ressouce.MoveNext();
-            ressouce.MoveNext();
-            ressouce.MoveNext();
-            ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
-            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
-            ressouce.Current.transform.parent = transform.parent;
-            ressouce.Current.name = ressouce.Current.name;
-            shield = ressouce.Current.GetComponent<Shield>();
-            shield.defenseParmater = parameter.getCharacterData.defense;
+        var deviceMgr = GameObject.FindObjectOfType<ARDeviceManager>();
 
-        }
-        else
-        {
-            ressouce.MoveNext();
-            ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.eulerAngles = transform.parent.transform.eulerAngles;
-            ressouce.Current.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
-            ressouce.Current.transform.parent = transform.parent;
-            ressouce.Current.name = ressouce.Current.name;
-            shield = ressouce.Current.GetComponent<Shield>();
-            shield.defenseParmater = parameter.getCharacterData.defense;
-            ressouce.MoveNext();
-            ressouce.MoveNext();
-        }
+        var newShield1P = list[2];
+        newShield1P.transform.rotation = deviceMgr.player1.gameObject.transform.rotation;
+        newShield1P.transform.eulerAngles = deviceMgr.player1.gameObject.transform.transform.eulerAngles;
+        newShield1P.transform.parent = deviceMgr.player1.gameObject.transform;
+        newShield1P.transform.position = deviceMgr.player1.gameObject.transform.position;
+        newShield1P.name = list[2].name;
+        newShield1P.transform.Translate(0.0f, 10.0f, 65.0f);
+        newShield1P.transform.localScale = Vector3.one;
+        shield1P = newShield1P.GetComponent<Shield>();
+        shield1P.gameManager = gameManager;
+        var par1P = deviceMgr.player1.gameObject.GetComponentInChildren<RandomBullet>().gameObject.GetComponentInChildren<CharacterData>();
+        shield1P.defenseParmater = par1P.getCharacterData.defense;
 
-        if (_OneCreateFlag)
-        {
-            // ボール生成
-            ressouce.MoveNext();
-            var ball = ressouce.Current;
-            ressouce.Current.transform.position = Vector3.forward * 700.0f;
-            ressouce.Current.name = _ballName;
-            ressouce.Current.GetComponent<Ball>().manager = manager;
+        var newShield2P = list[1];
+        newShield2P.transform.rotation = deviceMgr.player2.gameObject.transform.rotation;
+        newShield2P.transform.eulerAngles = deviceMgr.player2.gameObject.transform.transform.eulerAngles;
+        newShield2P.transform.parent = deviceMgr.player2.gameObject.transform;
+        newShield2P.transform.position = deviceMgr.player2.gameObject.transform.position;
+        newShield2P.name = list[1].name;
+        newShield2P.transform.Translate(0.0f, 10.0f, 65.0f);
+        newShield2P.transform.localScale = Vector3.one;
+        shield2P = newShield2P.GetComponent<Shield>();
+        shield2P.gameManager = gameManager;
+        var par2P = deviceMgr.player2.gameObject.GetComponentInChildren<RandomBullet>().gameObject.GetComponentInChildren<CharacterData>();
+        shield2P.defenseParmater = par2P.getCharacterData.defense;
 
-            // UI生成
-            ressouce.MoveNext();
-            var ui = ressouce.Current;
-            ui.GetComponent<PlayersHPUI>().ball = ball.GetComponent<Ball>();
-            ui.transform.parent = GameObject.Find("GameUI").transform;
-            ui.GetComponent<RectTransform>().localPosition = Vector3.zero;
-            ui.GetComponent<RectTransform>().localScale = Vector3.one;
-            _OneCreateFlag = false;
-        }
+        // ボール生成
+        var ball = list[3];
+        ball.transform.position = Vector3.forward * 700.0f;
+        ball.name = _ballName;
+        ball.GetComponent<Ball>().gameController = _controller;
+        ball.GetComponent<Ball>().manager = deviceMgr;
+        ball.GetComponent<Ball>().gameManager = gameManager;
+        shield1P.ballObj = ball;
+        shield2P.ballObj = ball;
 
-        //foreach (var res in ressouces.CreateResource())
-        //{
-        //    res.transform.position = transform.position;
-        //    res.transform.rotation = transform.rotation;
-        //    res.transform.eulerAngles = transform.parent.transform.eulerAngles;
-        //    res.transform.Translate(new Vector3(0.0f, -40.0f, 10.0f));
-        //    res.transform.parent = transform.parent;
-        //    res.name = res.name;
-        //    shield = res.GetComponent<Shield>();
-        //    
-        //    break;
-        //}
+        // UI生成
+        ressouce.MoveNext();
+        var ui = list[4];
+        ui.GetComponentInChildren<PlayersHPUI>().ball = ball.GetComponent<Ball>();
+        //ui.transform.parent = GameObject.Find("GameUI").transform;
+        ui.GetComponentInChildren<RectTransform>().localPosition = Vector3.zero;
+        ui.GetComponentInChildren<RectTransform>().localScale = Vector3.one;
 
         // (説明適当)
         gameRule = "飛んでくるボールをタイミングよく跳ね返して相手の盾を壊しましょう。";
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // デバック用に Update() で動かしている
-        var a = controller.player1.GetEnumerator();
-        a.MoveNext();
-        if (Input.GetKeyDown(a.Current))
-        {
-            Action();
-        }
+        var key1P = _controller.player1.GetEnumerator();
+        var key2P = _controller.player2.GetEnumerator();
+        key1P.MoveNext();
+        key2P.MoveNext();
+
+        _key1P = key1P.Current;
+        _key2P = key2P.Current;
     }
 
     public override void Action()
     {
-        shield.PushOn();
+
+        if (Input.GetKeyDown(_key1P)) {
+            shield1P.PushOn();
+        }
+
+        if (Input.GetKeyDown(_key2P))
+        {
+            shield2P.PushOn();
+        }
+
     }
 
     public override Transform GetWinner()
@@ -140,11 +116,11 @@ public class Pendulum : AbstractGame
         if (player1 == null || player2 == null) { return null; }
 
         // 盾がなくなったら負けなので勝ちである相手の transform を返す
-        if(player1.GetComponent<Pendulum>().shield == null)
+        if(shield1P == null)
         {
             return player2.transform;
         }
-        else if (player2.GetComponent<Pendulum>().shield == null)
+        else if (shield2P == null)
         {
             return player1.transform;
         }
@@ -154,7 +130,21 @@ public class Pendulum : AbstractGame
     public override bool IsFinish()
     {
         // 盾がなくなったら終了
-        if (shield != null) { return false; }
-        return true;  
+        var isFinish = shield1P.isDeath || shield2P.isDeath;
+        if (isFinish)
+        {
+            var deviceMgr = GameObject.FindObjectOfType<ARDeviceManager>();
+            if (shield1P.isDeath)
+            {
+                var vector = deviceMgr.player1.transform.eulerAngles;
+                deviceMgr.player1.costume.AddForce(vector.normalized * 10000);
+            }
+            else if (shield2P.isDeath)
+            {
+                var vector = deviceMgr.player2.transform.eulerAngles;
+                deviceMgr.player2.costume.AddForce(vector.normalized * 10000);
+            }
+        }
+        return isFinish;  
     }
 }

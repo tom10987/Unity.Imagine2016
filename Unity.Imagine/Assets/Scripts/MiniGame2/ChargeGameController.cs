@@ -19,9 +19,13 @@ public class ChargeGameController : AbstractGame {
 
     public GameObject player2Obj { get { return _aRDeviceManager.player2.gameObject; } }
 
+    EnergyGage[] _energyGage;
+
     ChargePlayer _chargePlayer;
 
     bool _isFinish = false;
+
+    bool _drawCheck = false;
 
     Round _round = null;
     GameResource ressouces;
@@ -31,7 +35,8 @@ public class ChargeGameController : AbstractGame {
 
     void Start()
     {
-        
+        _energyGage = FindObjectsOfType<EnergyGage>();
+
         ressouces = GameResources.instance.charge;
         ressouce = ressouces.CreateResource().GetEnumerator();
 
@@ -56,6 +61,12 @@ public class ChargeGameController : AbstractGame {
 
 
 
+        // ゲームルールのテキスト初期化
+        string text = ("タイミングよく\n").ToColor(RichText.ColorType.red).ToSize(100);
+            text += ("ボタンをはなしてパワーをためよう!!").ToSize(60);//("").ToColor(RichText.ColorType.red).ToSize(100);
+
+        gameRule = text;
+
         //Action();
 
     }
@@ -73,7 +84,7 @@ public class ChargeGameController : AbstractGame {
             //_gageLengthChange = FindObjectOfType<GageLengthChange>();
             gameObject.AddComponent<ChargePlayer>();
             parameter = GetComponentInChildren<CharacterData>();
-            _aRDeviceManager = GetComponentInParent<ARDeviceManager>();
+            _aRDeviceManager = FindObjectOfType<ARDeviceManager>();
             _chargePlayer = GetComponent<ChargePlayer>();
             _isStart = true;
             if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
@@ -92,21 +103,34 @@ public class ChargeGameController : AbstractGame {
         }
         if (_aRDeviceManager == null) return;
         if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return; }
-        
+
+        if (_aRDeviceManager.player1.isVisible == false || _aRDeviceManager.player1.isVisible == false) return;
+
         _chargePlayer = GetComponent<ChargePlayer>();
         _chargePlayer.IsKeyDownMoveGage();
         _chargePlayer.EnergyGageMove();
         IsFinish();
     }  
 
+
     public override bool IsFinish()
     {
         if (_isFinish) return true;
         if (_round.getRoundFinish)
         {
-            
-            GetWinner();
-            
+            if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return _isFinish = false; }
+
+            if (_aRDeviceManager.player1.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 == _aRDeviceManager.player2.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
+            {
+                IsDraw();
+            }
+            else
+            {
+                GetWinner();
+
+            }
+
+
             return _isFinish = true;
         }
 
@@ -115,9 +139,28 @@ public class ChargeGameController : AbstractGame {
 
     public override bool IsDraw()
     {
-
-        return true;
+        return _drawCheck = true;
     }
+
+    public override void GameStart()
+    {
+        if (_drawCheck == true)
+        {
+            _round.getRoundCount = 2;
+            _round.getRoundFinish = false;
+            _isFinish = false;
+            foreach (var energy in _energyGage)
+            {
+                energy.Init();
+            }
+        }
+    }
+
+    public override void SuddenDeathAction()
+    {
+
+    }
+
 
     public override Transform GetWinner()
     {
@@ -135,14 +178,12 @@ public class ChargeGameController : AbstractGame {
             LaserCreate();
             return _aRDeviceManager.player2.transform;
         }
-        else
-        if (_aRDeviceManager.player1.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 == _aRDeviceManager.player2.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
-        {
-            IsDraw();
-        }
+
 
         return null;
     }
+
+
 
     //レーザーのエフェクトの生成
     public void LaserCreate()
@@ -156,7 +197,6 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            //ressouce.Current.transform.localScale = new Vector3(1,1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }
@@ -170,7 +210,6 @@ public class ChargeGameController : AbstractGame {
             ressouce.MoveNext();
             ressouce.Current.transform.rotation = transform.rotation;
             ressouce.Current.transform.position = transform.position;
-            //ressouce.Current.transform.localScale = new Vector3(1, 1, 1/ halfScaleLaser);
             ressouce.Current.transform.parent = transform.parent;
             ressouce.Current.name = ressouce.Current.name;
         }

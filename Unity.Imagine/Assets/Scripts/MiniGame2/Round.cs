@@ -16,10 +16,10 @@ public class Round : MonoBehaviour
 
     bool _roundFinish = false;
 
-    public bool getRoundFinish { get { return _roundFinish; } }
+    public bool getRoundFinish { get { return _roundFinish; } set { _roundFinish = value; } }
 
     int _round;
-    public int getRoundCount { get { return _roundCount; } }
+    public int getRoundCount { get { return _round; } set { _round = value; } }
 
 
     void Start()
