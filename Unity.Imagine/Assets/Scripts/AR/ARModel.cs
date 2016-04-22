@@ -37,6 +37,9 @@ public class ARModel : MonoBehaviour
   public CharacterData data { get { return _data; } }
 
 
+  /// <summary> モデルの正面方向（正規化済み） </summary>
+  public Vector3 forward { get { return transform.forward.normalized; } }
+
   /// <summary> マーカーがカメラに認識されたか </summary>
   public bool isVisible { get; set; }
 

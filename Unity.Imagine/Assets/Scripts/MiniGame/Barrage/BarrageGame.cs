@@ -1,7 +1,5 @@
 ﻿
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
 
 //------------------------------------------------------------
 // NOTICE:
@@ -15,8 +13,17 @@ public class BarrageGame : AbstractGame
 
   public override void Action()
   {
+    _speedGame.timeManager.UpdateTime();
+    gameManager.referee.textBox.text = _speedGame.timeManager.currentTimeString;
     if (inputP1.IsPush()) { Shot(Player._1); }
     if (inputP2.IsPush()) { Shot(Player._2); }
+
+    // TIPS: 残り時間が少なくなったらカウントダウン開始
+    if (_isPlaying) { return; }
+    if (_speedGame.timeManager.currentTimeToInt > 3) { return; }
+    _isPlaying = true;
+    gameManager.audio.Play(ClipIndex.se_No16_FinishCountDown);
+    StartCoroutine(gameManager.announce.finishCount.PlayCountDown());
   }
 
   // ショット発射
@@ -32,54 +39,64 @@ public class BarrageGame : AbstractGame
     var shot = _speedGame.shotObject;
     shot.effect = effect;
     shot.target = target.transform;
-    shot.transform.position = player.transform.position + shot.offset;
-    shot.transform.Translate(shot.transform.forward * 50f);
+    shot.transform.position = player.transform.position + shot.offsetY;
+    shot.transform.Translate(player.forward * shot.offsetForward);
     shot.listener = action;
+
+    // SE 再生
     gameManager.audio.Play(ClipIndex.se_No21_Shot);
   }
-
   // プレイヤー１のショットが命中したとき
   void ShotP1()
   {
-    Debug.Log("Player 1");
+    ++_p1score;
+    _speedGame.gameUI.p1Score.text = _p1score.ToString();
+    gameManager.audio.Play(ClipIndex.se_No22_Hit);
   }
-
   // プレイヤー２のショットが命中したとき
   void ShotP2()
   {
-    Debug.Log("Player 2");
+    ++_p2score;
+    _speedGame.gameUI.p2Score.text = _p2score.ToString();
+    gameManager.audio.Play(ClipIndex.se_No22_Hit);
   }
 
 
   public override void GameStart()
   {
-    base.GameStart();
+    _speedGame.gameObject.SetActive(true);
+    _speedGame.timeManager.TimeReset();
+    _isPlaying = false;
   }
-
   public override void SuddenDeathAction()
   {
-    base.SuddenDeathAction();
+    _speedGame.timeManager.SuddenDeathMode();
   }
 
 
   public override bool IsFinish()
   {
-    return Input.GetKeyDown(KeyCode.G);
+    return _speedGame.timeManager.isFinish;
   }
-
   public override bool IsDraw()
   {
-    return false;
+    return _p1score == _p2score;
   }
 
   public override Transform GetWinner()
   {
-    return null;
+    return _p1score > _p2score ?
+      gameManager.player1.transform : gameManager.player2.transform;
   }
 
 
   SpeedGameManager _speedGame = null;
-  TimeCount _timeCount = null;
+  int _p1score = 0;
+  int _p2score = 0;
+
+  // TIPS: 終了前のカウントダウン開始したか
+  bool _isPlaying = false;
+
 
   void Start()
   {
@@ -89,8 +106,14 @@ public class BarrageGame : AbstractGame
     gameRule = text;
 
     // ゲームで使用するリソースの生成
-    var resources = GameResources.instance.barrage.CreateResource();
-    var instances = resources.Select(resource => Instantiate(resource)).ToArray();
+    var resources = GameResources.instance.barrage.CreateResourceArray();
+    _speedGame = resources[0].GetComponent<SpeedGameManager>();
+
+    // モデル初期化
+    _speedGame.ModelSetup(gameManager.arManager);
+    _speedGame.gameUI.p1Score.text = _p1score.ToString();
+    _speedGame.gameUI.p2Score.text = _p2score.ToString();
+    _speedGame.gameObject.SetActive(false);
   }
 }
 

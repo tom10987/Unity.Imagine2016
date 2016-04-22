@@ -1,7 +1,6 @@
 ﻿
 using UnityEngine;
 using System.Collections;
-using System.Linq;
 
 //------------------------------------------------------------
 // NOTICE:
@@ -22,6 +21,7 @@ public class GameManager : MonoBehaviour
   [SerializeField]
   [Tooltip("AR カメラ")]
   ARDeviceManager _arManager = null;
+  public ARDeviceManager arManager { get { return _arManager; } }
   public ARModel player1 { get { return _arManager.player1; } }
   public ARModel player2 { get { return _arManager.player2; } }
 
@@ -45,9 +45,16 @@ public class GameManager : MonoBehaviour
   /// <summary> レフェリーのオブジェクトを取得 </summary>
   public Referee referee { get { return _referee; } }
 
+
   [SerializeField]
   [Tooltip("ゲーム開始時のカウントダウンを表示するキャンバス")]
-  //
+  GameAnnounce _announce = null;
+  /// <summary> カウントダウン表示など、通知の呼び出し </summary>
+  public GameAnnounce announce { get { return _announce; } }
+
+  [SerializeField]
+  [Tooltip("ゲーム終了時のエフェクト")]
+  GameFinish _finishEffect = null;
 
 
   // TIPS: 動作中のコルーチンを保持
@@ -145,9 +152,6 @@ public class GameManager : MonoBehaviour
     var ruleBoardInstance = Instantiate(_ruleBoard);
     ruleBoardInstance.SetRuleText(_game.gameRule);
 
-    // TIPS: 次のステップに進むまで動作停止
-    _game.gameObject.SetActive(false);
-
     // TIPS: 両方のプレイヤーが同時に操作キーを入力したら次のステップに進む
     while (!GameController.instance.IsGameStart())
     {
@@ -219,8 +223,20 @@ public class GameManager : MonoBehaviour
   {
     // TIPS: ゲームの初期化
     _game.GameStart();
+
     // TIPS: サドンデスだったときの処理
-    if (_isSuddenDeath) { _game.SuddenDeathAction(); }
+    if (_isSuddenDeath)
+    {
+      _announce.hideSuddenDeath = false;
+      _game.SuddenDeathAction();
+      yield return new WaitForSeconds(2f);
+    }
+
+    // TIPS: カウントダウン開始
+    _audioPlayer.Play(ClipIndex.se_No15_StartCountDown);
+    yield return StartCoroutine(_announce.startCount.PlayCountDown());
+
+    _announce.hideSuddenDeath = true;
 
     while (!_game.IsFinish())
     {
@@ -242,7 +258,20 @@ public class GameManager : MonoBehaviour
   // ゲーム結果
   IEnumerator Result()
   {
+    // TIPS: 戻るボタン復旧、SE 再生、レフェリーのボード更新
     _menu.BackMenuActivate();
+    _audioPlayer.Play(ClipIndex.se_No20_Result);
+    _referee.textBox.text = "メニューに戻る";
+
+    // TIPS: エフェクト実行
+    var winner = _game.GetWinner();
+    _finishEffect.PaperActivate(winner);
+    _finishEffect.PlayFireworks(winner);
+
+    // TIPS: 勝敗表示
+    System.Action victory = (winner == player1.transform) ?
+      (System.Action)_finishEffect.WinnerP1 : _finishEffect.WinnerP2;
+    victory();
 
     // TIPS: レフェリーがクリックされた場合もゲームを終了する
     while (!_referee.IsRaycastHit())
@@ -254,22 +283,4 @@ public class GameManager : MonoBehaviour
 
     OnBackToMenu();
   }
-
-  /*
-
-  void Shot(ARModel player, ARModel target)
-  {
-    var shot = Instantiate(_shot);
-    shot.transform.position = player.transform.position + shot.offset;
-    shot.transform.Translate(shot.transform.forward * 50f);
-    shot.target = target.transform;
-    shot.listener = (player == _device.player1 ? (System.Action)ShotHitP1 : ShotHitP2);
-    shot.effect = player.effect;
-    _audio.Play(20);
-  }
-
-  void HitPlay() { _audio.Play(21); }
-  void ShotHitP1() { _device.player1.scoreBoard.CountUp(); HitPlay(); }
-  void ShotHitP2() { _device.player2.scoreBoard.CountUp(); HitPlay(); }
-  */
 }

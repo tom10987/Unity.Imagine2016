@@ -20,8 +20,8 @@ public class SpeedGameModelResource
 
 
   [SerializeField]
-  ShotEffect _effect = null;
-  public ShotEffect shotEffect { get { return _effect; } }
+  OneTimeEffect _effect = null;
+  public OneTimeEffect shotEffect { get { return _effect; } }
 
 
   /// <summary> AR モデルのマテリアルを設定する </summary>

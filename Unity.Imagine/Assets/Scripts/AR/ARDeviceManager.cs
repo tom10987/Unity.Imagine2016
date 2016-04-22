@@ -48,6 +48,19 @@ public class ARDeviceManager : MonoBehaviour
   public int markerScale { get { return _markerScale; } }
 
 
+  [SerializeField, Range(-180f, 180f)]
+  [Tooltip("モデルの回転補正：X軸")]
+  float _axisX = 0f;
+
+  [SerializeField, Range(-180f, 180f)]
+  [Tooltip("モデルの回転補正：Y軸")]
+  float _axisY = 0f;
+
+  [SerializeField, Range(-180f, 180f)]
+  [Tooltip("モデルの回転補正：Z軸")]
+  float _axisZ = 0f;
+
+
   /// <summary> 管理下にある <see cref="ARModel"/> を全て取得 </summary>
   public IEnumerable<ARModel> GetModels() { return this.GetOnlyChildren<ARModel>(); }
 
@@ -137,7 +150,10 @@ public class ARDeviceManager : MonoBehaviour
       // TIPS: マーカーを認識できたらモデルを画面に表示する
       _arSystem.setMarkerTransform(model.id, model.transform);
       _models.Add(model);
-      model.transform.Rotate(Vector3.right * 90f);
+      // TIPS: モデルが変な方向に向いてしまうので補正する
+      model.transform.Rotate(Vector3.right * _axisX);
+      model.transform.Rotate(Vector3.up * _axisY);
+      model.transform.Rotate(Vector3.forward * _axisZ);
     }
 
     return (_models.Count == _existsCount);
@@ -159,8 +175,10 @@ public class ARDeviceManager : MonoBehaviour
       if (!_arSystem.isExistMarker(model.id)) { ResetTransform(model); continue; }
       model.isVisible = true;
       _arSystem.setMarkerTransform(model.id, model.transform);
-      // TIPS: 認識したモデルが変な方向に回転しているので戻す
-      model.transform.Rotate(Vector3.right * 90f);
+      // TIPS: モデルの向きを補正する
+      model.transform.Rotate(Vector3.right * _axisX);
+      model.transform.Rotate(Vector3.up * _axisY);
+      model.transform.Rotate(Vector3.forward * _axisZ);
     }
 
     // TIPS: マーカーが認識できていなければスキップ
