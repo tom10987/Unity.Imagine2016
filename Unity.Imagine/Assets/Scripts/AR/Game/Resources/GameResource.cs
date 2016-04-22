@@ -19,6 +19,7 @@ public class GameResource : MonoBehaviour
 {
   [SerializeField]
   GameObject[] _objects = null;
+  /// <summary> オブジェクトの一覧を取得 </summary>
   public IEnumerable<GameObject> objects { get { return _objects; } }
 }
 
@@ -29,8 +30,14 @@ public static class GameResourceExtension
   /// 生成したオブジェクトそのものを返す </para></summary>
   public static IEnumerable<GameObject> CreateResource(this GameResource resource)
   {
+    var parent = new GameObject("_GameResources");
     var resources = Object.Instantiate(resource);
-    foreach (var res in resources.objects) { yield return Object.Instantiate(res); }
+    foreach (var res in resources.objects)
+    {
+      var instance = Object.Instantiate(res);
+      instance.transform.SetParent(parent.transform);
+      yield return instance;
+    }
     Object.Destroy(resources.gameObject);
     GameResources.instance.Release();
   }
