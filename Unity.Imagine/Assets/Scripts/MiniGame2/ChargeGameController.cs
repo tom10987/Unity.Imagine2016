@@ -109,7 +109,20 @@ public class ChargeGameController : AbstractGame {
         _chargePlayer = GetComponent<ChargePlayer>();
         _chargePlayer.IsKeyDownMoveGage();
         _chargePlayer.EnergyGageMove();
-        IsFinish();
+
+		if (_round.getRoundFinish) {
+			if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) {
+				return ;
+			}
+
+			if (_aRDeviceManager.player1.GetComponentInChildren<ChargePlayer> ().getTotalScorePlayer1 == _aRDeviceManager.player2.GetComponentInChildren<ChargePlayer> ().getTotalScorePlayer2) {
+				IsDraw ();
+			} else {
+				GetWinner ();
+
+			}
+		}
+       // IsFinish();
     }  
 
 
@@ -149,9 +162,11 @@ public class ChargeGameController : AbstractGame {
             _round.getRoundCount = 2;
             _round.getRoundFinish = false;
             _isFinish = false;
+			_energyGage = FindObjectsOfType<EnergyGage>();
             foreach (var energy in _energyGage)
             {
                 energy.Init();
+
             }
         }
     }

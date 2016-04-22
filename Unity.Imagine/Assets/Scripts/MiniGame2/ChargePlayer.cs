@@ -124,6 +124,10 @@ public class ChargePlayer : MonoBehaviour
     public void EnergyGageMove()
     {
         _chargeGameController = GetComponent<ChargeGameController>();
+
+		if (_chargeGameController.name == "_GameInstance")
+			return;
+		Debug.Log (_chargeGameController);
         //Debug.Log(_chargeGameController.player1Obj);
         //Debug.Log(_chargeGameController.player2Obj);
         if (_chargeGameController.player1Obj == gameObject.transform.parent.gameObject)

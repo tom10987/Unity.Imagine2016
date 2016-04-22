@@ -33,7 +33,7 @@ public class Round : MonoBehaviour
 
     public void NextRound()
     {
-
+		Debug.Log (_round + "round");
         int finishPowerGageCount = 0;
         foreach (var energyGage in _energyGage)
         {
