@@ -141,13 +141,13 @@ public class Pendulum : AbstractGame
             {
                 var vector = deviceMgr.player1.transform.eulerAngles;
                 deviceMgr.player1.costume.AddForce(vector.normalized * 10000);
-                gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n2Pの勝ち!!";
+                //gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n2Pの勝ち!!";
             }
             else if (shield2P.isDeath)
             {
                 var vector = deviceMgr.player2.transform.eulerAngles;
                 deviceMgr.player2.costume.AddForce(vector.normalized * 10000);
-                gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n1Pの勝ち!!";
+                //gameManager.referee.textBox.text = "スピードレベル\n" + _ballObj.speedLevel + "\n1Pの勝ち!!";
             }
         }
         return isFinish;  
