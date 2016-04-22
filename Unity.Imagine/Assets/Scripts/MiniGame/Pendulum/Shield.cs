@@ -19,9 +19,18 @@ public class Shield : MonoBehaviour {
         set
         {
             _hp = value;
-            if (_hp < 0) { _hp = 0; }        
+            if (_hp <= 0) {
+                _hp = 0;
+                isDeath = true;
+            }        
         }
     }
+
+    [SerializeField]
+    public GameObject ballObj { get; set; }
+
+    public bool isDeath { get; set; } 
+
     [SerializeField]
     private int _maxDamage = 20;
     [SerializeField]
@@ -56,6 +65,10 @@ public class Shield : MonoBehaviour {
     private float _hitDelayCount = 0;
     private const float _MAX_HIT_DELAY_COUNT = 30;
 
+    public GameManager gameManager { get; set; }
+
+    int _timingAudioNum = 0;
+
     // Use this for initialization
     void Start() {
         //pendulum = GetComponentInParent<Pendulum>();
@@ -83,9 +96,12 @@ public class Shield : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        var ball = collision.gameObject.GetComponent<Ball>();
-        if(ball == null) { return; }
-        if (!ball.stopFlag)
+        if(ballObj != collision.gameObject)
+        {
+            return;
+        }
+        var ball = ballObj.GetComponent<Ball>();
+        if (!ball.stopFlag && ball.moveFlag)
         {
             if (_hitDelayCount == 0)
             {
@@ -97,14 +113,27 @@ public class Shield : MonoBehaviour {
                     var particle = Instantiate(breakParticle);
                     particle.transform.position = transform.position + _particleOffsetPos;
                     particle.name = breakParticle.name;
+
+                    gameManager.audio.Play(ClipIndex.se_No30_ShieldBreak);
                 }
                 else
                 {
                     var particle = Instantiate(hitParticle);
                     particle.transform.position = transform.position + _particleOffsetPos;
                     particle.name = hitParticle.name;
+
+                    if (_timingAudioNum >= 1)
+                    {
+                        gameManager.audio.Play(ClipIndex.se_No28_JustHit);
+                    }
+                    else
+                    {
+                        gameManager.audio.Play(ClipIndex.se_No29_MissHit);
+                    }
                 }
                 _hitDelayCount = _MAX_HIT_DELAY_COUNT;
+
+                
             }
             collision.gameObject.GetComponent<Ball>().ChangeTarget();
         }
@@ -128,16 +157,19 @@ public class Shield : MonoBehaviour {
         for (int i = 0; i < PUSH_FREAM; ++i)
         {
             _armor = _maxArmor - _maxArmor / PUSH_FREAM * i;
+            ++_timingAudioNum;
             transform.Translate(0.0f, 0.0f, PUSH_VALUE * PUSH_SPEED);
             yield return PUSH_VALUE * PUSH_SPEED;
         }
         for (int i = 0; i < PULL_FREAM; ++i)
         {
             _armor -= _maxArmor;
+            --_timingAudioNum;
             transform.Translate(0.0f, 0.0f, PULL_VALUE * PULL_SPEED);
             yield return PULL_VALUE * PULL_SPEED;
         }
         _armor = 0;
+        _timingAudioNum = 0;
     }
 
     //void OnTriggerEnter(Collider collider)
