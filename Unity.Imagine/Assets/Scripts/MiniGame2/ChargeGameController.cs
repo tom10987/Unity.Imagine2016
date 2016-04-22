@@ -28,33 +28,29 @@ public class ChargeGameController : AbstractGame {
     bool _drawCheck = false;
 
     Round _round = null;
-    GameResource ressouces;
-    IEnumerator<GameObject> ressouce;
+    
+	GameObject[] ressouces;
 
     static bool _isCreateUI = false;
 
+	ChargePlayer _p1charge; 
+	ChargePlayer _p2charge;
+
+
     void Start()
     {
+
+
         _energyGage = FindObjectsOfType<EnergyGage>();
+		_round = FindObjectOfType<Round>();
 
-        ressouces = GameResources.instance.charge;
-        ressouce = ressouces.CreateResource().GetEnumerator();
+		ressouces = GameResources.instance.charge.CreateResourceArray();
 
-        if (_isCreateUI == false)
-        {
-            
 
-            ressouce.MoveNext();
-            CharacterData[] characterData = FindObjectsOfType<CharacterData>();
-            foreach (var gameobject in characterData)
-            {
-                gameobject.gameObject.transform.parent.gameObject.AddComponent<ChargeGameController>();
+			 _p1charge = gameManager.player1.gameObject.AddComponent<ChargePlayer>();
+			 _p2charge = gameManager.player2.gameObject.AddComponent<ChargePlayer>();
+						
 
-            }
-
-            _isCreateUI = true;
-        }
-        //ここクソコード
         _gageLengthChange = new GageLengthChange[2];  
         _gageLengthChange[0] = GameObject.Find("GageUI1").GetComponent<GageLengthChange>();
         _gageLengthChange[1] = GameObject.Find("GageUI2").GetComponent<GageLengthChange>();
@@ -67,48 +63,51 @@ public class ChargeGameController : AbstractGame {
 
         gameRule = text;
 
+
+		_aRDeviceManager = FindObjectOfType<ARDeviceManager>();
+
+		_round = FindObjectOfType<Round>();
+		//_gageLengthChange = FindObjectOfType<GageLengthChange>();
+
+		parameter = GetComponentInChildren<CharacterData>();
+
+		_isStart = true;
+		_aRDeviceManager = FindObjectOfType<ARDeviceManager>();
+		if(_aRDeviceManager.name == gameObject.name)
+		if (gameManager.player1.gameObject == gameObject.transform.parent.gameObject)
+		{
+			_gageLengthChange[0].Parameter = parameter.getCharacterData.attack;
+			_gageLengthChange[0].StatusGageLengthChange();
+		}
+		else
+			if (gameManager.player2.gameObject == gameObject.transform.parent.gameObject)
+			{
+				_gageLengthChange[1].Parameter = parameter.getCharacterData.attack;
+				_gageLengthChange[1].StatusGageLengthChange();
+			}
         //Action();
 
     }
 
     void Update()
     {
-        Action();
+        //Action();
     }
 
     public override void Action()
     {
-        if (_isStart == false)
-        {
-            _round = FindObjectOfType<Round>();
-            //_gageLengthChange = FindObjectOfType<GageLengthChange>();
-            gameObject.AddComponent<ChargePlayer>();
-            parameter = GetComponentInChildren<CharacterData>();
-            _aRDeviceManager = FindObjectOfType<ARDeviceManager>();
-            _chargePlayer = GetComponent<ChargePlayer>();
-            _isStart = true;
-            if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
-            {
-                _gageLengthChange[0].Parameter = parameter.getCharacterData.attack;
-                _gageLengthChange[0].StatusGageLengthChange();
-            }
-            else
-            if (_aRDeviceManager.player2.gameObject == gameObject.transform.parent.gameObject)
-            {
-                _gageLengthChange[1].Parameter = parameter.getCharacterData.attack;
-                _gageLengthChange[1].StatusGageLengthChange();
-            }
-            
-            
-        }
+   
         if (_aRDeviceManager == null) return;
         if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return; }
 
         if (_aRDeviceManager.player1.isVisible == false || _aRDeviceManager.player1.isVisible == false) return;
 
-        _chargePlayer = GetComponent<ChargePlayer>();
-        _chargePlayer.IsKeyDownMoveGage();
-        _chargePlayer.EnergyGageMove();
+			
+		     _p1charge.IsKeyDownMoveGage ();
+		     _p1charge.EnergyGageMove ();
+			 _p2charge.IsKeyDownMoveGage ();
+			 _p2charge.EnergyGageMove ();
+
 
 		if (_round.getRoundFinish) {
 			if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) {
@@ -122,26 +121,19 @@ public class ChargeGameController : AbstractGame {
 
 			}
 		}
-       // IsFinish();
+
     }  
 
 
     public override bool IsFinish()
     {
         if (_isFinish) return true;
+		_round = FindObjectOfType<Round>();
         if (_round.getRoundFinish)
         {
             if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return _isFinish = false; }
 
-            if (_aRDeviceManager.player1.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 == _aRDeviceManager.player2.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
-            {
-                IsDraw();
-            }
-            else
-            {
                 GetWinner();
-
-            }
 
 
             return _isFinish = true;
@@ -152,7 +144,11 @@ public class ChargeGameController : AbstractGame {
 
     public override bool IsDraw()
     {
-        return _drawCheck = true;
+		if (gameManager.player1.gameObject.GetComponent<ChargePlayer> ().getTotalScorePlayer1 == gameManager.player2.gameObject.GetComponent<ChargePlayer> ().getTotalScorePlayer2) 
+		{
+			return _drawCheck = true;
+		}
+		return _drawCheck = false;
     }
 
     public override void GameStart()
@@ -182,13 +178,13 @@ public class ChargeGameController : AbstractGame {
 
         if (_aRDeviceManager.player1 == null || _aRDeviceManager.player2 == null) { return null; }
 
-        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 > _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
+		if (gameManager.player1.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer1 > gameManager.player2.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer2)
         {
             LaserCreate();
             return _aRDeviceManager.player1.transform;
         }
         else
-        if (_aRDeviceManager.player1.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer1 < _aRDeviceManager.player2.gameObject.GetComponentInChildren<ChargePlayer>().getTotalScorePlayer2)
+			if (gameManager.player1.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer1 < gameManager.player2.gameObject.GetComponent<ChargePlayer>().getTotalScorePlayer2)
         {
             LaserCreate();
             return _aRDeviceManager.player2.transform;
@@ -203,31 +199,20 @@ public class ChargeGameController : AbstractGame {
     //レーザーのエフェクトの生成
     public void LaserCreate()
     {
+		var creater = ressouces [1].GetComponent<LeserCreater>();
 
-        if (_aRDeviceManager.player1.gameObject == gameObject.transform.parent.gameObject)
-        {
-          
-            ressouce.MoveNext();
-            Destroy(ressouce.Current.gameObject);
-            ressouce.MoveNext();
-            ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.parent = transform.parent;
-            ressouce.Current.name = ressouce.Current.name;
-        }
-        else
-        if(_aRDeviceManager.player2.gameObject == gameObject.transform.parent.gameObject)
-        {
-            ressouce.MoveNext();
-            Destroy(ressouce.Current.gameObject);
-            ressouce.MoveNext();
-            Destroy(ressouce.Current.gameObject);
-            ressouce.MoveNext();
-            ressouce.Current.transform.rotation = transform.rotation;
-            ressouce.Current.transform.position = transform.position;
-            ressouce.Current.transform.parent = transform.parent;
-            ressouce.Current.name = ressouce.Current.name;
-        }
+		gameManager.audio.Play (ClipIndex.se_No26_BeamFire);
+		var laser1 = Instantiate (creater.getPlayer1);
+		laser1.transform.rotation = gameManager.player1.transform.rotation;
+		laser1.transform.position = gameManager.player1.transform.position;
+		laser1.transform.SetParent (gameManager.player1.transform);
+		laser1.transform.Translate (0.0f,50.2f,50.2f);
+
+		var laser2 = Instantiate (creater.getPlayer2);
+		laser2.transform.rotation = gameManager.player2.transform.rotation;
+		laser2.transform.position = gameManager.player2.transform.position;
+		laser2.transform.SetParent (gameManager.player2.transform);
+		laser2.transform.Translate (0.0f,50.2f,50.2f);
     }
 
 }
