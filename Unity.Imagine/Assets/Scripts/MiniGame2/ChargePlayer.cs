@@ -74,7 +74,7 @@ public class ChargePlayer : MonoBehaviour
         P1Key = _controller.player1.GetEnumerator();
         P2Key = _controller.player2.GetEnumerator();
 
-        if (P1Key.MoveNext() && Input.GetKey(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
+        if ( Input.GetKey(P1Key.Current) /*&& _energyGage[0].getSelectPlayer == EnergyGage.Player.Player1*/)
         {
             
             if (!(_firstSkipCount[0] == 0))
@@ -97,7 +97,7 @@ public class ChargePlayer : MonoBehaviour
             _firstSkipCount[0]++;
         }
 
-        if (P2Key.MoveNext() && Input.GetKey(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
+        if ( Input.GetKey(P2Key.Current) /*&& _energyGage[1].getSelectPlayer == EnergyGage.Player.Player2*/)
         {
             
             if (!(_firstSkipCount[1] == 0))
