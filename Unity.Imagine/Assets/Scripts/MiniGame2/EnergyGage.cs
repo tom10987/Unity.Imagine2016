@@ -84,6 +84,7 @@ public class EnergyGage : MonoBehaviour
         _initialPosition.z = _powerGage.rectTransform.localPosition.z;
         Vector2 size = _powerGage.rectTransform.sizeDelta;
         size.x = 0;
+		_size.x = 0;
         _powerGage.rectTransform.sizeDelta = size;
         _powerGage.rectTransform.localPosition = _initialPosition;
         foreach(var player in _player)
