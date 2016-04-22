@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
     // TIPS: 戻るボタン復旧、SE 再生、レフェリーのボード更新
     _menu.BackMenuActivate();
     _audioPlayer.Play(ClipIndex.se_No20_Result);
-    _referee.textBox.text = "メニューに戻る";
+    _referee.textBox.text = "しゅーりょー";
 
     // TIPS: エフェクト実行
     var winner = _game.GetWinner();
