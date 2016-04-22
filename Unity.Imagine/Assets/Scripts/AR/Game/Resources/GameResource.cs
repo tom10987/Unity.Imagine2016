@@ -41,4 +41,12 @@ public static class GameResourceExtension
     Object.Destroy(resources.gameObject);
     GameResources.instance.Release();
   }
+
+  /// <summary> 配列としてリソースを生成する </summary>
+  public static GameObject[] CreateResourceArray(this GameResource resource)
+  {
+    var list = new List<GameObject>();
+    foreach (var res in resource.CreateResource()) { list.Add(res); }
+    return list.ToArray();
+  }
 }
