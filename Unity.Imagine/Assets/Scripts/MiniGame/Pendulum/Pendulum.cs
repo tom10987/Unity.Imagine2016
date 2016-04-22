@@ -116,16 +116,16 @@ public class Pendulum : AbstractGame
 
     public override Transform GetWinner()
     {
-        if (player1 == null || player2 == null) { return null; }
+        //if (player1 == null || player2 == null) { return null; }
 
         // 盾がなくなったら負けなので勝ちである相手の transform を返す
-        if(shield1P == null)
+        if(shield1P.isDeath)
         {
-            return player2.transform;
+            return gameManager.player2.transform;
         }
-        else if (shield2P == null)
+        else if (shield2P.isDeath)
         {
-            return player1.transform;
+            return gameManager.player1.transform;
         }
         return null;
     }
@@ -136,7 +136,7 @@ public class Pendulum : AbstractGame
         var isFinish = shield1P.isDeath || shield2P.isDeath;
         if (isFinish)
         {
-            var deviceMgr = GameObject.FindObjectOfType<ARDeviceManager>();
+            var deviceMgr = gameManager.arManager;
             if (shield1P.isDeath)
             {
                 var vector = deviceMgr.player1.transform.eulerAngles;
