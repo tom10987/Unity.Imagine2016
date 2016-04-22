@@ -23,10 +23,12 @@ using System.Collections;
 //
 //------------------------------------------------------------
 
-public class AudioPlayer : MonoBehaviour {
+public class AudioPlayer : MonoBehaviour
+{
 
   /// <summary> <see cref="SourceObject"/> の管理方法の一覧 </summary>
-  public enum SourceManageMode {
+  public enum SourceManageMode
+  {
     /// <summary> <see cref="SourceObject"/> の管理を手動で行う </summary>
     Manual,
     /// <summary> <see cref="SourceObject"/> に
@@ -45,7 +47,8 @@ public class AudioPlayer : MonoBehaviour {
   SourceManageMode _manageMode = SourceManageMode.Manual;
 
   /// <summary> <see cref="SourceObject"/> の管理方法を指定 </summary>
-  public SourceManageMode manageMode {
+  public SourceManageMode manageMode
+  {
     get { return _manageMode; }
     set { _manageMode = value; }
   }
@@ -59,7 +62,8 @@ public class AudioPlayer : MonoBehaviour {
 
   /// <summary> 再生終了時に自動で
   /// <see cref="SourceObject"/> を解放するか指定 </summary>
-  public bool autoRelease {
+  public bool autoRelease
+  {
     get { return _autoRelease; }
     set { _autoRelease = value; AutoRelease(); }
   }
@@ -91,13 +95,15 @@ public class AudioPlayer : MonoBehaviour {
   public bool ExistLoopSource() { return _sourceObject.ExistLoopSource(); }
 
   // TIPS: Bind() 用、SourceObject 取得メソッド
-  SourceObject GetObject() {
+  SourceObject GetObject()
+  {
     var source = table.GetSourceObject();
     return (source == null) ? SourceObject.Create() : source;
   }
 
   /// <summary> <see cref="SourceObject"/> を割り当てる </summary>
-  public void Bind() {
+  public void Bind()
+  {
     if (_sourceObject != null) { UnBind(); }
     var source = GetObject();
     source.transform.SetParent(isRelease ? table.transform : transform);
@@ -105,7 +111,8 @@ public class AudioPlayer : MonoBehaviour {
   }
 
   /// <summary> <see cref="SourceObject"/> を解放する </summary>
-  public void UnBind() {
+  public void UnBind()
+  {
     Destroy(_sourceObject.gameObject);
     _sourceObject = null;
   }
@@ -117,7 +124,8 @@ public class AudioPlayer : MonoBehaviour {
   /// <summary> 指定した ID の <see cref="AudioClip"/> を使って再生する </summary>
   /// <param name="volume"> 音量を指定 (0.0 ~ 1.0) </param>
   /// <param name="isLoop"> true = ループ再生を許可 </param>
-  public void Play(int index, float volume, bool isLoop) {
+  public void Play(int index, float volume, bool isLoop)
+  {
     if (_sourceObject == null) { Bind(); }
 
     // TIPS: AudioSource の取得を試みる
@@ -156,13 +164,18 @@ public class AudioPlayer : MonoBehaviour {
   /// <summary> 再生中の <see cref="AudioSource"/> を全て停止する </summary>
   public void Stop() { _sourceObject.AllStop(); }
 
+  /// <summary> ループ再生以外の <see cref="AudioSource"/> を停止する </summary>
+  public void StopSE() { _sourceObject.StopWithoutLoop(); }
+
   void AutoRelease() { if (!_isAutoRelease) StartCoroutine(RefreshSource()); }
 
   // TIPS: 未使用になった AudioSource を自動的に開放する
-  IEnumerator RefreshSource() {
+  IEnumerator RefreshSource()
+  {
     _isAutoRelease = true;
 
-    while (_autoRelease) {
+    while (_autoRelease)
+    {
       if (_sourceObject.ExistStopSource()) { _sourceObject.Refresh(); }
       yield return null;
     }
