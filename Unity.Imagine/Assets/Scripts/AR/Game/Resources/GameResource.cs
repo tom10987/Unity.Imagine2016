@@ -32,5 +32,6 @@ public static class GameResourceExtension
     var resources = Object.Instantiate(resource);
     foreach (var res in resources.objects) { yield return Object.Instantiate(res); }
     Object.Destroy(resources.gameObject);
+    GameResources.instance.Release();
   }
 }

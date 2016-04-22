@@ -45,8 +45,7 @@ SE
 
 14: No17 -> se_No15_StartCountDown    (ゲーム開始時のカウントダウン)
 15: No18 -> se_No16_FinishCountDown   (ゲーム終了前のカウントダウン)
-
-16: No19 -> se_No17_Finish            (※ No18:se_No16 と結合しているため未使用)
+16: No19 -> se_No17_Finish            (制限時間のないミニゲームの終了ホイッスル)
 
 17: No20 -> se_No18_CostumeBreak_A    (リザルト発表時のコスチュームが吹っ飛ぶ音１)
 18: No20 -> se_No19_CostumeBreak_B    (リザルト発表時のコスチュームが吹っ飛ぶ音２)

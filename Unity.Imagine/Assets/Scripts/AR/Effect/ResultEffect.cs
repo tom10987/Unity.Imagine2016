@@ -4,16 +4,16 @@ using UnityEngine;
 public class ResultEffect : MonoBehaviour
 {
   [SerializeField]
-  GameEffect _player1effect = null;
-  public GameEffect p1effect { get { return _player1effect; } }
+  ShotEffect _player1effect = null;
+  public ShotEffect p1effect { get { return _player1effect; } }
 
   [SerializeField]
-  GameEffect _player2effect = null;
-  public GameEffect p2effect { get { return _player2effect; } }
+  ShotEffect _player2effect = null;
+  public ShotEffect p2effect { get { return _player2effect; } }
 
 
   [SerializeField]
-  GameEffect _paper = null;
+  ShotEffect _paper = null;
 
   [SerializeField, Range(0f, 100f)]
   [Tooltip("紙吹雪の開始座標（Y 軸のみ）")]
