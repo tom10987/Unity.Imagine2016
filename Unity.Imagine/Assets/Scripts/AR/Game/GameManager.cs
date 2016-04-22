@@ -217,8 +217,8 @@ public class GameManager : MonoBehaviour
   // ゲーム部分
   IEnumerator Game()
   {
-    //yield return StartCoroutine(StartCountDown());
-
+    // TIPS: ゲームの初期化
+    _game.GameStart();
     // TIPS: サドンデスだったときの処理
     if (_isSuddenDeath) { _game.SuddenDeathAction(); }
 

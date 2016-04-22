@@ -12,7 +12,7 @@ public static class GameMode
   /// <typeparam name="T"> <see cref="AbstractGame"/> の派生クラス </typeparam>
   public static AbstractGame Create<T>(GameManager manager) where T : AbstractGame
   {
-    var instance = new GameObject("Game Instance").AddComponent<T>();
+    var instance = new GameObject("_GameInstance").AddComponent<T>();
     instance.gameManager = manager;
     return instance;
   }

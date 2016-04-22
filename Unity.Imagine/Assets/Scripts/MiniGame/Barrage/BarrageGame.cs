@@ -1,5 +1,13 @@
 ﻿
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+
+//------------------------------------------------------------
+// NOTICE:
+// スピードのゲームのメイン処理
+//
+//------------------------------------------------------------
 
 public class BarrageGame : AbstractGame
 {
@@ -43,6 +51,17 @@ public class BarrageGame : AbstractGame
   }
 
 
+  public override void GameStart()
+  {
+    base.GameStart();
+  }
+
+  public override void SuddenDeathAction()
+  {
+    base.SuddenDeathAction();
+  }
+
+
   public override bool IsFinish()
   {
     return Input.GetKeyDown(KeyCode.G);
@@ -59,10 +78,7 @@ public class BarrageGame : AbstractGame
   }
 
 
-  // TIPS: スピードのゲームのリソース管理クラス
   SpeedGameManager _speedGame = null;
-
-
   TimeCount _timeCount = null;
 
   void Start()
@@ -73,12 +89,12 @@ public class BarrageGame : AbstractGame
     gameRule = text;
 
     // ゲームで使用するリソースの生成
-    _speedGame = Instantiate(GameResources.instance.barrage);
-    GameResources.instance.Release();
+    var resources = GameResources.instance.barrage.CreateResource();
+    var instances = resources.Select(resource => Instantiate(resource)).ToArray();
   }
 }
 
-static class Extension
+public static class GameUtility
 {
   public static bool IsPlayer1(this BarrageGame.Player p)
   {
